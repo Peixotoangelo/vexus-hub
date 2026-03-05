@@ -2,851 +2,417 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<meta name="theme-color" content="#060708"/>
-<title>Vexus HUB — Command Center</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Vexus HUB — CEO Agent</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
 <style>
-/* ═══════════════════════════════════════
-   DESIGN SYSTEM
-═══════════════════════════════════════ */
-:root{
-  --bg:#060708; --s1:#0c0e11; --s2:#111318;
-  --card:#14171d; --card2:#191c23;
-  --b1:#1c1f27; --b2:#242830; --b3:#2e3340;
-  --gold:#c9a84c; --gold2:#e8cc80; --goldA:rgba(201,168,76,.09);
-  --goldB:rgba(201,168,76,.18); --goldC:rgba(201,168,76,.04);
-  --red:#e05252; --redA:rgba(224,82,82,.12);
-  --green:#3ab870; --greenA:rgba(58,184,112,.12);
-  --blue:#4d9be0; --blueA:rgba(77,155,224,.12);
-  --orange:#e09a3a; --orangeA:rgba(224,154,58,.12);
-  --purple:#9a6ee0; --purpleA:rgba(154,110,224,.12);
-  --teal:#3abfb8; --tealA:rgba(58,191,184,.12);
-  --text:#c8ccd8; --muted:#484e60; --muted2:#6e7588;
-  --white:#eef0f8;
-  --sb: env(safe-area-inset-bottom,0px);
-  --st: env(safe-area-inset-top,0px);
-}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{height:100%;height:-webkit-fill-available}
-body{
-  background:var(--bg);color:var(--text);
-  font-family:'Syne',sans-serif;font-size:14px;
-  height:100vh;height:100dvh;
-  display:flex;flex-direction:column;
-  overflow:hidden;
-  padding-top:var(--st);
+:root{
+  --bg:#060708;--s1:#0c0e11;--card:#14171d;--b1:#1c1f27;--b2:#242830;
+  --gold:#c9a84c;--gold2:#e8cc80;--goldA:rgba(201,168,76,.1);--goldB:rgba(201,168,76,.2);
+  --green:#3ab870;--red:#e05252;--blue:#4d9be0;
+  --text:#c8ccd8;--muted:#484e60;--muted2:#6e7588;--white:#eef0f8;
 }
-
-/* ── TOPBAR ── */
-.topbar{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 16px;height:52px;flex-shrink:0;
-  background:var(--s1);border-bottom:1px solid var(--b1);
-  position:relative;z-index:200;
-}
-.topbar::after{
-  content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,var(--gold),transparent);
-  opacity:.2;
-}
-.tb-l{display:flex;align-items:center;gap:10px}
-.logo{height:26px;object-fit:contain}
-.tb-div{width:1px;height:18px;background:var(--b2)}
-.tb-brand{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:17px;letter-spacing:3px;color:var(--gold);line-height:1;
-}
-.tb-tag{
-  font-size:8px;letter-spacing:2px;text-transform:uppercase;
-  color:var(--muted2);display:none;
-}
-@media(min-width:500px){.tb-tag{display:block}}
-.tb-r{display:flex;align-items:center;gap:8px}
-.status-pill{
-  display:flex;align-items:center;gap:5px;
-  background:var(--greenA);border:1px solid rgba(58,184,112,.25);
-  border-radius:20px;padding:3px 10px;
-}
-.sdot{width:5px;height:5px;border-radius:50%;background:var(--green);
-  animation:sp 2s ease-in-out infinite}
-@keyframes sp{0%,100%{box-shadow:0 0 0 0 rgba(58,184,112,.5)}
-  50%{box-shadow:0 0 0 4px rgba(58,184,112,0)}}
-.stxt{font-size:9px;color:var(--green);font-weight:700;letter-spacing:.5px}
-.hamburger{
-  width:34px;height:34px;border-radius:8px;
-  background:var(--card);border:1px solid var(--b2);
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;font-size:15px;color:var(--muted2);
-}
-
-/* ── LAYOUT ROOT ── */
-.root{display:flex;flex:1;overflow:hidden}
-
-/* ── SIDEBAR ── */
-.sidebar{
-  width:260px;flex-shrink:0;
-  background:var(--s1);border-right:1px solid var(--b1);
-  display:flex;flex-direction:column;overflow:hidden;
-  transition:transform .25s cubic-bezier(.4,0,.2,1);
-}
-@media(max-width:767px){
-  .sidebar{
-    position:fixed;top:52px;left:0;bottom:0;z-index:100;
-    transform:translateX(-100%);
-    box-shadow:none;
-  }
-  .sidebar.open{transform:translateX(0);box-shadow:6px 0 28px rgba(0,0,0,.7)}
-}
-.overlay{
-  display:none;position:fixed;inset:0;z-index:90;
-  background:rgba(0,0,0,.65);backdrop-filter:blur(3px);
-}
-@media(max-width:767px){.overlay.on{display:block}}
-
-/* Perfil CEO */
-.ceo-profile{
-  padding:18px 16px 14px;border-bottom:1px solid var(--b1);
-  background:linear-gradient(160deg,rgba(201,168,76,.06),transparent 60%);
-  position:relative;overflow:hidden;
-}
-.ceo-profile::after{
-  content:'';position:absolute;top:-20px;right:-20px;
-  width:80px;height:80px;border-radius:50%;
-  background:radial-gradient(circle,rgba(201,168,76,.06),transparent);
-}
-.ceo-av{
-  width:46px;height:46px;border-radius:50%;
-  background:linear-gradient(135deg,#1a1612,#2a2010);
-  border:2px solid rgba(201,168,76,.3);
-  display:flex;align-items:center;justify-content:center;
-  overflow:hidden;margin-bottom:10px;
-  box-shadow:0 0 0 3px rgba(201,168,76,.06);
-}
-.ceo-av img{width:30px;height:30px;object-fit:contain}
-.ceo-nm{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--white);margin-bottom:1px}
-.ceo-rl{font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
-.ceo-chips{display:flex;flex-wrap:wrap;gap:3px}
-.cchip{
-  font-size:8px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;
-  padding:2px 6px;border-radius:2px;
-}
-.cc-g{background:var(--goldA);border:1px solid var(--goldB);color:var(--gold)}
-.cc-d{background:var(--b1);color:var(--muted2)}
-
-/* Nav ferramentas */
-.nav{padding:10px 8px;border-bottom:1px solid var(--b1);overflow-y:auto}
-.nav-sec{
-  font-size:8px;letter-spacing:2.5px;text-transform:uppercase;
-  color:var(--muted);padding:6px 8px 4px;font-weight:700;
-}
-.tool-btn{
-  display:flex;align-items:center;gap:10px;
-  padding:9px 10px;border-radius:7px;cursor:pointer;
-  font-size:12px;font-weight:600;color:var(--muted2);
-  transition:.15s;user-select:none;border:1px solid transparent;
-  margin-bottom:2px;
-}
-.tool-btn:hover{background:var(--b1);color:var(--text)}
-.tool-btn.active{border-color:var(--goldB);background:var(--goldA);color:var(--gold)}
-.tool-icon{
-  width:28px;height:28px;border-radius:7px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:13px;background:var(--card2);
-}
-.tool-btn.active .tool-icon{background:rgba(201,168,76,.15)}
-.tool-info{flex:1;min-width:0}
-.tool-nm{font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tool-desc{font-size:9px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tool-btn.active .tool-desc{color:var(--muted2)}
-
-/* KPIs sidebar */
-.kpi-box{padding:10px 8px 14px;margin-top:auto}
-.kpi-sec{font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);padding:0 8px;margin-bottom:6px;font-weight:700}
-.kpi-row{display:flex;justify-content:space-between;align-items:center;padding:5px 8px;margin-bottom:1px;background:var(--card);border-radius:5px;font-size:10px}
-.kpi-k{color:var(--muted2)}
-.kpi-v{font-weight:700}
-.kpi-v.g{color:var(--gold)}.kpi-v.gr{color:var(--green)}.kpi-v.r{color:var(--red)}
-
-/* ── MAIN AREA ── */
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;display:flex;flex-direction:column}
+.topbar{height:50px;background:var(--s1);border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;padding:0 14px;flex-shrink:0;position:relative;z-index:100}
+.topbar::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.2}
+.tb-l{display:flex;align-items:center;gap:9px}
+.hmbtn{width:32px;height:32px;border-radius:7px;background:var(--card);border:1px solid var(--b2);cursor:pointer;font-size:15px;color:var(--muted2);display:flex;align-items:center;justify-content:center}
+.logov{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#1a1612,#2a2010);border:1.5px solid rgba(201,168,76,.4);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold);flex-shrink:0}
+.brand{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:3px;color:var(--gold)}
+.brandsub{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2)}
+.tb-r{display:flex;align-items:center;gap:7px}
+.keybtn{padding:4px 11px;border-radius:6px;background:var(--goldA);border:1px solid var(--goldB);color:var(--gold);font-size:10px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif}
+.pill{display:flex;align-items:center;gap:5px;background:rgba(58,184,112,.1);border:1px solid rgba(58,184,112,.25);border-radius:20px;padding:3px 9px}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pu 2s infinite}
+@keyframes pu{0%,100%{box-shadow:0 0 0 0 rgba(58,184,112,.5)}50%{box-shadow:0 0 0 4px rgba(58,184,112,0)}}
+.ptxt{font-size:9px;color:var(--green);font-weight:700}
+.layout{display:flex;flex:1;overflow:hidden}
+.sidebar{width:235px;flex-shrink:0;background:var(--s1);border-right:1px solid var(--b1);display:flex;flex-direction:column;overflow:hidden;transition:transform .25s ease}
+@media(max-width:767px){.sidebar{position:fixed;top:50px;left:0;bottom:0;z-index:90;transform:translateX(-100%)}.sidebar.open{transform:translateX(0);box-shadow:6px 0 20px rgba(0,0,0,.7)}}
+.overlay{display:none;position:fixed;inset:0;top:50px;z-index:80;background:rgba(0,0,0,.65)}
+.ceocard{padding:14px 12px 10px;border-bottom:1px solid var(--b1);background:linear-gradient(160deg,var(--goldA),transparent 60%)}
+.ceoav{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#1a1612,#2a2010);border:2px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold);margin-bottom:8px}
+.ceonm{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;color:var(--white)}
+.ceorl{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:7px}
+.ceotags{display:flex;flex-wrap:wrap;gap:3px}
+.ctag{font-size:7px;text-transform:uppercase;font-weight:700;padding:2px 5px;border-radius:2px}
+.ctag.g{background:var(--goldA);border:1px solid var(--goldB);color:var(--gold)}
+.ctag.d{background:var(--b1);color:var(--muted2)}
+.nav{padding:7px;border-bottom:1px solid var(--b1)}
+.nsec{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:4px 8px;margin-bottom:2px;font-weight:700}
+.ni{display:flex;align-items:center;gap:8px;padding:8px 9px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:700;color:var(--muted2);transition:.15s;border:1px solid transparent;margin-bottom:2px}
+.ni:hover{background:var(--b1);color:var(--text)}
+.ni.on{background:var(--goldA);border-color:var(--goldB);color:var(--gold)}
+.niic{width:24px;height:24px;border-radius:5px;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.ni.on .niic{background:rgba(201,168,76,.15)}
+.ninm{font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nids{font-size:9px;color:var(--muted);margin-top:1px}
+.kpis{padding:8px;border-top:1px solid var(--b1);margin-top:auto}
+.ksec{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:0 6px;margin-bottom:5px;font-weight:700}
+.kr{display:flex;justify-content:space-between;padding:4px 7px;background:var(--card);border-radius:4px;margin-bottom:2px;font-size:10px}
+.kk{color:var(--muted2)}.kv{font-weight:700}
+.kv.g{color:var(--gold)}.kv.gr{color:var(--green)}.kv.r{color:var(--red)}
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
-
-/* Toolbar header */
-.tool-header{
-  padding:10px 16px;background:var(--s1);
-  border-bottom:1px solid var(--b1);flex-shrink:0;
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-}
-.th-left{display:flex;align-items:center;gap:10px;min-width:0}
-.th-icon{
-  width:32px;height:32px;border-radius:8px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:15px;
-}
-.th-name{
-  font-size:12px;font-weight:800;letter-spacing:.5px;
-  color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.th-desc{font-size:10px;color:var(--muted2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.th-right{display:flex;gap:6px;flex-shrink:0}
-.th-btn{
-  padding:5px 12px;border-radius:6px;font-size:10px;font-weight:700;
-  letter-spacing:.5px;text-transform:uppercase;cursor:pointer;
-  border:1px solid var(--b2);background:var(--card);color:var(--muted2);
-  transition:.15s;white-space:nowrap;
-}
-.th-btn:hover{border-color:var(--goldB);color:var(--gold)}
-.th-btn.primary{background:var(--gold);border-color:var(--gold);color:#000}
-.th-btn.primary:hover{background:var(--gold2)}
-
-/* ── CHAT ENGINE ── */
-.chat-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden}
-
-.messages{
-  flex:1;overflow-y:auto;padding:16px;
-  display:flex;flex-direction:column;gap:14px;
-  scroll-behavior:smooth;-webkit-overflow-scrolling:touch;
-}
-.messages::-webkit-scrollbar{width:3px}
-.messages::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
-
-/* Boas-vindas */
-.welcome{
-  display:flex;flex-direction:column;align-items:center;
-  text-align:center;padding:32px 20px;
-  animation:fadeIn .5s ease;
-}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.w-icon{
-  width:64px;height:64px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:28px;margin-bottom:14px;
-  border:2px solid;
-}
-.w-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:var(--white);margin-bottom:6px}
-.w-desc{font-size:13px;color:var(--muted2);max-width:420px;line-height:1.7;margin-bottom:20px}
-.w-chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
-.w-chip{
-  font-size:11px;font-weight:600;color:var(--text);
-  background:var(--card);border:1px solid var(--b2);
-  border-radius:20px;padding:6px 14px;cursor:pointer;
-  transition:.15s;
-}
-.w-chip:hover{border-color:var(--goldB);color:var(--gold);background:var(--goldA)}
-.w-chip:active{transform:scale(.97)}
-
-/* Mensagens */
-.msg-u{display:flex;justify-content:flex-end;gap:8px;align-items:flex-end;animation:fadeIn .3s ease}
-.msg-u .bub{
-  background:var(--goldA);border:1px solid var(--goldB);
-  border-radius:14px 14px 3px 14px;
-  padding:10px 14px;max-width:82%;
-  font-size:13px;line-height:1.65;color:var(--white);word-break:break-word;
-}
-.u-av{
-  width:26px;height:26px;border-radius:50%;background:var(--b2);
-  display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;
-}
-.msg-a{display:flex;gap:9px;align-items:flex-start;animation:fadeIn .3s ease}
-.a-av{
-  width:30px;height:30px;border-radius:50%;flex-shrink:0;margin-top:2px;
-  background:linear-gradient(135deg,#1a1612,#2a2010);
-  border:1px solid rgba(201,168,76,.25);
-  display:flex;align-items:center;justify-content:center;overflow:hidden;
-}
-.a-av img{width:20px;height:20px;object-fit:contain}
-.msg-a .bub{
-  background:var(--card);border:1px solid var(--b2);
-  border-radius:3px 14px 14px 14px;
-  padding:13px 15px;max-width:90%;
-  font-size:13px;line-height:1.75;color:var(--text);word-break:break-word;
-}
-.bub-hdr{display:flex;align-items:center;gap:8px;margin-bottom:9px}
-.bub-nm{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700}
-.bub-tool{font-size:8px;letter-spacing:1px;text-transform:uppercase;font-weight:700;padding:2px 7px;border-radius:3px}
-
-.bub strong{color:var(--white)}
-.bub em{color:var(--gold2);font-style:normal;font-weight:600}
-.bub hr{border:none;border-top:1px solid var(--b2);margin:10px 0}
-
-/* Action items */
-.act{display:flex;gap:8px;align-items:flex-start;
-  background:rgba(255,255,255,.025);border-radius:6px;
-  padding:7px 10px;margin:3px 0;font-size:12px;line-height:1.5}
-.act-n{font-family:'Bebas Neue',sans-serif;font-size:15px;
-  color:var(--gold);flex-shrink:0;line-height:1.3;min-width:16px}
-
-/* Score bars */
-.sc-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
-.sc-lbl{font-size:11px;color:var(--muted2);flex:0 0 130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sc-track{flex:1;background:var(--b1);border-radius:2px;height:3px;overflow:hidden}
-.sc-fill{height:3px;border-radius:2px;width:0;transition:width .8s ease}
-.sc-val{font-size:11px;font-weight:700;min-width:30px;text-align:right}
-
-/* Tag diagnóstico */
-.diag{
-  display:inline-flex;align-items:center;gap:5px;
-  font-size:8px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
-  padding:3px 8px;border-radius:3px;margin-bottom:8px;
-}
-
-/* Img preview */
-.img-prv{padding:6px 12px 0;display:flex;gap:6px;flex-wrap:wrap}
-.ithumb{
-  position:relative;width:48px;height:48px;border-radius:8px;
-  overflow:hidden;border:1px solid var(--b2);flex-shrink:0;
-}
-.ithumb img{width:100%;height:100%;object-fit:cover}
-.irm{
-  position:absolute;top:1px;right:1px;background:rgba(0,0,0,.85);
-  color:#fff;border:none;border-radius:50%;width:14px;height:14px;
-  font-size:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;
-}
-.msg-img{max-width:180px;border-radius:8px;border:1px solid var(--b2);margin-top:6px;display:block}
-
-/* Quick chips */
-.qchips{padding:6px 12px 0;display:flex;gap:5px;flex-wrap:wrap}
-.qchip{
-  font-size:10px;font-weight:600;color:var(--muted2);
-  background:var(--card);border:1px solid var(--b2);
-  border-radius:20px;padding:5px 11px;cursor:pointer;transition:.15s;white-space:nowrap;
-}
-.qchip:hover{border-color:var(--goldB);color:var(--gold);background:var(--goldA)}
-.qchip:active{transform:scale(.97)}
-
-/* Typing */
-.typing-msg{display:flex;gap:9px;align-items:center}
-.tdots{
-  display:flex;gap:4px;background:var(--card);border:1px solid var(--b2);
-  border-radius:20px;padding:9px 13px;
-}
-.tdots span{
-  width:5px;height:5px;border-radius:50%;background:var(--gold);opacity:.25;
-  animation:td 1.2s ease-in-out infinite;
-}
-.tdots span:nth-child(2){animation-delay:.2s}
-.tdots span:nth-child(3){animation-delay:.4s}
+.toolhdr{padding:8px 14px;background:var(--s1);border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:9px;flex-shrink:0}
+#thic{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+#thnm{font-size:11px;font-weight:800;color:var(--white)}
+#thds{font-size:9px;color:var(--muted2)}
+.panel{flex:1;display:none;flex-direction:column;overflow:hidden}
+.panel.on{display:flex}
+/* CHAT */
+#msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column}
+#msgs::-webkit-scrollbar{width:3px}
+#msgs::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
+.welcome{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px 16px}
+.wav{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#1a1612,#2a2010);border:2px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--gold);margin-bottom:12px}
+.wtitle{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:var(--white);margin-bottom:6px}
+.wdesc{font-size:13px;color:var(--muted2);max-width:380px;line-height:1.7;margin-bottom:18px}
+.wchips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.wc{font-size:11px;font-weight:600;color:var(--text);background:var(--card);border:1px solid var(--b2);border-radius:20px;padding:6px 14px;cursor:pointer;transition:.15s}
+.wc:hover{border-color:var(--goldB);color:var(--gold);background:var(--goldA)}
+.mu{display:flex;justify-content:flex-end;gap:7px;align-items:flex-end;margin-bottom:12px}
+.mu .b{background:var(--goldA);border:1px solid var(--goldB);border-radius:14px 14px 3px 14px;padding:9px 13px;max-width:82%;font-size:13px;line-height:1.65;color:var(--white);word-break:break-word}
+.uav{width:24px;height:24px;border-radius:50%;background:var(--b2);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0}
+.ma{display:flex;gap:8px;align-items:flex-start;margin-bottom:12px}
+.aav{width:28px;height:28px;border-radius:50%;flex-shrink:0;margin-top:2px;background:linear-gradient(135deg,#1a1612,#2a2010);border:1px solid rgba(201,168,76,.25);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--gold)}
+.ma .b{background:var(--card);border:1px solid var(--b2);border-radius:3px 14px 14px 14px;padding:12px 14px;max-width:90%;font-size:13px;line-height:1.75;color:var(--text);word-break:break-word}
+.bnm{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:7px}
+.b strong{color:var(--white)}
+.dtag{display:inline-block;font-size:8px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border-radius:3px;margin-bottom:7px}
+.act{display:flex;gap:7px;align-items:flex-start;background:rgba(255,255,255,.025);border-radius:5px;padding:6px 9px;margin:3px 0;font-size:12px;line-height:1.5}
+.an{font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--gold);flex-shrink:0;line-height:1.3;min-width:16px}
+.sr{display:flex;align-items:center;gap:7px;margin-bottom:5px}
+.sl{font-size:10px;color:var(--muted2);flex:0 0 120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.st{flex:1;background:var(--b1);border-radius:2px;height:3px;overflow:hidden}
+.sf{height:3px;border-radius:2px;width:0;transition:width .8s ease}
+.sv{font-size:10px;font-weight:700;min-width:28px;text-align:right}
+.typing{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.tdots{display:flex;gap:4px;background:var(--card);border:1px solid var(--b2);border-radius:20px;padding:9px 12px}
+.tdots span{width:5px;height:5px;border-radius:50%;background:var(--gold);opacity:.25;animation:td 1.2s ease-in-out infinite}
+.tdots span:nth-child(2){animation-delay:.2s}.tdots span:nth-child(3){animation-delay:.4s}
 @keyframes td{0%,60%,100%{opacity:.25;transform:scale(1)}30%{opacity:1;transform:scale(1.4)}}
-
-/* Input area */
-.inp-area{
-  padding:10px 12px;padding-bottom:calc(10px + var(--sb));
-  border-top:1px solid var(--b1);background:var(--s1);flex-shrink:0;
-}
-.inp-row{display:flex;gap:7px;align-items:flex-end}
-.inp-att{
-  width:40px;height:40px;min-width:40px;border-radius:9px;
-  background:var(--card);border:1px solid var(--b2);
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;font-size:16px;color:var(--muted2);transition:.15s;
-}
-.inp-att:hover,.inp-att:active{border-color:var(--gold);color:var(--gold)}
-.inp-txt{
-  flex:1;background:var(--card);border:1px solid var(--b2);
-  border-radius:9px;padding:9px 13px;
-  color:var(--white);font-family:'Syne',sans-serif;
-  font-size:13px;resize:none;outline:none;
-  min-height:40px;max-height:120px;line-height:1.5;
-  transition:border-color .2s;-webkit-appearance:none;
-}
-.inp-txt:focus{border-color:var(--goldB)}
-.inp-txt::placeholder{color:var(--muted)}
-.inp-send{
-  height:40px;padding:0 14px;min-width:64px;
-  background:var(--gold);border:none;border-radius:9px;
-  cursor:pointer;font-family:'Syne',sans-serif;
-  font-size:12px;font-weight:800;color:#000;
-  transition:.15s;flex-shrink:0;letter-spacing:.3px;
-}
-.inp-send:hover{background:var(--gold2)}
-.inp-send:active{transform:scale(.97)}
-.inp-send:disabled{opacity:.4;cursor:not-allowed;transform:none}
-.inp-hint{font-size:9px;color:var(--muted);margin-top:5px;display:none}
-@media(min-width:600px){.inp-hint{display:block}}
-
-#file-in{display:none}
-
-/* ── FERRAMENTAS ESPECIAIS (não-chat) ── */
-.tool-panel{
-  flex:1;overflow-y:auto;padding:16px;
-  display:none;flex-direction:column;gap:14px;
-  -webkit-overflow-scrolling:touch;
-}
-.tool-panel.active{display:flex}
-
-/* Painel precificação */
-.calc-card{
-  background:var(--card);border:1px solid var(--b2);border-radius:10px;
-  padding:18px;
-}
-.calc-title{
-  font-family:'Bebas Neue',sans-serif;font-size:18px;
-  letter-spacing:1.5px;color:var(--white);margin-bottom:14px;
-  display:flex;align-items:center;gap:8px;
-}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-@media(max-width:500px){.form-grid{grid-template-columns:1fr}}
-.form-group label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);display:block;margin-bottom:4px}
-.form-input{
-  width:100%;background:var(--s2);border:1px solid var(--b2);
-  border-radius:7px;padding:8px 12px;
-  color:var(--white);font-family:'Syne',sans-serif;font-size:13px;
-  outline:none;transition:border-color .2s;
-}
-.form-input:focus{border-color:var(--goldB)}
-.calc-btn{
-  width:100%;padding:11px;border-radius:8px;
-  background:var(--gold);border:none;cursor:pointer;
-  font-family:'Syne',sans-serif;font-size:13px;font-weight:800;
-  color:#000;letter-spacing:.5px;transition:.15s;
-}
-.calc-btn:hover{background:var(--gold2)}
-.result-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-top:14px}
-.result-card{
-  background:var(--s2);border:1px solid var(--b2);border-radius:8px;
-  padding:12px;text-align:center;
-}
-.res-lbl{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);margin-bottom:4px}
-.res-val{font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1;margin-bottom:2px}
-.res-sub{font-size:9px;color:var(--muted)}
-.res-val.gold{color:var(--gold)}.res-val.green{color:var(--green)}.res-val.red{color:var(--red)}
-
-/* Painel Gerador de Anúncios */
-.ad-gen-form{display:flex;flex-direction:column;gap:10px}
-.ad-result{
-  background:var(--card);border:1px solid var(--goldB);
-  border-radius:10px;padding:16px;display:none;
-}
-.ad-result.show{display:block}
-.ad-field{margin-bottom:10px}
-.ad-label{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:5px}
-.ad-value{
-  background:var(--s2);border:1px solid var(--b2);border-radius:6px;
-  padding:10px 12px;font-size:12px;color:var(--white);line-height:1.7;
-  cursor:pointer;transition:border-color .2s;position:relative;
-}
-.ad-value:hover{border-color:var(--goldB)}
-.copy-hint{font-size:9px;color:var(--muted);margin-top:4px}
-
-/* Painel FAQ/SAC */
-.sac-list{display:flex;flex-direction:column;gap:8px}
-.sac-item{
-  background:var(--card);border:1px solid var(--b2);border-radius:9px;overflow:hidden;
-}
-.sac-q{
-  padding:12px 14px;font-size:12px;font-weight:600;color:var(--white);
-  cursor:pointer;display:flex;justify-content:space-between;align-items:center;
-}
-.sac-q::after{content:'▾';color:var(--gold);transition:.2s}
-.sac-item.open .sac-q::after{transform:rotate(180deg)}
-.sac-a{
-  padding:0 14px 12px;font-size:12px;color:var(--muted2);line-height:1.7;
-  display:none;
-}
-.sac-item.open .sac-a{display:block}
-
-/* Toast */
-.toast{
-  position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
-  background:var(--green);color:#000;font-size:11px;font-weight:700;
-  padding:8px 18px;border-radius:20px;z-index:999;
-  opacity:0;transition:.3s;pointer-events:none;white-space:nowrap;
-}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* Onboarding steps */
-.steps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
-.step-card{
-  background:var(--card);border:1px solid var(--b2);border-radius:10px;
-  padding:16px;position:relative;overflow:hidden;
-}
-.step-n{
-  font-family:'Bebas Neue',sans-serif;font-size:48px;
-  color:var(--gold);opacity:.12;position:absolute;top:-6px;right:10px;line-height:1;
-}
-.step-icon{font-size:22px;margin-bottom:8px}
-.step-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:5px}
-.step-desc{font-size:11px;color:var(--muted2);line-height:1.65}
-.step-ex{
-  margin-top:10px;background:var(--s2);border-left:2px solid var(--gold);
-  border-radius:0 5px 5px 0;padding:7px 10px;
-  font-size:11px;color:var(--text);line-height:1.6;font-style:italic;
-}
-
-/* Util */
-.tag-pill{
-  display:inline-block;font-size:8px;font-weight:800;letter-spacing:1.5px;
-  text-transform:uppercase;padding:2px 7px;border-radius:3px;margin-right:4px;
-}
-.divider{height:1px;background:var(--b1);margin:8px 0}
+.imgprev{padding:5px 12px 0;display:flex;gap:5px;flex-wrap:wrap}
+.ith{position:relative;width:46px;height:46px;border-radius:7px;overflow:hidden;border:1px solid var(--b2);flex-shrink:0}
+.ith img{width:100%;height:100%;object-fit:cover}
+.irm{position:absolute;top:1px;right:1px;background:rgba(0,0,0,.85);color:#fff;border:none;border-radius:50%;width:14px;height:14px;font-size:8px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.qchips{padding:6px 12px 0;display:flex;gap:5px;flex-wrap:wrap}
+.qc{font-size:10px;font-weight:600;color:var(--muted2);background:var(--card);border:1px solid var(--b2);border-radius:20px;padding:5px 10px;cursor:pointer;transition:.15s;white-space:nowrap}
+.qc:hover{border-color:var(--goldB);color:var(--gold);background:var(--goldA)}
+.inparea{padding:10px 12px 12px;border-top:1px solid var(--b1);background:var(--s1);flex-shrink:0}
+.inprow{display:flex;gap:7px;align-items:flex-end}
+.attbtn{width:38px;height:38px;min-width:38px;border-radius:8px;background:var(--card);border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--muted2);transition:.15s}
+.attbtn:hover{border-color:var(--gold);color:var(--gold)}
+#inp{flex:1;background:var(--card);border:1px solid var(--b2);border-radius:8px;padding:9px 12px;color:var(--white);font-family:'Syne',sans-serif;font-size:13px;resize:none;outline:none;min-height:38px;max-height:110px;line-height:1.5;transition:border-color .2s}
+#inp:focus{border-color:var(--goldB)}
+#inp::placeholder{color:var(--muted)}
+.sendbtn{height:38px;padding:0 14px;background:var(--gold);border:none;border-radius:8px;cursor:pointer;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:#000;flex-shrink:0;transition:.15s}
+.sendbtn:hover{background:var(--gold2)}
+.sendbtn:disabled{opacity:.4;cursor:not-allowed}
+/* PANELS SCROLL */
+.spanel{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
+.spanel::-webkit-scrollbar{width:3px}
+.spanel::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
+.pcard{background:var(--card);border:1px solid var(--b2);border-radius:10px;padding:16px}
+.ptitle{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:1.5px;color:var(--white);margin-bottom:12px}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
+@media(max-width:480px){.fgrid{grid-template-columns:1fr}}
+.fg label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);display:block;margin-bottom:3px}
+.fi{width:100%;background:var(--s1);border:1px solid var(--b2);border-radius:7px;padding:8px 11px;color:var(--white);font-family:'Syne',sans-serif;font-size:13px;outline:none;transition:border-color .2s}
+.fi:focus{border-color:var(--goldB)}
+.rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+@media(max-width:480px){.rgrid{grid-template-columns:1fr 1fr}}
+.rc{background:var(--s1);border:1px solid var(--b2);border-radius:8px;padding:10px;text-align:center}
+.rl{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);margin-bottom:3px}
+.rv{font-family:'Bebas Neue',sans-serif;font-size:24px;line-height:1}
+.rs{font-size:9px;color:var(--muted);margin-top:2px}
+.calcbtn{width:100%;padding:11px;border-radius:8px;background:var(--gold);border:none;cursor:pointer;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#000;margin-bottom:14px;transition:.15s}
+.calcbtn:hover{background:var(--gold2)}
+.adfield{margin-bottom:12px}
+.adlbl{font-size:8px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.adval{background:var(--s1);border:1px solid var(--b2);border-radius:6px;padding:10px 12px;font-size:12px;color:var(--white);line-height:1.7;cursor:pointer;white-space:pre-wrap;transition:border-color .2s}
+.adval:hover{border-color:var(--gold)}
+.copyhint{font-size:9px;color:var(--muted);margin-top:3px}
+.sacitem{background:var(--s1);border:1px solid var(--b2);border-radius:9px;overflow:hidden;margin-bottom:8px}
+.sacq{padding:11px 14px;font-size:12px;font-weight:700;color:var(--white);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none}
+.sacq span{color:var(--gold);transition:.2s;display:inline-block}
+.sacitem.open .sacq span{transform:rotate(180deg)}
+.saca{padding:0 14px 12px;font-size:12px;color:var(--muted2);line-height:1.7;display:none}
+.sacitem.open .saca{display:block}
+.copybtn{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:4px;background:transparent;border:1px solid var(--gold);color:var(--gold);cursor:pointer;margin-top:7px;font-family:'Syne',sans-serif;transition:.15s}
+.copybtn:hover{background:var(--goldA)}
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.step-card{background:var(--s1);border:1px solid var(--b2);border-radius:10px;padding:14px;position:relative;overflow:hidden}
+.stepn{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--gold);opacity:.1;position:absolute;top:-6px;right:8px;line-height:1}
+.stepic{font-size:22px;margin-bottom:8px}
+.stept{font-size:13px;font-weight:700;color:var(--white);margin-bottom:4px}
+.stepd{font-size:11px;color:var(--muted2);line-height:1.65;margin-bottom:8px}
+.stepex{border-left:2px solid var(--gold);padding-left:9px;font-size:11px;color:var(--text);line-height:1.6;font-style:italic}
+/* MODAL */
+.modal{display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.92);backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:20px}
+.mbox{background:#0d0f12;border:1px solid rgba(201,168,76,.35);border-radius:16px;padding:28px;max-width:430px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.9)}
+.mtitle{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:3px;color:var(--gold);text-align:center;margin-bottom:3px}
+.msub{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted2);text-align:center;margin-bottom:20px}
+.minfo{background:#060708;border:1px solid var(--b1);border-radius:10px;padding:14px;margin-bottom:16px;font-size:12px;color:var(--muted2);line-height:1.9}
+.minfo strong{color:var(--white)}.minfo a{color:var(--gold);text-decoration:none}
+.minp{width:100%;background:#060708;border:1px solid var(--b2);border-radius:9px;padding:12px 14px;color:var(--white);font-family:'Syne',sans-serif;font-size:13px;outline:none;margin-bottom:8px;transition:border-color .2s}
+.minp:focus{border-color:rgba(201,168,76,.5)}
+.merr{font-size:11px;color:var(--red);min-height:16px;margin-bottom:10px}
+.mbtn{width:100%;padding:13px;border-radius:9px;background:var(--gold);border:none;cursor:pointer;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#000;letter-spacing:.5px;margin-bottom:10px;transition:.15s}
+.mbtn:hover{background:var(--gold2)}
+.mfoot{text-align:center;font-size:10px;color:var(--muted)}
+.mfoot a{color:var(--gold);text-decoration:none}
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:#000;font-size:11px;font-weight:700;padding:8px 18px;border-radius:20px;z-index:9999;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
 
-<!-- ─── TOPBAR ─── -->
 <div class="topbar">
   <div class="tb-l">
-    <div class="hamburger" onclick="toggleSB()">☰</div>
-    <img class="logo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23333'/%3E%3Cstop offset='100%25' stop-color='%23c9a84c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='100' cy='100' r='100' fill='%230d0f12'/%3E%3Ctext x='100' y='125' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' fill='url(%23g)' text-anchor='middle'%3EV%3C/text%3E%3C/svg%3E" alt="Vexus"/>
-    <div class="tb-div"></div>
-    <div>
-      <div class="tb-brand">VEXUS HUB</div>
-      <div class="tb-tag">Multi-Agent Command Center</div>
-    </div>
+    <div class="hmbtn" onclick="toggleSB()">☰</div>
+    <div class="logov">V</div>
+    <div><div class="brand">VEXUS HUB</div><div class="brandsub">Powered by Gemini AI</div></div>
   </div>
   <div class="tb-r">
-    <button onclick="showKeyModal()" title="API Key"
-      style="width:30px;height:30px;border-radius:7px;background:rgba(201,168,76,.1);
-        border:1px solid rgba(201,168,76,.25);cursor:pointer;font-size:13px;
-        color:#c9a84c;display:flex;align-items:center;justify-content:center">🔑</button>
-    <div class="status-pill">
-      <div class="sdot"></div>
-      <div class="stxt">Agentes Ativos</div>
-    </div>
+    <button class="keybtn" onclick="showModal()">🔑 API Key</button>
+    <div class="pill"><div class="dot"></div><div class="ptxt">Online</div></div>
   </div>
 </div>
 
-<div class="root">
-  <div class="overlay" id="ov" onclick="toggleSB()"></div>
-
-  <!-- ─── SIDEBAR ─── -->
+<div class="layout">
+  <div class="overlay" id="ov" onclick="closeSB()"></div>
   <div class="sidebar" id="sb">
-    <div class="ceo-profile">
-      <div class="ceo-av"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23333'/%3E%3Cstop offset='100%25' stop-color='%23c9a84c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='100' cy='100' r='100' fill='%230d0f12'/%3E%3Ctext x='100' y='125' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' fill='url(%23g)' text-anchor='middle'%3EV%3C/text%3E%3C/svg%3E" alt="V"/></div>
-      <div class="ceo-nm">Victor Stein</div>
-      <div class="ceo-rl">CEO &amp; Sócio Estratégico</div>
-      <div class="ceo-chips">
-        <span class="cchip cc-g">ML Expert</span>
-        <span class="cchip cc-g">B2A/AEO</span>
-        <span class="cchip cc-d">Pricing</span>
-        <span class="cchip cc-d">SAC</span>
-        <span class="cchip cc-d">Growth</span>
+    <div class="ceocard">
+      <div class="ceoav">V</div>
+      <div class="ceonm">Victor Stein</div>
+      <div class="ceorl">CEO &amp; Sócio Estratégico</div>
+      <div class="ceotags">
+        <span class="ctag g">ML Expert</span><span class="ctag g">B2A/AEO</span>
+        <span class="ctag d">Pricing</span><span class="ctag d">SAC</span><span class="ctag d">Growth</span>
       </div>
     </div>
-
-    <div class="nav" id="nav">
-      <div class="nav-sec">⚡ Núcleo Principal</div>
-      <div class="tool-btn active" onclick="switchTool('ceo')" id="btn-ceo">
-        <div class="tool-icon">🧠</div>
-        <div class="tool-info"><div class="tool-nm">CEO Estratégico</div><div class="tool-desc">Estratégia, decisões, vereditos</div></div>
-      </div>
-
-      <div class="nav-sec">🛠️ Ferramentas Ativas</div>
-      <div class="tool-btn" onclick="switchTool('pricing')" id="btn-pricing">
-        <div class="tool-icon">💰</div>
-        <div class="tool-info"><div class="tool-nm">Calculadora de Margem</div><div class="tool-desc">Preço, markup, viabilidade</div></div>
-      </div>
-      <div class="tool-btn" onclick="switchTool('adgen')" id="btn-adgen">
-        <div class="tool-icon">📋</div>
-        <div class="tool-info"><div class="tool-nm">Gerador de Anúncio</div><div class="tool-desc">Título + bullets AEO automático</div></div>
-      </div>
-      <div class="tool-btn" onclick="switchTool('sac')" id="btn-sac">
-        <div class="tool-icon">💬</div>
-        <div class="tool-info"><div class="tool-nm">Base SAC / FAQ</div><div class="tool-desc">Respostas prontas para ML</div></div>
-      </div>
-      <div class="tool-btn" onclick="switchTool('imgeval')" id="btn-imgeval">
-        <div class="tool-icon">🖼️</div>
-        <div class="tool-info"><div class="tool-nm">Avaliação de Foto ML</div><div class="tool-desc">Score algoritmo por imagem</div></div>
-      </div>
-
-      <div class="nav-sec">📖 Guia</div>
-      <div class="tool-btn" onclick="switchTool('guide')" id="btn-guide">
-        <div class="tool-icon">📖</div>
-        <div class="tool-info"><div class="tool-nm">Como Usar</div><div class="tool-desc">Passo a passo com exemplos</div></div>
-      </div>
+    <div class="nav">
+      <div class="nsec">Ferramentas</div>
+      <div class="ni on" id="btn-ceo" onclick="goTool('ceo')"><div class="niic">🧠</div><div><div class="ninm">CEO Estratégico</div><div class="nids">Estratégia, diagnóstico, B2A</div></div></div>
+      <div class="ni" id="btn-pricing" onclick="goTool('pricing')"><div class="niic">💰</div><div><div class="ninm">Calculadora de Margem</div><div class="nids">Preço, markup, projeção</div></div></div>
+      <div class="ni" id="btn-adgen" onclick="goTool('adgen')"><div class="niic">📋</div><div><div class="ninm">Gerador de Anúncio</div><div class="nids">Título + bullets AEO</div></div></div>
+      <div class="ni" id="btn-sac" onclick="goTool('sac')"><div class="niic">💬</div><div><div class="ninm">Base SAC / FAQ</div><div class="nids">Respostas prontas ML</div></div></div>
+      <div class="ni" id="btn-imgeval" onclick="goTool('imgeval')"><div class="niic">🖼️</div><div><div class="ninm">Avaliar Foto ML</div><div class="nids">Score do algoritmo</div></div></div>
+      <div class="ni" id="btn-guide" onclick="goTool('guide')"><div class="niic">📖</div><div><div class="ninm">Como Usar</div><div class="nids">Guia + auto-regeneração</div></div></div>
     </div>
-
-    <div class="kpi-box">
-      <div class="kpi-sec">📊 Vexus · Dados Ativos</div>
-      <div class="kpi-row"><span class="kpi-k">F-1006 Preto</span><span class="kpi-v g">R$349,90</span></div>
-      <div class="kpi-row"><span class="kpi-k">F-1006 Gold</span><span class="kpi-v g">R$449,90</span></div>
-      <div class="kpi-row"><span class="kpi-k">Margem alvo</span><span class="kpi-v gr">~49% bruto</span></div>
-      <div class="kpi-row"><span class="kpi-k">Markup ML</span><span class="kpi-v">÷ 0,57</span></div>
-      <div class="kpi-row"><span class="kpi-k">Fase</span><span class="kpi-v r">Lançamento</span></div>
+    <div class="kpis">
+      <div class="ksec">Dados Vexus</div>
+      <div class="kr"><span class="kk">F-1006 Preto</span><span class="kv g">R$349,90</span></div>
+      <div class="kr"><span class="kk">F-1006 Gold</span><span class="kv g">R$449,90</span></div>
+      <div class="kr"><span class="kk">Margem bruta</span><span class="kv gr">~49%</span></div>
+      <div class="kr"><span class="kk">Markup ML</span><span class="kv">÷ 0,57</span></div>
+      <div class="kr"><span class="kk">Fase</span><span class="kv r">Lançamento</span></div>
     </div>
   </div>
 
-  <!-- ─── MAIN ─── -->
   <div class="main">
-
-    <!-- Tool Header -->
-    <div class="tool-header" id="tool-hdr">
-      <div class="th-left">
-        <div class="th-icon" id="th-icon" style="background:var(--goldA)">🧠</div>
-        <div>
-          <div class="th-name" id="th-name">CEO Estratégico — Victor Stein</div>
-          <div class="th-desc" id="th-desc">Estratégia · Diagnóstico · Decisões · Avaliação de Imagem</div>
-        </div>
-      </div>
-      <div class="th-right">
-        <div class="th-btn" onclick="clearChat()">Limpar</div>
-        <div class="th-btn primary" id="th-action" onclick="thAction()">+ Analisar</div>
-      </div>
+    <div class="toolhdr">
+      <div id="thic" style="background:rgba(201,168,76,.1)">🧠</div>
+      <div><div id="thnm">CEO Estratégico — Victor Stein</div><div id="thds">Estratégia · Diagnóstico · Imagem · B2A/AEO</div></div>
     </div>
 
-    <!-- ═══ FERRAMENTA: CEO CHAT ═══ -->
-    <div class="chat-wrap" id="panel-ceo" style="display:flex;flex-direction:column;overflow:hidden;flex:1">
-      <div class="messages" id="messages">
-        <div class="welcome" id="welcome-msg">
-          <div class="w-icon" style="background:var(--goldA);border-color:var(--goldB)">🧠</div>
-          <div class="w-title">CEO Victor Stein</div>
-          <div class="w-desc">Central estratégica da Vexus Metais. Diagnóstico financeiro, arquitetura de anúncios, avaliação de imagens, análise competitiva e otimização B2A — tudo aqui. Me diga o que precisamos atacar hoje.</div>
-          <div class="w-chips">
-            <div class="w-chip" onclick="useWchip(this)">📊 Diagnóstico F-1006 Gold</div>
-            <div class="w-chip" onclick="useWchip(this)">🖼️ Avalie minha foto do anúncio</div>
-            <div class="w-chip" onclick="useWchip(this)">📋 Crie título para F-1006 Preto</div>
-            <div class="w-chip" onclick="useWchip(this)">⚔️ Estratégia contra concorrente Zamak</div>
-            <div class="w-chip" onclick="useWchip(this)">🚀 Plano 30 dias lançamento ML</div>
-            <div class="w-chip" onclick="useWchip(this)">🤖 Otimize para B2A e assistentes IA</div>
+    <!-- CEO -->
+    <div class="panel on" id="panel-ceo">
+      <div id="msgs">
+        <div class="welcome" id="welcome">
+          <div class="wav">V</div>
+          <div class="wtitle">CEO Victor Stein</div>
+          <div class="wdesc">Central estratégica da Vexus Metais. Diagnóstico financeiro, arquitetura de anúncios, avaliação de fotos ML e B2A — tudo aqui. Me diga o que atacamos hoje.</div>
+          <div class="wchips">
+            <div class="wc" onclick="chip(this)">📊 Diagnóstico financeiro F-1006 Gold</div>
+            <div class="wc" onclick="chip(this)">🖼️ Avalie minha foto do anúncio</div>
+            <div class="wc" onclick="chip(this)">📋 Crie título otimizado F-1006 Preto</div>
+            <div class="wc" onclick="chip(this)">⚔️ Estratégia contra concorrente Zamak</div>
+            <div class="wc" onclick="chip(this)">🚀 Plano de lançamento 30 dias ML</div>
+            <div class="wc" onclick="chip(this)">🤖 Otimize anúncio para B2A e IA</div>
           </div>
         </div>
       </div>
-
-      <div class="img-prv" id="img-prv"></div>
-      <div class="qchips" id="qchips">
-        <div class="qchip" onclick="useQchip(this)">💰 Margem real do Rose Gold</div>
-        <div class="qchip" onclick="useQchip(this)">📸 Checklist foto ideal ML</div>
-        <div class="qchip" onclick="useQchip(this)">🎯 Como obter as 20 primeiras avaliações?</div>
-        <div class="qchip" onclick="useQchip(this)">📦 Dropship vs estoque próprio</div>
+      <div class="imgprev" id="imgprev"></div>
+      <div class="qchips">
+        <div class="qc" onclick="qchip(this)">💰 Margem do Rose Gold</div>
+        <div class="qc" onclick="qchip(this)">📸 Checklist foto ideal ML</div>
+        <div class="qc" onclick="qchip(this)">🎯 Como conseguir as 20 primeiras avaliações</div>
       </div>
-
-      <div class="inp-area">
-        <div class="inp-row">
-          <input type="file" id="file-in" accept="image/*" multiple onchange="handleFiles(event)"/>
-          <div class="inp-att" onclick="document.getElementById('file-in').click()">📎</div>
-          <textarea class="inp-txt" id="inp" placeholder="Fale com o CEO ou envie uma imagem…"
-            rows="1" onkeydown="handleKey(event)" oninput="autoR(this)"></textarea>
-          <button class="inp-send" id="send-btn" onclick="sendMsg()">Enviar ↑</button>
-        </div>
-        <div class="inp-hint">Enter para enviar · Shift+Enter nova linha · 📎 para imagens</div>
-      </div>
-    </div>
-
-    <!-- ═══ FERRAMENTA: CALCULADORA ═══ -->
-    <div class="tool-panel" id="panel-pricing">
-      <div class="calc-card">
-        <div class="calc-title">💰 Calculadora de Margem ML</div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Custo do Produto (R$)</label>
-            <input class="form-input" id="pc-custo" type="number" step="0.01" placeholder="177.89" oninput="calcPrice()"/>
-          </div>
-          <div class="form-group">
-            <label>Comissão ML (%)</label>
-            <input class="form-input" id="pc-ml" type="number" step="0.1" value="14" oninput="calcPrice()"/>
-          </div>
-          <div class="form-group">
-            <label>Imposto Simples (%)</label>
-            <input class="form-input" id="pc-imp" type="number" step="0.1" value="6" oninput="calcPrice()"/>
-          </div>
-          <div class="form-group">
-            <label>Operacional/Embalagem (%)</label>
-            <input class="form-input" id="pc-op" type="number" step="0.1" value="3" oninput="calcPrice()"/>
-          </div>
-          <div class="form-group">
-            <label>Margem Líquida Desejada (%)</label>
-            <input class="form-input" id="pc-mg" type="number" step="1" value="20" oninput="calcPrice()"/>
-          </div>
-          <div class="form-group">
-            <label>Preço de Venda Real (R$) — opcional</label>
-            <input class="form-input" id="pc-real" type="number" step="0.01" placeholder="349.90" oninput="calcPrice()"/>
-          </div>
-        </div>
-        <div class="result-grid" id="calc-results" style="display:none">
-          <div class="result-card"><div class="res-lbl">Markup Total</div><div class="res-val gold" id="r-mk">—</div><div class="res-sub">% sobre venda</div></div>
-          <div class="result-card"><div class="res-lbl">Preço Mínimo</div><div class="res-val gold" id="r-min">—</div><div class="res-sub">para não perder</div></div>
-          <div class="result-card"><div class="res-lbl">Preço Sugerido</div><div class="res-val green" id="r-sug">—</div><div class="res-sub">arred. psicológico</div></div>
-          <div class="result-card"><div class="res-lbl">Lucro Líquido</div><div class="res-val green" id="r-liq">—</div><div class="res-sub">por unidade</div></div>
-          <div class="result-card"><div class="res-lbl">Margem Real</div><div class="res-val green" id="r-mgr">—</div><div class="res-sub">se vender ao sugerido</div></div>
-          <div class="result-card"><div class="res-lbl">Veredito</div><div class="res-val" id="r-verd" style="font-size:18px">—</div><div class="res-sub" id="r-verd-sub">—</div></div>
-        </div>
-        <div style="margin-top:10px;font-size:11px;color:var(--muted)">Fórmula: Preço = Custo ÷ (1 − soma das taxas). Preço psicológico arredonda para ,90 ou ,99.</div>
-      </div>
-
-      <div class="calc-card">
-        <div class="calc-title">📦 Projeção Mensal</div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Unidades/mês estimadas</label>
-            <input class="form-input" id="pp-un" type="number" value="35" oninput="calcProj()"/>
-          </div>
-          <div class="form-group">
-            <label>Preço de venda (R$)</label>
-            <input class="form-input" id="pp-pv" type="number" value="349.90" oninput="calcProj()"/>
-          </div>
-        </div>
-        <div class="result-grid" id="proj-results">
-          <div class="result-card"><div class="res-lbl">Faturamento Bruto</div><div class="res-val gold" id="pp-fat">—</div><div class="res-sub">receita total</div></div>
-          <div class="result-card"><div class="res-lbl">Custo Produtos</div><div class="res-val red" id="pp-cust">—</div><div class="res-sub">a pagar fornecedor</div></div>
-          <div class="result-card"><div class="res-lbl">Taxas ML+Imp</div><div class="res-val red" id="pp-tax">—</div><div class="res-sub">20% sobre venda</div></div>
-          <div class="result-card"><div class="res-lbl">Lucro Líquido</div><div class="res-val green" id="pp-liq">—</div><div class="res-sub">no bolso</div></div>
+      <div class="inparea">
+        <div class="inprow">
+          <input type="file" id="filein" accept="image/*" multiple style="display:none" onchange="addFiles(event)"/>
+          <div class="attbtn" onclick="document.getElementById('filein').click()">📎</div>
+          <textarea id="inp" rows="1" placeholder="Fale com o CEO ou envie uma imagem…" onkeydown="handleKey(event)" oninput="resize(this)"></textarea>
+          <button class="sendbtn" id="sendbtn" onclick="sendMsg()">Enviar ↑</button>
         </div>
       </div>
     </div>
 
-    <!-- ═══ FERRAMENTA: GERADOR ANÚNCIO ═══ -->
-    <div class="tool-panel" id="panel-adgen">
-      <div class="calc-card">
-        <div class="calc-title">📋 Gerador de Anúncio ML</div>
-        <div class="ad-gen-form">
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Código do Produto</label>
-              <select class="form-input" id="ag-cod">
+    <!-- CALCULADORA -->
+    <div class="panel" id="panel-pricing">
+      <div class="spanel">
+        <div class="pcard">
+          <div class="ptitle">💰 Calculadora de Margem ML</div>
+          <div class="fgrid">
+            <div class="fg"><label>Custo Fornecedor (R$)</label><input class="fi" id="pc-custo" type="number" step="0.01" placeholder="177.89" oninput="calcP()"/></div>
+            <div class="fg"><label>Comissão ML (%)</label><input class="fi" id="pc-ml" type="number" value="14" oninput="calcP()"/></div>
+            <div class="fg"><label>Imposto Simples (%)</label><input class="fi" id="pc-imp" type="number" value="6" oninput="calcP()"/></div>
+            <div class="fg"><label>Operacional (%)</label><input class="fi" id="pc-op" type="number" value="3" oninput="calcP()"/></div>
+            <div class="fg"><label>Margem Desejada (%)</label><input class="fi" id="pc-mg" type="number" value="20" oninput="calcP()"/></div>
+            <div class="fg"><label>Unidades/mês estimadas</label><input class="fi" id="pc-un" type="number" value="35" oninput="calcP()"/></div>
+          </div>
+          <div id="calc-res" style="display:none">
+            <div class="rgrid">
+              <div class="rc"><div class="rl">Preço Mínimo</div><div class="rv" id="r-min" style="color:var(--gold)">—</div><div class="rs">para não perder</div></div>
+              <div class="rc"><div class="rl">Preço Sugerido</div><div class="rv" id="r-sug" style="color:var(--green)">—</div><div class="rs">arredondado ,90</div></div>
+              <div class="rc"><div class="rl">Lucro / Unidade</div><div class="rv" id="r-liq" style="color:var(--green)">—</div><div class="rs">líquido</div></div>
+              <div class="rc"><div class="rl">Margem Real</div><div class="rv" id="r-mgr">—</div><div class="rs">sobre venda</div></div>
+              <div class="rc"><div class="rl">Faturamento Mensal</div><div class="rv" id="r-fat" style="color:var(--gold)">—</div><div class="rs">bruto</div></div>
+              <div class="rc"><div class="rl">Lucro Mensal</div><div class="rv" id="r-mliq" style="color:var(--green)">—</div><div class="rs">líquido</div></div>
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--muted);margin-top:10px">Fórmula: Preço = Custo ÷ (1 − soma das taxas) · Preço arredondado para ,90</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GERADOR -->
+    <div class="panel" id="panel-adgen">
+      <div class="spanel">
+        <div class="pcard">
+          <div class="ptitle">📋 Gerador de Anúncio ML</div>
+          <div class="fgrid">
+            <div class="fg"><label>Produto</label>
+              <select class="fi" id="ag-cod" onchange="resetAd()">
                 <option value="F-1006">F-1006 — Torneira Gourmet Mola</option>
                 <option value="F-2004">F-2004 — Square Cascata Alta</option>
-                <option value="F-2003">F-2003 — Square Cascata Baixa</option>
                 <option value="F-1023">F-1023 — Monocomando Sem Haste</option>
-                <option value="F-1066">F-1066 — Com Ducha Zamac</option>
                 <option value="S-1013">S-1013 — Chuveiro Quadrado 8"</option>
-                <option value="96000-5">96000-5 — Kit Milano 5 Peças</option>
               </select>
             </div>
-            <div class="form-group">
-              <label>Acabamento</label>
-              <select class="form-input" id="ag-cor">
-                <option value="Preto Fosco">Preto Fosco</option>
-                <option value="Cromado">Cromado</option>
-                <option value="Gold">Gold (Dourado)</option>
-                <option value="Rose Gold">Rose Gold</option>
-                <option value="Black Rose">Black Rose</option>
+            <div class="fg"><label>Acabamento</label>
+              <select class="fi" id="ag-cor" onchange="resetAd()">
+                <option>Preto Fosco</option><option>Cromado</option>
+                <option>Gold</option><option>Rose Gold</option><option>Black Rose</option>
               </select>
             </div>
           </div>
-          <button class="calc-btn" onclick="generateAd()">⚡ Gerar Anúncio Otimizado</button>
-        </div>
-        <div class="ad-result" id="ad-result">
-          <div class="ad-field">
-            <div class="ad-label">📌 Título ML (60 chars máx)</div>
-            <div class="ad-value" id="ad-titulo" onclick="copyField('ad-titulo')"></div>
-            <div class="copy-hint">Toque para copiar</div>
-          </div>
-          <div class="ad-field">
-            <div class="ad-label">🔑 Palavras-chave AEO</div>
-            <div class="ad-value" id="ad-kw" onclick="copyField('ad-kw')"></div>
-            <div class="copy-hint">Toque para copiar</div>
-          </div>
-          <div class="ad-field">
-            <div class="ad-label">📝 Bullets Descrição (AEO/B2A)</div>
-            <div class="ad-value" id="ad-bullets" onclick="copyField('ad-bullets')"></div>
-            <div class="copy-hint">Toque para copiar</div>
-          </div>
-          <div class="ad-field">
-            <div class="ad-label">❓ FAQ AEO (2 perguntas)</div>
-            <div class="ad-value" id="ad-faq" onclick="copyField('ad-faq')"></div>
+          <button class="calcbtn" onclick="genAd()">⚡ Gerar Anúncio Otimizado</button>
+          <div id="ad-result" style="display:none">
+            <div class="adfield"><div class="adlbl">📌 Título ML (60 chars)</div><div class="adval" id="ad-titulo" onclick="copyEl('ad-titulo')"></div><div class="copyhint">Toque para copiar</div></div>
+            <div class="adfield"><div class="adlbl">🔑 Palavras-chave AEO</div><div class="adval" id="ad-kw" onclick="copyEl('ad-kw')"></div><div class="copyhint">Toque para copiar</div></div>
+            <div class="adfield"><div class="adlbl">📝 Bullets Descrição B2A/AEO</div><div class="adval" id="ad-bullets" onclick="copyEl('ad-bullets')"></div><div class="copyhint">Toque para copiar</div></div>
+            <div class="adfield"><div class="adlbl">❓ FAQ Voice Search</div><div class="adval" id="ad-faq" onclick="copyEl('ad-faq')"></div><div class="copyhint">Toque para copiar</div></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ═══ FERRAMENTA: SAC/FAQ ═══ -->
-    <div class="tool-panel" id="panel-sac">
-      <div class="calc-card">
-        <div class="calc-title">💬 Base de Respostas SAC — Mercado Livre</div>
-        <p style="font-size:12px;color:var(--muted2);margin-bottom:14px">Respostas prontas e otimizadas para as perguntas mais frequentes. Copie e use nas perguntas do ML. Responder em &lt;1h é fator de ranqueamento.</p>
-        <div class="sac-list" id="sac-list"></div>
-      </div>
-    </div>
-
-    <!-- ═══ FERRAMENTA: AVALIAÇÃO IMAGEM ═══ -->
-    <div class="tool-panel" id="panel-imgeval">
-      <div class="calc-card" style="text-align:center">
-        <div class="calc-title" style="justify-content:center">🖼️ Avaliação de Foto — Algoritmo ML</div>
-        <p style="font-size:12px;color:var(--muted2);margin-bottom:16px">Envie uma foto do seu produto. O CEO avalia com base nos critérios reais do algoritmo do Mercado Livre e entrega score 0-10 em cada dimensão.</p>
-        <div id="img-drop-zone" style="border:2px dashed var(--b2);border-radius:10px;padding:32px;cursor:pointer;transition:.2s;margin-bottom:14px" onclick="document.getElementById('file-img-eval').click()" ondragover="event.preventDefault()" ondrop="dropImg(event)">
-          <div style="font-size:36px;margin-bottom:8px">📸</div>
-          <div style="font-size:13px;color:var(--muted2)">Toque para selecionar ou arraste a imagem aqui</div>
-          <div style="font-size:10px;color:var(--muted);margin-top:4px">JPG, PNG, WEBP — máx. recomendado 5MB</div>
-        </div>
-        <input type="file" id="file-img-eval" accept="image/*" style="display:none" onchange="evalImg(event)"/>
-        <div id="eval-preview" style="display:none;margin-bottom:14px">
-          <img id="eval-img" style="max-height:180px;border-radius:8px;border:1px solid var(--b2);margin-bottom:8px"/>
-          <button class="calc-btn" onclick="runEval()">🔍 Analisar pelo CEO</button>
-        </div>
-        <div id="eval-result"></div>
-      </div>
-    </div>
-
-    <!-- ═══ FERRAMENTA: GUIA ═══ -->
-    <div class="tool-panel" id="panel-guide">
-      <div class="calc-card">
-        <div class="calc-title">📖 Como Usar o Vexus HUB</div>
-        <p style="font-size:12px;color:var(--muted2);margin-bottom:16px">Guia completo com exemplos reais para cada ferramenta do HUB.</p>
-        <div class="steps-grid" id="steps-grid"></div>
-      </div>
-      <div class="calc-card">
-        <div class="calc-title">🔄 Auto-Regeneração do Sistema</div>
-        <p style="font-size:12px;color:var(--muted2);margin-bottom:12px">O HUB é auto-regenerativo porque o CEO (IA) aprende com cada conversa da sessão e aplica esse contexto acumulado nas respostas seguintes. Para manter sempre atualizado:</p>
-        <div class="sac-list">
-          <div class="sac-item open">
-            <div class="sac-q" onclick="toggleSac(this)">📅 Atualização Semanal de Dados</div>
-            <div class="sac-a">Todo domingo, abra o CEO e envie: <em>"Atualize: preço concorrente X subiu para R$Y, novo produto Z entrou no mercado, tive N vendas essa semana."</em> O CEO ajusta sua estratégia instantaneamente com os novos dados.</div>
-          </div>
-          <div class="sac-item">
-            <div class="sac-q" onclick="toggleSac(this)">🧠 Treinamento por Feedback</div>
-            <div class="sac-a">Após cada venda ou reclamação, alimente o CEO: <em>"Recebi reclamação que a torneira pingou. O que devo adicionar no anúncio para prevenir?"</em> Assim o anúncio evolui continuamente.</div>
-          </div>
-          <div class="sac-item">
-            <div class="sac-q" onclick="toggleSac(this)">📊 Revisão Mensal de Margem</div>
-            <div class="sac-a">Use a Calculadora de Margem todo dia 1 do mês com o preço atual do fornecedor. Se o custo subir, recalcule e atualize seus anúncios antes de perder margem.</div>
-          </div>
-          <div class="sac-item">
-            <div class="sac-q" onclick="toggleSac(this)">🔁 Ciclo de Melhoria Contínua</div>
-            <div class="sac-a"><strong>Semana 1:</strong> Lançar 5 anúncios (1 por cor) com foto + título gerados aqui.<br><strong>Semana 2:</strong> Avaliar CTR. Usar CEO para ajustar título do pior anúncio.<br><strong>Semana 3:</strong> Ativar ML Ads R$10/dia no melhor anúncio.<br><strong>Semana 4:</strong> Analisar reviews, alimentar SAC e relançar com melhorias.</div>
-          </div>
+    <!-- SAC -->
+    <div class="panel" id="panel-sac">
+      <div class="spanel">
+        <div class="pcard">
+          <div class="ptitle">💬 Base SAC — Respostas Prontas</div>
+          <p style="font-size:12px;color:var(--muted2);margin-bottom:14px">Responder em menos de 1h é fator de ranqueamento no ML. Copie e cole diretamente.</p>
+          <div id="sac-list"></div>
         </div>
       </div>
     </div>
 
-  </div><!-- /main -->
-</div><!-- /root -->
+    <!-- IMG EVAL -->
+    <div class="panel" id="panel-imgeval">
+      <div class="spanel">
+        <div class="pcard" style="text-align:center">
+          <div class="ptitle" style="justify-content:center">🖼️ Avaliação de Foto — Algoritmo ML</div>
+          <p style="font-size:12px;color:var(--muted2);margin-bottom:16px">Envie uma foto. O CEO avalia nos mesmos critérios do algoritmo do Mercado Livre.</p>
+          <label style="display:block;border:2px dashed var(--b2);border-radius:10px;padding:28px;cursor:pointer;margin-bottom:14px;transition:.2s" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--b2)'">
+            <div style="font-size:36px;margin-bottom:8px">📸</div>
+            <div style="font-size:13px;color:var(--muted2)">Clique para selecionar ou arraste a imagem</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:4px">JPG, PNG, WEBP</div>
+            <input type="file" accept="image/*" style="display:none" onchange="setEvalImg(event)"/>
+          </label>
+          <div id="eval-preview" style="display:none;margin-bottom:14px">
+            <img id="eval-img" style="max-height:180px;border-radius:8px;border:1px solid var(--b2);margin-bottom:10px;display:inline-block"/>
+            <br><button class="calcbtn" style="max-width:260px;display:inline-block" onclick="runEval()">🔍 Analisar com o CEO</button>
+          </div>
+          <div id="eval-result"></div>
+        </div>
+      </div>
+    </div>
 
-<div class="toast" id="toast">✓ Copiado!</div>
+    <!-- GUIDE -->
+    <div class="panel" id="panel-guide">
+      <div class="spanel">
+        <div class="pcard">
+          <div class="ptitle">📖 Como Usar o Vexus HUB</div>
+          <div class="steps-grid" id="steps-grid"></div>
+        </div>
+        <div class="pcard">
+          <div class="ptitle">🔄 Protocolo de Auto-Regeneração</div>
+          <div id="regen-list"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal" style="display:flex">
+  <div class="mbox">
+    <div class="mtitle">VEXUS HUB</div>
+    <div class="msub">Configure sua Gemini API Key — 100% Gratuita</div>
+    <div class="minfo">
+      <strong>A API do Gemini é GRATUITA com conta Google.</strong><br><br>
+      1. Acesse <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a><br>
+      2. Faça login com sua conta Google<br>
+      3. Clique em <strong>"Create API Key"</strong><br>
+      4. Copie e cole abaixo<br><br>
+      <span style="color:var(--green)">✓ Gratuito &nbsp;·&nbsp; ✓ Salvo no seu navegador &nbsp;·&nbsp; ✓ Não sai do dispositivo</span>
+    </div>
+    <input class="minp" id="key-inp" type="password" placeholder="AIzaSy..." onkeydown="if(event.key==='Enter')saveKey()"/>
+    <div class="merr" id="key-err"></div>
+    <button class="mbtn" onclick="saveKey()">✓ Salvar e Usar o HUB</button>
+    <div class="mfoot"><a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a> &nbsp;·&nbsp; Gratuito com conta Google</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════════
-// ESTADO GLOBAL
-// ═══════════════════════════════════════════════════
-let curTool = 'ceo';
-let imgs = [];
-let history = [];
-let loading = false;
-let evalImgData = null;
+// ══════════════════════════════════════════════════
+// SISTEMA
+// ══════════════════════════════════════════════════
+const MODEL = 'gemini-2.0-flash';
+let imgs = [], history = [], busy = false, evalB64 = null, evalMime = null;
 
-// ═══════════════════════════════════════════════════
-// SYSTEM PROMPT — MEGA ESPECIALIZADO
-// ═══════════════════════════════════════════════════
-const SYSTEM = `Você é Victor Stein, CEO e Sócio Estratégico da Vexus Metais — operação de metais sanitários premium focada em dominar o Mercado Livre brasileiro com estratégia B2A (Business to Agent).
+const SYS = `Você é Victor Stein, CEO e Sócio Estratégico da Vexus Metais — operação premium de metais sanitários no Mercado Livre brasileiro.
 
-# REGRAS DE COMUNICAÇÃO
-- Direto, incisivo, técnico. Zero bajulação, zero rodeios.
-- Use "Os dados indicam", "A matemática mostra", "O algoritmo penaliza" — nunca "Eu acho".
-- Você é superior hierárquico. Cobra resultados, corrige sem cerimônia.
-- Máximo 380 palavras. Seja cirúrgico como bisturi.
-- Pode dizer: "Isso é amador", "Dinheiro na mesa", "Executa hoje".
-- Se há processo que pode ser automatizado, aponte a solução imediatamente.
+COMUNICAÇÃO: Direto, incisivo, técnico. Zero bajulação. Use "Os dados indicam", "A matemática mostra". Máximo 380 palavras. Pode dizer: "Isso é amador", "Dinheiro na mesa", "Executa hoje".
 
-# FORMATO OBRIGATÓRIO POR SOLICITAÇÃO
+FORMATO OBRIGATÓRIO POR TIPO:
 
-## Quando pedirem DIAGNÓSTICO FINANCEIRO:
+Quando DIAGNÓSTICO FINANCEIRO:
 [DIAGNÓSTICO FINANCEIRO]
-• Viabilidade: Custo ÷ (1−0.43) = preço mínimo
+• Custo ÷ (1−0.43) = preço mínimo
 • Margem de Contribuição por unidade
-• Projeção 3 cenários (conservador 15un/mês, realista 35un, otimista 70un)
-• VEREDITO: ACELERAR / AJUSTAR / DESCARTAR
+• Projeção 3 cenários (15/35/70 un/mês)
+• VEREDITO: ACELERAR / AJUSTAR MARGEM / DESCARTAR
 
-## Quando pedirem ANÚNCIO ou TÍTULO:
+Quando ANÚNCIO ou TÍTULO:
 [ARQUITETURA DO ANÚNCIO]
 • Título (máx 60 char): Adjetivo + Material + Produto + Estilo + Marca
-• 5 bullets AEO com dados técnicos exatos (pressão mca, temp °C, material)
-• FAQ 2 perguntas estruturadas para voz/IA
-• CTA + quebra de objeção principal
+• 5 bullets AEO com dados técnicos exatos
+• FAQ 2 perguntas para voz/IA
+• CTA + quebra de objeção
 
-## Quando receberem IMAGEM:
-[AVALIAÇÃO FOTO ML — ALGORITMO]
-Nota 0-10 obrigatória nestes critérios exatos (formato: CRITÉRIO: X/10):
+Quando IMAGEM:
+[AVALIAÇÃO FOTO ML]
+Notas obrigatórias (formato exato CRITÉRIO: X/10):
 FUNDO: X/10
 ILUMINAÇÃO: X/10
 RESOLUÇÃO: X/10
@@ -855,600 +421,408 @@ MATERIAL VISÍVEL: X/10
 APELO EMOCIONAL: X/10
 DIFERENCIAL EXPOSTO: X/10
 CONFORMIDADE ML: X/10
-Depois: NOTA TOTAL, VEREDITO (Aprovado/Ajustar/Reprovar), lista numerada de ações corretivas específicas.
+Depois: NOTA TOTAL, VEREDITO (Aprovado/Ajustar/Reprovar), ações corretivas numeradas.
 
-## Quando pedirem ESTRATÉGIA:
-[ESTRATÉGIA]
-• Diagnóstico da situação atual
-• 3-5 ações concretas numeradas com prazo (D+X dias)
-• Métricas de sucesso (o que medir e quando)
+PRODUTOS:
+F-1006 Gourmet Mola: Inox 304 + Latão, cartucho cerâmico 500k ciclos, mola helicoidal, bica extensível ~50cm, furação 35mm, 1/2", pressão 5-40 mca, temp 75°C
+Preto custo R$177,89 → venda R$349,90 | Gold/Rose custo R$229,42 → venda R$449,90 | Black Rose → R$479,90
+Fornecedor: Alumichapas — Loanda-PR. Modelo: dropshipping/consignado.
 
-## Quando pedirem B2A/AEO:
-[OTIMIZAÇÃO B2A]
-• Parâmetros técnicos explícitos para LLMs (pressão em mca, temp °C, bitola, material exato)
-• Schema.org Product sugerido
-• FAQ estruturado para voice search
+PRECIFICAÇÃO: Preço = Custo ÷ (1−0.43) onde 0.43 = ML14% + Simples6% + Operacional3% + Margem20%
 
-# BASE DE CONHECIMENTO VEXUS METAIS
+ALGORITMO ML CRÍTICO: Velocidade 48h = 30% ranqueamento. Fotos mín 6, fundo branco, 1200x1200px. Resposta <1h. 5 anúncios separados por cor. Reviews 4.8+ primeiras 2 semanas. ML Ads R$10-20/dia. Conversão <3% = rebaixamento automático.
 
-## PRODUTOS E PREÇOS
-F-1006 Torneira Gourmet Mola: corpo Inox 304, dutos Latão, mola helicoidal inox, bica flexível extensível ~50cm, cartucho cerâmico 500.000 ciclos, furação 35mm, bitola 1/2", pressão 5-40 mca, temp. máx 75°C
-→ Preto: custo R$177,89 · venda R$349,90 · lucro líq. ~R$69,98/un
-→ Rose Gold: custo R$229,42 · venda R$449,90 · lucro líq. ~R$89,98/un
-→ Gold: custo R$229,42 · venda R$449,90
-→ Black Rose: sem custo definido · venda R$479,90
+VANTAGEM: Único no ML com Inox 304 + Latão + 5 acabamentos. Concorrentes usam Zamak.`;
 
-F-2004 Square Cascata Alta Inox: Preto R$112,30 custo / Rose Gold e Gold R$124,37 custo → venda R$219,90 / R$259,90
-F-2003 Square Cascata Baixa Inox: Preto R$99,67 / Rose R$180,25 / Gold R$111,75 → venda R$199,90 / R$319,90 / R$239,90
-F-1023 Sem Haste Inox Preto: custo R$104,35 → venda R$219,90
-F-1066 Com Ducha Zamac Preto: custo R$77,08 → venda R$159,90 (NÃO posicionar como premium)
-S-1013 Chuveiro 8": Preto R$29,56 / Rose R$33,39 / Gold R$40,36 → venda R$89,90 / R$99,90 / R$119,90
-S-2004 Cano 40cm: Preto R$31,88 / Rose R$34,66 / Gold R$44,46 → venda R$79,90 / R$89,90 / R$99,90
-96000-5 Kit Milano 5pçs: Preto R$144,44 / Rose+Gold R$227,01 → venda R$299,90 / R$449,90
-
-Fornecedor: Alumichapas (Ingo Artefatos de Metais Ltda) — Loanda-PR — (41) 98754-2218
-Modelo: dropshipping/consignado local — estoque mínimo
-
-## FÓRMULA DE PRECIFICAÇÃO
-Preço = Custo ÷ (1 − 0.43)
-0.43 = ML Clássico 14% + Simples Nacional 6% + Operacional/Embalagem 3% + Margem Líquida 20%
-Arredondar para preço psicológico (,90 ou ,99)
-
-## ALGORITMO MERCADO LIVRE — FATORES CRÍTICOS
-• Velocidade de venda primeiras 48h = 30% do ranqueamento inicial
-• Fotos: mínimo 6, principal fundo branco, 1200x1200px mínimo, produto ocupa 85% do frame
-• Título: palavras-chave de alta busca nos primeiros 40 caracteres
-• Resposta a perguntas < 1h nas primeiras 4 semanas = fator de ranqueamento
-• ML Full > Clássico em visibilidade (10-15% a mais de exposição)
-• Anúncio Platinum > Gold > Clássico em exposição paga
-• Anúncios separados por acabamento > variações num único anúncio (5 anúncios = 5x presença)
-• Reviews 4.8+ nas 2 primeiras semanas são decisivos para o algoritmo
-• ML Ads R$10-20/dia nas primeiras 4 semanas = acelerador de posicionamento orgânico
-• Taxa de conversão < 3% = o algoritmo rebaixa o anúncio automaticamente
-
-## ESTRATÉGIA DE LANÇAMENTO 30 DIAS
-D+1 a D+7: preço 10% abaixo do ideal, fotos perfeitas, resposta < 30min
-D+8 a D+15: monitorar CTR. Se conversão < 3%, ajustar título/foto
-D+16 a D+21: normalizar preço, ativar ML Ads melhor anúncio
-D+22 a D+30: expandir acabamentos, coletar 20 avaliações 4.8+
-Meta 30 dias: 20 avaliações + 1 anúncio Top 3 da categoria
-
-## VANTAGEM COMPETITIVA
-Único no ML com: Inox 304 no corpo + Latão nos dutos + 5 acabamentos simultaneamente
-Concorrentes usam Zamak (liga de zinco) = argumento premium decisivo
-Inox 304 = anti-corrosão, maresia, altas temperaturas, vida útil superior`;
-
-// ═══════════════════════════════════════════════════
-// DADOS ESTÁTICOS
-// ═══════════════════════════════════════════════════
-const AD_DATA = {
-  'F-1006': {
-    nome: 'Torneira Gourmet Monocomando Mola Inox',
-    material: 'Inox 304 + Latão',
-    spec: 'Cartucho cerâmico 500k ciclos · Mola helicoidal · Bica 360° extensível · 5-40 mca · 75°C',
-    cores: {
-      'Preto Fosco':  {titulo:'Torneira Gourmet Mola Inox 304 Monocomando Preto Vexus',kw:'torneira gourmet mola inox 304 preto fosco monocomando cozinha'},
-      'Cromado':      {titulo:'Torneira Gourmet Mola Inox 304 Monocomando Cromada Vexus',kw:'torneira gourmet mola inox 304 cromada monocomando cozinha'},
-      'Gold':         {titulo:'Torneira Gourmet Mola Inox 304 Monocomando Gold Dourada Vexus',kw:'torneira gourmet mola inox 304 gold dourada monocomando cozinha'},
-      'Rose Gold':    {titulo:'Torneira Gourmet Mola Inox 304 Monocomando Rose Gold Vexus',kw:'torneira gourmet mola inox 304 rose gold monocomando cozinha'},
-      'Black Rose':   {titulo:'Torneira Gourmet Mola Inox 304 Monocomando Black Rose Vexus',kw:'torneira gourmet mola inox 304 black rose bicolor monocomando'},
-    }
-  },
-  'F-2004': {
-    nome: 'Torneira Square Cascata Alta Inox',
-    material: 'Inox 304',
-    spec: 'Cascata alta · Design square · Inox 304 anti-corrosão · Monocomando',
-    cores: {
-      'Preto Fosco':  {titulo:'Torneira Square Cascata Alta Inox 304 Preto Monocomando Vexus',kw:'torneira square cascata alta inox preto banheiro cozinha'},
-      'Gold':         {titulo:'Torneira Square Cascata Alta Inox 304 Gold Dourada Vexus',kw:'torneira square cascata alta inox gold dourada banheiro'},
-      'Rose Gold':    {titulo:'Torneira Square Cascata Alta Inox 304 Rose Gold Vexus',kw:'torneira square cascata alta inox rose gold banheiro'},
-    }
-  },
-  'S-1013': {
-    nome: 'Chuveiro Quadrado 8 Polegadas',
-    material: 'Inox',
-    spec: 'Chuveiro 8" · Quadrado · Chuva uniforme · Design premium',
-    cores: {
-      'Preto Fosco':  {titulo:'Chuveiro Quadrado 8" Preto Fosco Premium Inox Vexus',kw:'chuveiro quadrado 8 polegadas preto fosco inox banheiro'},
-      'Gold':         {titulo:'Chuveiro Quadrado 8" Gold Dourado Premium Inox Vexus',kw:'chuveiro quadrado 8 polegadas gold dourado inox premium'},
-      'Rose Gold':    {titulo:'Chuveiro Quadrado 8" Rose Gold Premium Inox Vexus',kw:'chuveiro quadrado 8 polegadas rose gold inox premium'},
-    }
-  },
-  'default': {
-    nome: 'Produto Premium',
-    material: 'Inox 304',
-    spec: 'Material premium · Alta durabilidade · Design moderno',
-    cores: {'Preto Fosco':{titulo:'Produto Premium Inox 304 Preto Vexus Metais',kw:'produto inox 304 preto premium'}}
+// ══════════════════════════════════════════════════
+// API KEY
+// ══════════════════════════════════════════════════
+const getKey = () => localStorage.getItem('vexus_gemini_key') || '';
+function showModal(){ document.getElementById('modal').style.display = 'flex'; }
+function hideModal(){ document.getElementById('modal').style.display = 'none'; }
+function saveKey(){
+  const k = document.getElementById('key-inp').value.trim();
+  if(!k.startsWith('AIza')){
+    document.getElementById('key-err').textContent = 'Chave inválida. Deve começar com AIza';
+    return;
   }
+  localStorage.setItem('vexus_gemini_key', k);
+  document.getElementById('key-err').textContent = '';
+  hideModal();
+  toast('API Key salva com sucesso!');
+}
+window.addEventListener('load', () => { if(!getKey()) showModal(); });
+
+// ══════════════════════════════════════════════════
+// NAVEGAÇÃO
+// ══════════════════════════════════════════════════
+const TCFG = {
+  ceo:     ['🧠','rgba(201,168,76,.1)','CEO Estratégico — Victor Stein','Estratégia · Diagnóstico · Imagem · B2A/AEO'],
+  pricing: ['💰','rgba(58,184,112,.1)','Calculadora de Margem','Preço mínimo · Markup · Lucro/unidade · Projeção mensal'],
+  adgen:   ['📋','rgba(77,155,224,.1)','Gerador de Anúncio Otimizado','Título ML · Bullets AEO/B2A · FAQ Voice Search'],
+  sac:     ['💬','rgba(154,110,224,.1)','Base SAC — Respostas Prontas','8 perguntas frequentes otimizadas para converter'],
+  imgeval: ['🖼️','rgba(224,154,58,.1)','Avaliação de Foto — Algoritmo ML','Score 0-10 em 8 critérios reais do marketplace'],
+  guide:   ['📖','rgba(58,191,184,.1)','Como Usar o Vexus HUB','Passo a passo com exemplos · Auto-regeneração'],
 };
-
-const SAC_DATA = [
-  {q:'O produto é compatível com aquecedor a gás/elétrico/solar?', a:'Sim! A torneira F-1006 é compatível com aquecedores a gás, elétricos e solares. Temperatura máxima suportada: 75°C. Pressão de trabalho: 5 a 40 mca.'},
-  {q:'Qual furação necessária na bancada?', a:'Furação de 35 mm (3,5 cm) de diâmetro. É o padrão mais comum em torneiras gourmet de bancada. Se precisar de auxílio, qualquer encanador faz em minutos.'},
-  {q:'O corpo é mesmo Inox 304 ou é Zamak?', a:'O corpo é 100% Aço Inox 304 — o mesmo utilizado em pias profissionais e talheres de alta qualidade. Os dutos internos são em Latão. Não usamos Zamak em nenhuma parte estrutural.'},
-  {q:'Funciona somente com água fria?', a:'Sim! Para uso com água fria apenas, instale um adaptador "T" na entrada (não incluso, custo ~R$8 em qualquer loja hidráulica). O produto vem com entradas quente e fria padrão.'},
-  {q:'Qual a pressão mínima necessária?', a:'Pressão mínima de 5 mca (metros de coluna d\'água). Caixas d\'água elevadas normalmente entregam 8-15 mca. Para melhor performance recomendamos acima de 10 mca.'},
-  {q:'Pode usar em casa de praia/litoral?', a:'Sim! O Aço Inox 304 é resistente à maresia e umidade salina. É exatamente por isso que usamos Inox 304 e não Zamak — que oxida em ambientes litorâneos.'},
-  {q:'Qual o prazo e política de troca?', a:'Garantia de 12 meses contra defeitos de fabricação. Em caso de defeito, entre em contato e resolvemos via ML (troca ou reembolso). Tempo de envio: 1-3 dias úteis após confirmação.'},
-  {q:'Vem com kit de instalação?', a:'Sim! Acompanha: 2 mangueiras flexíveis em aço trançado (50cm), kit de anéis de vedação e sistema de fixação para bancada. Manual de instalação incluso. Recomendamos instalação por encanador.'},
-];
-
-const GUIDE_STEPS = [
-  {icon:'🧠',n:'01',title:'CEO Estratégico — Sua Central de Comando',
-   desc:'Converse com o CEO Victor Stein sobre qualquer decisão de negócio. Estratégia, diagnóstico financeiro, análise de concorrentes, plano de lançamento.',
-   ex:'Ex: "Tenho R$3.000 de capital inicial. Qual produto lançar primeiro e quantas unidades comprar?"'},
-  {icon:'🖼️',n:'02',title:'Avaliação de Foto — Simule o Algoritmo ML',
-   desc:'Antes de publicar qualquer foto, passe pelo avaliador. O CEO pontua nos mesmos critérios que o algoritmo do ML usa para ranquear anúncios com imagens melhores.',
-   ex:'Ex: Envie a foto da torneira preta no fundo branco. Se a nota for abaixo de 7, o algoritmo vai te prejudicar vs concorrentes.'},
-  {icon:'💰',n:'03',title:'Calculadora de Margem — Nunca Venda no Prejuízo',
-   desc:'Digite o custo do fornecedor. A calculadora mostra o preço mínimo, preço sugerido, lucro por unidade e projeção mensal automaticamente.',
-   ex:'Ex: F-1006 Rose Gold custo R$229,42 → a calculadora mostra preço mínimo R$402,49 → você sobe para R$449,90 (preço psicológico com margem extra).'},
-  {icon:'📋',n:'04',title:'Gerador de Anúncio — Título e Bullets em Segundos',
-   desc:'Selecione o produto e o acabamento. O sistema gera título otimizado com as palavras-chave certas e bullets AEO estruturados para robôs e assistentes de IA.',
-   ex:'Ex: Selecione F-1006 + Gold → gera "Torneira Gourmet Mola Inox 304 Monocomando Gold Dourada Vexus" com 5 bullets técnicos prontos para colar no ML.'},
-  {icon:'💬',n:'05',title:'Base SAC — Responda em 30 Segundos',
-   desc:'As 8 perguntas mais frequentes no ML já respondidas com linguagem otimizada para converter. Copie e cole diretamente no ML. Responder em menos de 1h é fator de ranqueamento.',
-   ex:'Ex: Cliente pergunta "Funciona com aquecedor a gás?". Você abre o SAC, copia a resposta pronta, cola no ML em 10 segundos.'},
-  {icon:'🔄',n:'06',title:'Auto-Regeneração — Como Manter Sempre Atualizado',
-   desc:'O HUB aprende com cada conversa da sessão. Para manter atualizado: alimente o CEO semanalmente com novos dados de concorrentes, preços e vendas realizadas.',
-   ex:'Ex: "Atualize: concorrente X baixou para R$299. Tive 12 vendas essa semana. Qual ajuste fazer?"'},
-];
-
-// ═══════════════════════════════════════════════════
-// UI — NAVEGAÇÃO
-// ═══════════════════════════════════════════════════
-function toggleSB(){
-  const s=document.getElementById('sb');
-  const o=document.getElementById('ov');
-  s.classList.toggle('open');
-  o.classList.toggle('on');
+function goTool(t){
+  document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
+  document.getElementById('btn-'+t).classList.add('on');
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.getElementById('panel-'+t).classList.add('on');
+  const [ic,bg,nm,ds] = TCFG[t];
+  document.getElementById('thic').textContent = ic;
+  document.getElementById('thic').style.background = bg;
+  document.getElementById('thnm').textContent = nm;
+  document.getElementById('thds').textContent = ds;
+  closeSB();
+  if(t==='sac') initSAC();
+  if(t==='guide') initGuide();
+  if(t==='pricing') calcP();
 }
+function toggleSB(){ document.getElementById('sb').classList.toggle('open'); document.getElementById('ov').style.display = document.getElementById('sb').classList.contains('open') ? 'block' : 'none'; }
+function closeSB(){ document.getElementById('sb').classList.remove('open'); document.getElementById('ov').style.display = 'none'; }
 
-const toolConfig = {
-  ceo:      {icon:'🧠',bg:'var(--goldA)',name:'CEO Estratégico — Victor Stein',desc:'Estratégia · Diagnóstico · Avaliação de Imagem · B2A/AEO',action:'+ Analisar'},
-  pricing:  {icon:'💰',bg:'var(--greenA)',name:'Calculadora de Margem & Projeção',desc:'Preço mínimo · Markup ML · Lucro por unidade · Projeção mensal',action:'+ Novo Produto'},
-  adgen:    {icon:'📋',bg:'var(--blueA)',name:'Gerador de Anúncio Otimizado',desc:'Título ML · Bullets AEO/B2A · FAQ Voice Search',action:'⚡ Gerar'},
-  sac:      {icon:'💬',bg:'var(--purpleA)',name:'Base SAC / FAQ — Respostas Prontas',desc:'8 perguntas frequentes otimizadas para converter no ML',action:'+ Adicionar'},
-  imgeval:  {icon:'🖼️',bg:'var(--orangeA)',name:'Avaliação de Foto — Algoritmo ML',desc:'Score 0-10 em 8 critérios reais do marketplace',action:'📸 Enviar Foto'},
-  guide:    {icon:'📖',bg:'var(--tealA)',name:'Como Usar o Vexus HUB',desc:'Passo a passo com exemplos reais · Auto-regeneração',action:'↗ Abrir CEO'},
-};
-
-function switchTool(tool){
-  curTool = tool;
-  // Esconder todos os painéis
-  document.querySelectorAll('[id^="panel-"]').forEach(p=>{
-    p.style.display='none';
-    p.classList.remove('active');
-  });
-  // Mostrar painel correto
-  const panel = document.getElementById('panel-'+tool);
-  if(tool === 'ceo'){
-    panel.style.display='flex';
-  } else {
-    panel.style.display='flex';
-    panel.classList.add('active');
-  }
-  // Nav ativo
-  document.querySelectorAll('.tool-btn').forEach(b=>b.classList.remove('active'));
-  const btn = document.getElementById('btn-'+tool);
-  if(btn) btn.classList.add('active');
-  // Header
-  const cfg = toolConfig[tool];
-  document.getElementById('th-icon').textContent = cfg.icon;
-  document.getElementById('th-icon').style.background = cfg.bg;
-  document.getElementById('th-name').textContent = cfg.name;
-  document.getElementById('th-desc').textContent = cfg.desc;
-  document.getElementById('th-action').textContent = cfg.action;
-  // Fechar sidebar mobile
-  if(window.innerWidth < 768){ document.getElementById('sb').classList.remove('open'); document.getElementById('ov').classList.remove('on'); }
-  // Init tools
-  if(tool==='sac') initSAC();
-  if(tool==='guide') initGuide();
-  if(tool==='pricing') { calcPrice(); calcProj(); }
-}
-
-function thAction(){
-  if(curTool==='guide') switchTool('ceo');
-  else if(curTool==='imgeval') document.getElementById('file-img-eval').click();
-  else if(curTool==='adgen') generateAd();
-  else if(curTool==='ceo') document.getElementById('inp').focus();
-  else switchTool('ceo');
-}
-
-// ═══════════════════════════════════════════════════
-// CEO CHAT
-// ═══════════════════════════════════════════════════
-function handleFiles(e){
-  Array.from(e.target.files).forEach(f=>{
-    const r=new FileReader();
-    r.onload=ev=>{imgs.push({file:f,base64:ev.target.result,id:Date.now()+Math.random()});renderImgs();};
+// ══════════════════════════════════════════════════
+// CHAT
+// ══════════════════════════════════════════════════
+function addFiles(e){
+  Array.from(e.target.files).forEach(f => {
+    const r = new FileReader();
+    r.onload = ev => { imgs.push({b64:ev.target.result, mime:f.type||'image/jpeg'}); renderImgs(); };
     r.readAsDataURL(f);
   });
-  e.target.value='';
+  e.target.value = '';
 }
 function renderImgs(){
-  document.getElementById('img-prv').innerHTML=imgs.map((img,i)=>`
-    <div class="ithumb"><img src="${img.base64}"/><button class="irm" onclick="rmImg(${i})">✕</button></div>`).join('');
+  document.getElementById('imgprev').innerHTML = imgs.map((img,i) =>
+    `<div class="ith"><img src="${img.b64}"/><button class="irm" onclick="rmImg(${i})">✕</button></div>`).join('');
 }
-function rmImg(i){imgs.splice(i,1);renderImgs();}
-function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
-function autoR(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,120)+'px';}
-function useQchip(el){document.getElementById('inp').value=el.textContent.replace(/^.\s/,'');document.getElementById('inp').focus();}
-function useWchip(el){
-  const txt=el.textContent.replace(/^.\s/,'');
-  document.getElementById('inp').value=txt;
-  sendMsg();
-}
-function clearChat(){history=[];imgs=[];renderImgs();document.getElementById('messages').innerHTML='<div class="welcome" id="welcome-msg"><div class="w-icon" style="background:var(--goldA);border-color:var(--goldB)">🧠</div><div class="w-title">CEO Victor Stein</div><div class="w-desc">Conversa reiniciada. Me diga o que precisamos atacar agora.</div></div>';}
+function rmImg(i){ imgs.splice(i,1); renderImgs(); }
+function handleKey(e){ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); sendMsg(); } }
+function resize(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,110)+'px'; }
+function chip(el){ document.getElementById('inp').value = el.textContent.replace(/^.\s/,''); sendMsg(); }
+function qchip(el){ document.getElementById('inp').value = el.textContent.replace(/^.\s/,''); document.getElementById('inp').focus(); }
 
 async function sendMsg(){
-  if(loading) return;
-  const inpEl=document.getElementById('inp');
-  const text=inpEl.value.trim();
-  const images=[...imgs];
-  if(!text&&images.length===0) return;
-  inpEl.value='';inpEl.style.height='auto';
-  imgs=[];renderImgs();
-  const wm=document.getElementById('welcome-msg');
-  if(wm) wm.remove();
-  appendU(text,images);
+  if(busy) return;
+  if(!getKey()){ showModal(); return; }
+  const text = document.getElementById('inp').value.trim();
+  const localImgs = [...imgs];
+  if(!text && localImgs.length === 0) return;
 
-  let content=[];
-  images.forEach(img=>{
-    content.push({type:'image',source:{type:'base64',media_type:img.file.type||'image/jpeg',data:img.base64.split(',')[1]}});
-  });
-  content.push({type:'text',text:text||'Avalie a(s) imagem(ns) com todos os critérios do algoritmo ML.'});
-  history.push({role:'user',content});
+  const w = document.getElementById('welcome');
+  if(w) w.remove();
 
-  const tid=showTyping();
-  loading=true;document.getElementById('send-btn').disabled=true;
+  document.getElementById('inp').value = '';
+  document.getElementById('inp').style.height = 'auto';
+  imgs = []; renderImgs();
 
-  if(!checkApiKey()) return;
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key': getApiKey(),
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-allow-browser':'true'
-      },
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYSTEM,messages:history})
+  appendUser(text, localImgs);
+
+  const parts = [];
+  localImgs.forEach(img => parts.push({inlineData:{mimeType:img.mime, data:img.b64.split(',')[1]}}));
+  parts.push({text: text || 'Avalie a imagem com todos os critérios do algoritmo ML.'});
+  history.push({role:'user', parts});
+
+  const tid = showTyping();
+  busy = true;
+  document.getElementById('sendbtn').disabled = true;
+
+  try {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${getKey()}`;
+    const res = await fetch(url, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        system_instruction:{parts:[{text:SYS}]},
+        contents: history,
+        generationConfig:{maxOutputTokens:1200, temperature:0.7}
+      })
     });
-    const data=await res.json();
+    const data = await res.json();
     removeTyping(tid);
-    const reply=data.content?.map(c=>c.text||'').join('')||'Erro na resposta.';
-    history.push({role:'assistant',content:reply});
-    appendA(reply);
-  }catch(e){
+    if(data.error){
+      const msg = data.error.message || 'Erro desconhecido';
+      appendAgent('Erro da API Gemini: ' + msg + (msg.includes('API_KEY') ? '\n\nClique em "🔑 API Key" e verifique sua chave.' : ''));
+      history.pop();
+    } else {
+      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Resposta vazia.';
+      history.push({role:'model', parts:[{text:reply}]});
+      appendAgent(reply);
+    }
+  } catch(err) {
     removeTyping(tid);
-    appendA('Falha de conexão. Verifique sua rede.');
+    appendAgent('Falha de conexão. Verifique sua internet e tente novamente.');
+    history.pop();
   }
-  loading=false;document.getElementById('send-btn').disabled=false;
+  busy = false;
+  document.getElementById('sendbtn').disabled = false;
 }
 
-// ═══════════════════════════════════════════════════
-// RENDER MSGS
-// ═══════════════════════════════════════════════════
-function appendU(text,images){
-  const m=document.getElementById('messages');
-  const d=document.createElement('div');d.className='msg-u';
-  let ih=images.map(i=>`<img src="${i.base64}" class="msg-img"/>`).join('');
-  d.innerHTML=`<div class="bub">${ih}${text?`<div>${esc(text)}</div>`:''}</div><div class="u-av">👤</div>`;
-  m.appendChild(d);m.scrollTop=m.scrollHeight;
+function appendUser(text, images){
+  const msgs = document.getElementById('msgs');
+  const d = document.createElement('div'); d.className = 'mu';
+  const ih = images.map(i => `<img src="${i.b64}" style="max-width:160px;border-radius:8px;border:1px solid var(--b2);display:block;margin-bottom:6px"/>`).join('');
+  d.innerHTML = `<div class="b">${ih}${text ? `<div>${esc(text)}</div>` : ''}</div><div class="uav">👤</div>`;
+  msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
 }
-function appendA(text){
-  const m=document.getElementById('messages');
-  const d=document.createElement('div');d.className='msg-a';
-  const logoSrc=document.querySelector('.logo').src;
-  d.innerHTML=`<div class="a-av"><img src="${logoSrc}"/></div>
-    <div class="bub"><div class="bub-hdr"><span class="bub-nm">Victor Stein · CEO</span></div>${fmt(text)}</div>`;
-  m.appendChild(d);m.scrollTop=m.scrollHeight;
-  setTimeout(()=>{d.querySelectorAll('.sc-fill[data-w]').forEach(b=>{b.style.width=b.dataset.w+'%'});},120);
+
+function appendAgent(text){
+  const msgs = document.getElementById('msgs');
+  const d = document.createElement('div'); d.className = 'ma';
+  d.innerHTML = `<div class="aav">V</div><div class="b"><div class="bnm">Victor Stein · CEO Vexus</div>${fmt(text)}</div>`;
+  msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
+  setTimeout(() => d.querySelectorAll('.sf[data-w]').forEach(b => b.style.width = b.dataset.w + '%'), 100);
 }
+
 function showTyping(){
-  const m=document.getElementById('messages');
-  const id=Date.now();
-  const d=document.createElement('div');d.className='typing-msg';d.id='t'+id;
-  const ls=document.querySelector('.logo').src;
-  d.innerHTML=`<div class="a-av"><img src="${ls}" style="opacity:.5"/></div><div class="tdots"><span></span><span></span><span></span></div>`;
-  m.appendChild(d);m.scrollTop=m.scrollHeight;return id;
+  const id = Date.now();
+  const msgs = document.getElementById('msgs');
+  const d = document.createElement('div'); d.className = 'typing'; d.id = 't'+id;
+  d.innerHTML = `<div class="aav" style="opacity:.5">V</div><div class="tdots"><span></span><span></span><span></span></div>`;
+  msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
+  return id;
 }
-function removeTyping(id){const e=document.getElementById('t'+id);if(e)e.remove();}
+function removeTyping(id){ const e = document.getElementById('t'+id); if(e) e.remove(); }
 
 function fmt(t){
-  // Tags diagnóstico
-  const tags={
-    '[DIAGNÓSTICO FINANCEIRO]':'<div class="diag" style="background:var(--blueA);color:var(--blue)">📊 Diagnóstico Financeiro</div>',
-    '[ARQUITETURA DO ANÚNCIO]':'<div class="diag" style="background:var(--goldA);color:var(--gold)">📋 Arquitetura do Anúncio</div>',
-    '[AVALIAÇÃO FOTO ML — ALGORITMO]':'<div class="diag" style="background:var(--orangeA);color:var(--orange)">🖼️ Avaliação Foto ML</div>',
-    '[OTIMIZAÇÃO B2A]':'<div class="diag" style="background:var(--greenA);color:var(--green)">🤖 Otimização B2A/AEO</div>',
-    '[ESTRATÉGIA]':'<div class="diag" style="background:var(--purpleA);color:var(--purple)">🎯 Estratégia</div>',
-    '[VEREDITO]':'<div class="diag" style="background:var(--greenA);color:var(--green)">✅ Veredito do CEO</div>',
+  const tags = {
+    '[DIAGNÓSTICO FINANCEIRO]':'<div class="dtag" style="background:rgba(77,155,224,.12);color:#4d9be0;border:1px solid rgba(77,155,224,.25)">📊 Diagnóstico Financeiro</div>',
+    '[ARQUITETURA DO ANÚNCIO]':'<div class="dtag" style="background:var(--goldA);color:var(--gold);border:1px solid var(--goldB)">📋 Arquitetura do Anúncio</div>',
+    '[AVALIAÇÃO FOTO ML]':'<div class="dtag" style="background:rgba(224,154,58,.12);color:#e09a3a;border:1px solid rgba(224,154,58,.25)">🖼️ Avaliação Foto ML</div>',
+    '[OTIMIZAÇÃO B2A]':'<div class="dtag" style="background:rgba(58,184,112,.12);color:var(--green);border:1px solid rgba(58,184,112,.25)">🤖 Otimização B2A</div>',
+    '[ESTRATÉGIA]':'<div class="dtag" style="background:rgba(154,110,224,.12);color:#9a6ee0;border:1px solid rgba(154,110,224,.25)">🎯 Estratégia</div>',
   };
-  Object.entries(tags).forEach(([k,v])=>{t=t.replaceAll(k,v);});
-  // Score bars
-  t=t.replace(/([A-ZÁÀÂÃÉÊÍÓÔÕÚÇ\s]{3,25}):\s*(\d+)\/10/g,(m,lbl,n)=>{
-    const num=parseInt(n);
-    const c=num>=8?'var(--green)':num>=5?'var(--gold)':'var(--red)';
-    return `<div class="sc-row"><span class="sc-lbl">${lbl.trim()}</span><div class="sc-track"><div class="sc-fill" data-w="${num*10}" style="background:${c}"></div></div><span class="sc-val" style="color:${c}">${n}/10</span></div>`;
+  Object.entries(tags).forEach(([k,v]) => { t = t.replaceAll(k, v); });
+  t = t.replace(/([A-ZÁÀÂÃÉÊÍÓÔÕÚÇ][A-ZÁÀÂÃÉÊÍÓÔÕÚÇa-záàâãéêíóôõúç\s]{2,24}):\s*(\d+)\/10/g, (m, lbl, n) => {
+    const num = parseInt(n);
+    const c = num>=8 ? 'var(--green)' : num>=5 ? 'var(--gold)' : 'var(--red)';
+    return `<div class="sr"><span class="sl">${lbl.trim()}</span><div class="st"><div class="sf" data-w="${num*10}" style="background:${c}"></div></div><span class="sv" style="color:${c}">${n}/10</span></div>`;
   });
-  // VEREDITO: ACELERAR/DESCARTAR/AJUSTAR
-  t=t.replace(/\bACELERAR\b/g,'<strong style="color:var(--green)">✅ ACELERAR</strong>');
-  t=t.replace(/\bDESCARTAR\b/g,'<strong style="color:var(--red)">❌ DESCARTAR</strong>');
-  t=t.replace(/\bAJUSTAR MARGEM\b/g,'<strong style="color:var(--gold)">⚠️ AJUSTAR MARGEM</strong>');
-  // Markdown
-  t=t.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
-  t=t.replace(/\*(.*?)\*/g,'<em>$1</em>');
-  t=t.replace(/^#{1,3}\s(.+)$/gm,'<strong style="color:var(--gold);font-size:11px;letter-spacing:1.5px;text-transform:uppercase">$1</strong>');
-  t=t.replace(/^[-•]\s(.+)$/gm,'<div class="act"><span class="act-n">→</span><span>$1</span></div>');
-  t=t.replace(/^(\d+)\.\s(.+)$/gm,'<div class="act"><span class="act-n">$1</span><span>$2</span></div>');
-  t=t.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+  t = t.replace(/\bACELERAR\b/g, '<strong style="color:var(--green)">✅ ACELERAR</strong>');
+  t = t.replace(/\bDESCARTAR\b/g, '<strong style="color:var(--red)">❌ DESCARTAR</strong>');
+  t = t.replace(/\bAJUSTAR MARGEM\b/g, '<strong style="color:var(--gold)">⚠️ AJUSTAR MARGEM</strong>');
+  t = t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  t = t.replace(/\*(.*?)\*/g, '<em style="color:#e8cc80;font-style:normal;font-weight:600">$1</em>');
+  t = t.replace(/^#{1,3}\s(.+)$/gm, '<div style="font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin:8px 0 3px">$1</div>');
+  t = t.replace(/^[-•]\s(.+)$/gm, '<div class="act"><span class="an">→</span><span>$1</span></div>');
+  t = t.replace(/^(\d+)\.\s(.+)$/gm, '<div class="act"><span class="an">$1</span><span>$2</span></div>');
+  t = t.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
   return t;
 }
-function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
+function esc(t){ return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
 
-// ═══════════════════════════════════════════════════
-// CALCULADORA DE MARGEM
-// ═══════════════════════════════════════════════════
-function calcPrice(){
-  const custo=parseFloat(document.getElementById('pc-custo').value)||0;
-  if(!custo){document.getElementById('calc-results').style.display='none';return;}
+// ══════════════════════════════════════════════════
+// CALCULADORA
+// ══════════════════════════════════════════════════
+function calcP(){
+  const c = parseFloat(document.getElementById('pc-custo').value)||0;
+  if(!c){ document.getElementById('calc-res').style.display='none'; return; }
   const ml=parseFloat(document.getElementById('pc-ml').value)||14;
   const imp=parseFloat(document.getElementById('pc-imp').value)||6;
   const op=parseFloat(document.getElementById('pc-op').value)||3;
   const mg=parseFloat(document.getElementById('pc-mg').value)||20;
-  const totalPct=(ml+imp+op+mg)/100;
-  const precoMin=custo/(1-totalPct);
-  // Arredondamento psicológico
-  const base=Math.ceil(precoMin/10)*10;
-  const sug=base-0.10;
-  const real=parseFloat(document.getElementById('pc-real').value)||sug;
-  const lucroLiq=real-(custo+(real*((ml+imp+op)/100)));
-  const margReal=((real-custo)/real)*100;
-  const vOk=real>=precoMin;
-  document.getElementById('r-mk').textContent=(totalPct*100).toFixed(0)+'%';
-  document.getElementById('r-min').textContent='R$'+precoMin.toFixed(2);
-  document.getElementById('r-sug').textContent='R$'+sug.toFixed(2);
-  document.getElementById('r-liq').textContent='R$'+lucroLiq.toFixed(2);
-  document.getElementById('r-mgr').textContent=margReal.toFixed(1)+'%';
-  const vEl=document.getElementById('r-verd');
-  const vSub=document.getElementById('r-verd-sub');
-  if(vOk&&margReal>=20){vEl.textContent='ACELERAR';vEl.className='res-val green';vSub.textContent='Margem segura';}
-  else if(vOk){vEl.textContent='OK';vEl.className='res-val gold';vSub.textContent='Margem apertada';}
-  else{vEl.textContent='RISCO';vEl.className='res-val red';vSub.textContent='Abaixo do mínimo';}
-  document.getElementById('calc-results').style.display='grid';
-  calcProj();
-}
-function calcProj(){
-  const un=parseFloat(document.getElementById('pp-un').value)||35;
-  const pv=parseFloat(document.getElementById('pp-pv').value)||349.90;
-  const custo=parseFloat(document.getElementById('pc-custo').value)||177.89;
-  const ml=(parseFloat(document.getElementById('pc-ml').value)||14)/100;
-  const imp=(parseFloat(document.getElementById('pc-imp').value)||6)/100;
-  const op=(parseFloat(document.getElementById('pc-op').value)||3)/100;
-  const fat=un*pv;
-  const cust=un*custo;
-  const tax=fat*(ml+imp+op);
-  const liq=fat-cust-tax;
-  document.getElementById('pp-fat').textContent='R$'+fat.toFixed(0);
-  document.getElementById('pp-cust').textContent='R$'+cust.toFixed(0);
-  document.getElementById('pp-tax').textContent='R$'+tax.toFixed(0);
-  document.getElementById('pp-liq').textContent='R$'+liq.toFixed(0);
+  const un=parseFloat(document.getElementById('pc-un').value)||35;
+  const tot=(ml+imp+op+mg)/100;
+  const pmin=c/(1-tot);
+  const psug=Math.ceil(pmin/10)*10-0.10;
+  const liq=psug-(c+psug*((ml+imp+op)/100));
+  const mgr=(psug-c)/psug*100;
+  const fat=un*psug, mliq=un*liq;
+  const mc=mgr>=20?'var(--green)':mgr>=10?'var(--gold)':'var(--red)';
+  document.getElementById('r-min').textContent='R$'+pmin.toFixed(2);
+  document.getElementById('r-sug').textContent='R$'+psug.toFixed(2);
+  document.getElementById('r-liq').textContent='R$'+liq.toFixed(2);
+  document.getElementById('r-mgr').textContent=mgr.toFixed(1)+'%';
+  document.getElementById('r-mgr').style.color=mc;
+  document.getElementById('r-fat').textContent='R$'+fat.toFixed(0);
+  document.getElementById('r-mliq').textContent='R$'+mliq.toFixed(0);
+  document.getElementById('calc-res').style.display='block';
 }
 
-// ═══════════════════════════════════════════════════
-// GERADOR DE ANÚNCIO
-// ═══════════════════════════════════════════════════
-function generateAd(){
-  const cod=document.getElementById('ag-cod').value;
-  const cor=document.getElementById('ag-cor').value;
-  const data=AD_DATA[cod]||AD_DATA['default'];
-  const cData=data.cores[cor]||Object.values(data.cores)[0];
+// ══════════════════════════════════════════════════
+// GERADOR
+// ══════════════════════════════════════════════════
+const ADDB = {
+  'F-1006':{
+    'Preto Fosco':{
+      titulo:'Torneira Gourmet Mola Inox 304 Monocomando Preto Vexus',
+      kw:'torneira gourmet mola inox 304 preto fosco monocomando cozinha',
+      bullets:'✅ CORPO INOX 304: Não usamos Zamak. Resistente à ferrugem e maresia — ideal para litoral\n✅ DUTOS EM LATÃO: Pressão 5-40 mca · Temperatura máxima 75°C · Bitola 1/2"\n✅ MOLA HELICOIDAL INDUSTRIAL: Estabilizadora de bica, retorno automático — visual restaurante\n✅ BICA EXTENSÍVEL 360°: Ducha dupla (jato + spray), alcance ~50cm, rotação completa\n✅ CARTUCHO CERÂMICO 500.000 CICLOS: Sem gotejamento · Garantia 12 meses · Fácil instalação',
+      faq:'❓ O corpo é Inox 304 ou Zamak?\n✅ 100% Aço Inox 304 no corpo e Latão nos dutos. Nenhuma peça estrutural em Zamak.\n\n❓ Funciona com aquecedor a gás, elétrico e solar?\n✅ Sim. Compatível com todos os sistemas. Temp. máx. 75°C · Pressão: 5 a 40 mca.'
+    },
+    'Gold':{
+      titulo:'Torneira Gourmet Mola Inox 304 Monocomando Gold Dourada Vexus',
+      kw:'torneira gourmet mola inox 304 gold dourada monocomando cozinha premium',
+      bullets:'✅ INOX 304 COM ACABAMENTO GOLD: Resistência superior + estética premium — tendência 2026\n✅ DUTOS EM LATÃO: Vedação profissional · Pressão 5-40 mca · Temperatura até 75°C\n✅ MOLA HELICOIDAL: Design de cozinha profissional, valoriza qualquer bancada\n✅ BICA 360° EXTENSÍVEL: 2 modos de jato, alcance ~50cm para toda a cuba\n✅ CARTUCHO CERÂMICO 500K CICLOS: Durabilidade comprovada · Garantia 12 meses',
+      faq:'❓ O acabamento Gold descasca com o tempo?\n✅ Não. Tratamento PVD sobre Inox 304. Resistente à maresia e produtos de limpeza.\n\n❓ Qual a pressão mínima necessária?\n✅ 5 mca. A maioria das residências opera acima de 8 mca — dentro do limite.'
+    },
+    'Rose Gold':{
+      titulo:'Torneira Gourmet Mola Inox 304 Monocomando Rose Gold Vexus',
+      kw:'torneira gourmet mola inox 304 rose gold monocomando cozinha',
+      bullets:'✅ INOX 304 + ROSE GOLD: Tendência dominante em cozinhas gourmet 2025-2026\n✅ DUTOS LATÃO: Material nobre hidráulico · Pressão 5-40 mca · Compatível com aquecimento\n✅ MOLA INDUSTRIAL: Visual que transforma a pia no ponto focal da decoração\n✅ BICA EXTENSÍVEL: 2 modos de jato · Alcance ~50cm · Rotação 360°\n✅ CARTUCHO CERÂMICO 500K CICLOS: Sem manutenção frequente · Garantia 12 meses',
+      faq:'❓ Rose Gold e Gold têm a mesma qualidade técnica?\n✅ Sim, idêntica. Apenas o acabamento difere: Rose Gold tem tonalidade rosada.\n\n❓ Posso instalar sozinho?\n✅ Sim! Acompanha kit completo: mangueiras trançadas, anéis de vedação e fixação. Furação: 35mm.'
+    },
+    'Black Rose':{
+      titulo:'Torneira Gourmet Mola Inox 304 Monocomando Black Rose Vexus',
+      kw:'torneira gourmet mola inox 304 black rose bicolor monocomando premium',
+      bullets:'✅ BICOLOR EXCLUSIVO BLACK ROSE: Design único — menor concorrência no ML por ser escasso\n✅ CORPO INOX 304: Resistência total à corrosão, maresia e umidade salina\n✅ DUTOS LATÃO: Qualidade hidráulica profissional · Pressão 5-40 mca\n✅ MOLA + BICA EXTENSÍVEL: Função industrial + estética premium em único produto\n✅ CARTUCHO CERÂMICO 500K CICLOS: Garantia 12 meses · Fabricação controlada',
+      faq:'❓ Por que o Black Rose é mais caro?\n✅ Acabamento bicolor exige processo adicional. É o modelo mais exclusivo e com menor concorrência.\n\n❓ A mola é decorativa ou funcional?\n✅ Totalmente funcional. Mola helicoidal em inox — estabiliza a bica e retrai automaticamente.'
+    },
+    'Cromado':{
+      titulo:'Torneira Gourmet Mola Inox 304 Monocomando Cromada Vexus',
+      kw:'torneira gourmet mola inox 304 cromada monocomando cozinha premium',
+      bullets:'✅ INOX 304 CROMADO: Clássico e resistente — banho de cromo sobre aço inox 304\n✅ DUTOS EM LATÃO: Padrão profissional · Pressão 5-40 mca · Temperatura até 75°C\n✅ MOLA HELICOIDAL: Design industrial que valoriza qualquer cozinha\n✅ BICA 360° EXTENSÍVEL: Jato concentrado + spray · Alcance ~50cm\n✅ CARTUCHO CERÂMICO 500K CICLOS: Sem gotejamento · Sem manutenção frequente',
+      faq:'❓ A torneira cromada enferruja?\n✅ Não. Corpo em Inox 304 com banho de cromo. Diferente de Zamak que oxida com facilidade.\n\n❓ Qual a diferença para o modelo preto?\n✅ Apenas estética. Idêntica qualidade técnica: Inox 304, Latão, cartucho 500k ciclos.'
+    }
+  }
+};
 
-  const titulo=cData.titulo;
-  const kw=cData.kw;
-  const bullets=`✅ MATERIAL PREMIUM: Corpo ${data.material} — resistente à ferrugem, maresia e uso intenso
-✅ ${data.spec}
-✅ ACABAMENTO ${cor.toUpperCase()}: Tendência 2026 para cozinhas e banheiros gourmet
-✅ INSTALAÇÃO SIMPLES: Compatível com aquecedor a gás, elétrico e solar
-✅ GARANTIA 12 MESES: Vexus Metais — qualidade com respaldo`;
-
-  const faq=`❓ O corpo é Inox 304 ou Zamak?
-✅ 100% Aço Inox 304. Não usamos Zamak em nenhuma parte estrutural. Inox 304 = anti-corrosão, alta durabilidade, indicado para litoral.
-
-❓ Funciona com aquecedor a gás e elétrico?
-✅ Sim. Compatível com todos os tipos de aquecimento. Temp. máxima: 75°C. Pressão: 5 a 40 mca.`;
-
-  document.getElementById('ad-titulo').textContent=titulo;
-  document.getElementById('ad-kw').textContent=kw;
-  document.getElementById('ad-bullets').textContent=bullets;
-  document.getElementById('ad-faq').textContent=faq;
-  document.getElementById('ad-result').classList.add('show');
+function resetAd(){ document.getElementById('ad-result').style.display='none'; }
+function genAd(){
+  const cod = document.getElementById('ag-cod').value;
+  const cor = document.getElementById('ag-cor').value;
+  const prod = ADDB[cod];
+  if(!prod){ toast('Produto sem template — use o CEO para gerar manualmente'); return; }
+  const d = prod[cor] || Object.values(prod)[0];
+  document.getElementById('ad-titulo').textContent = d.titulo;
+  document.getElementById('ad-kw').textContent = d.kw;
+  document.getElementById('ad-bullets').textContent = d.bullets;
+  document.getElementById('ad-faq').textContent = d.faq;
+  document.getElementById('ad-result').style.display = 'block';
+}
+function copyEl(id){
+  navigator.clipboard.writeText(document.getElementById(id).textContent).then(() => toast('Copiado!'));
 }
 
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════
 // SAC
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════
+const SACDB = [
+  {q:'É compatível com aquecedor a gás/elétrico/solar?',a:'Sim! Compatível com todos os sistemas. Temperatura máxima: 75°C. Pressão: 5 a 40 mca. Funciona com qualquer aquecimento residencial.'},
+  {q:'Qual furação necessária na bancada?',a:'Furação de 35mm de diâmetro — padrão para torneiras gourmet de bancada. Qualquer encanador faz em poucos minutos. Não precisa quebrar a bancada.'},
+  {q:'O corpo é mesmo Inox 304 ou é Zamak?',a:'100% Aço Inox 304 no corpo. Dutos internos em Latão. Não usamos Zamak em nenhuma parte estrutural. Inox 304 = sem oxidação, ideal para litoral.'},
+  {q:'Funciona somente com água fria?',a:'Sim. Para uso apenas com água fria, instale um adaptador T na entrada (não incluso, ~R$8 em loja hidráulica). O produto tem entradas quente e fria padrão 1/2".'},
+  {q:'Qual a pressão mínima necessária?',a:'Pressão mínima de 5 mca. Caixas d\'água elevadas normalmente entregam 8-15 mca. Recomendamos acima de 10 mca para melhor performance.'},
+  {q:'Pode usar em casa de praia/litoral?',a:'Sim! Inox 304 é altamente resistente à maresia. Por isso usamos Inox 304 e não Zamak — que oxida rapidamente em ambientes litorâneos.'},
+  {q:'Qual o prazo e política de troca?',a:'Garantia de 12 meses contra defeitos de fabricação. Em caso de problema, resolvemos via ML (troca ou reembolso). Envio: 1-3 dias úteis após confirmação.'},
+  {q:'Vem com kit de instalação?',a:'Sim! Inclui: 2 mangueiras flexíveis em aço trançado (50cm), kit de anéis de vedação e sistema de fixação para bancada.'},
+];
+
 function initSAC(){
-  const list=document.getElementById('sac-list');
-  if(list.children.length>0) return;
-  list.innerHTML=SAC_DATA.map((item,i)=>`
-    <div class="sac-item${i===0?' open':''}">
-      <div class="sac-q" onclick="toggleSac(this)">${item.q}</div>
-      <div class="sac-a">${item.a} <span onclick="copySac(this)" style="display:inline-block;margin-top:6px;font-size:9px;font-weight:700;color:var(--gold);cursor:pointer;letter-spacing:1px">[ COPIAR RESPOSTA ]</span></div>
+  const list = document.getElementById('sac-list');
+  if(list.children.length > 0) return;
+  list.innerHTML = SACDB.map((item, i) => `
+    <div class="sacitem${i===0?' open':''}">
+      <div class="sacq" onclick="this.parentElement.classList.toggle('open')">${item.q}<span>▾</span></div>
+      <div class="saca">${item.a.replace(/'/g,"&#39;")}<br>
+        <button class="copybtn" onclick="copySac(this, '${item.a.replace(/'/g,"\\'")}')">Copiar Resposta</button>
+      </div>
     </div>`).join('');
 }
-function toggleSac(el){el.parentElement.classList.toggle('open');}
-function copySac(el){
-  const txt=el.parentElement.textContent.replace('[ COPIAR RESPOSTA ]','').trim();
-  navigator.clipboard.writeText(txt).then(()=>showToast('Resposta copiada!'));
+function copySac(btn, txt){
+  navigator.clipboard.writeText(txt).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copiado!'; btn.style.background = 'var(--green)'; btn.style.borderColor = 'var(--green)'; btn.style.color = '#000';
+    setTimeout(() => { btn.textContent = orig; btn.style.background=''; btn.style.borderColor=''; btn.style.color=''; }, 2000);
+  });
 }
 
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════
 // AVALIAÇÃO IMAGEM
-// ═══════════════════════════════════════════════════
-function evalImg(e){
-  const file=e.target.files[0];if(!file) return;
-  const r=new FileReader();
-  r.onload=ev=>{
-    evalImgData={file,base64:ev.target.result};
-    document.getElementById('eval-img').src=ev.target.result;
-    document.getElementById('eval-preview').style.display='block';
-    document.getElementById('eval-result').innerHTML='';
+// ══════════════════════════════════════════════════
+function setEvalImg(e){
+  const file = e.target.files[0]; if(!file) return;
+  evalMime = file.type || 'image/jpeg';
+  const r = new FileReader();
+  r.onload = ev => {
+    evalB64 = ev.target.result;
+    document.getElementById('eval-img').src = evalB64;
+    document.getElementById('eval-preview').style.display = 'block';
+    document.getElementById('eval-result').innerHTML = '';
   };
   r.readAsDataURL(file);
 }
-function dropImg(e){
-  e.preventDefault();
-  const file=e.dataTransfer.files[0];if(!file) return;
-  const fake={target:{files:[file]}};evalImg(fake);
-}
+
 async function runEval(){
-  if(!evalImgData||loading) return;
-  loading=true;
-  document.getElementById('eval-result').innerHTML='<div style="text-align:center;padding:20px;color:var(--muted2)">🔍 CEO analisando a imagem…</div>';
-  if(!checkApiKey()) return;
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key': getApiKey(),
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-allow-browser':'true'
-      },
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYSTEM,
-        messages:[{role:'user',content:[
-          {type:'image',source:{type:'base64',media_type:evalImgData.file.type||'image/jpeg',data:evalImgData.base64.split(',')[1]}},
-          {type:'text',text:'Avalie esta imagem com [AVALIAÇÃO FOTO ML — ALGORITMO] completo. Todas as notas e ações corretivas.'}
-        ]}]
+  if(!evalB64 || busy) return;
+  if(!getKey()){ showModal(); return; }
+  busy = true;
+  document.getElementById('eval-result').innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted2)">🔍 Analisando imagem com o CEO…</div>';
+  try {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${getKey()}`;
+    const res = await fetch(url, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        system_instruction:{parts:[{text:SYS}]},
+        contents:[{role:'user', parts:[
+          {inlineData:{mimeType:evalMime, data:evalB64.split(',')[1]}},
+          {text:'Avalie esta imagem com [AVALIAÇÃO FOTO ML] completo. Todos os 8 critérios com nota e ações corretivas numeradas.'}
+        ]}],
+        generationConfig:{maxOutputTokens:1200, temperature:0.5}
       })
     });
-    const data=await res.json();
-    const reply=data.content?.map(c=>c.text||'').join('')||'Erro.';
-    document.getElementById('eval-result').innerHTML=`<div style="background:var(--card);border:1px solid var(--b2);border-radius:10px;padding:16px;font-size:13px;line-height:1.7">${fmt(reply)}</div>`;
-    setTimeout(()=>{document.querySelectorAll('#eval-result .sc-fill[data-w]').forEach(b=>{b.style.width=b.dataset.w+'%'});},120);
-  }catch(err){
-    document.getElementById('eval-result').innerHTML='<div style="color:var(--red)">Falha de conexão.</div>';
+    const data = await res.json();
+    if(data.error){
+      document.getElementById('eval-result').innerHTML = `<div style="color:var(--red)">Erro: ${data.error.message}</div>`;
+    } else {
+      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Resposta vazia.';
+      document.getElementById('eval-result').innerHTML = `<div style="background:var(--card);border:1px solid var(--b2);border-radius:10px;padding:14px;font-size:13px;line-height:1.75">${fmt(reply)}</div>`;
+      setTimeout(() => document.querySelectorAll('#eval-result .sf[data-w]').forEach(b => b.style.width = b.dataset.w+'%'), 100);
+    }
+  } catch(err) {
+    document.getElementById('eval-result').innerHTML = '<div style="color:var(--red)">Falha de conexão.</div>';
   }
-  loading=false;
+  busy = false;
 }
 
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════
 // GUIA
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════
+const STEPS = [
+  {ic:'🧠',n:'01',t:'CEO Estratégico',d:'Converse sobre qualquer decisão: estratégia, diagnóstico, concorrentes, lançamento. Envie imagens para avaliação pelo algoritmo ML.',ex:'Ex: "Tenho R$3.000 de capital. Qual produto lançar primeiro no ML?"'},
+  {ic:'🖼️',n:'02',t:'Avaliar Foto ML',d:'Envie a foto do produto. O CEO pontua 0-10 nos critérios reais que o algoritmo do ML usa para ranquear anúncios.',ex:'Ex: Foto com fundo branco. Score abaixo de 7 = algoritmo te rebaixa vs concorrentes.'},
+  {ic:'💰',n:'03',t:'Calculadora de Margem',d:'Digite o custo. Resultado instantâneo: preço mínimo, sugerido, lucro/unidade e projeção mensal.',ex:'Ex: Rose Gold R$229,42 → mínimo R$402,49 → sugerido R$449,90 com margem garantida.'},
+  {ic:'📋',n:'04',t:'Gerador de Anúncio',d:'Selecione produto e acabamento. Gera título ML otimizado + bullets AEO/B2A prontos para colar no marketplace.',ex:'Ex: F-1006 + Gold → título + 5 bullets técnicos + FAQ voice search prontos.'},
+  {ic:'💬',n:'05',t:'Base SAC',d:'8 perguntas frequentes do ML com respostas otimizadas. Copie e cole. Responder em <1h é fator de ranqueamento.',ex:'Ex: "Funciona com aquecedor?" → copie a resposta pronta em 5 segundos.'},
+  {ic:'🔄',n:'06',t:'Auto-Regeneração',d:'O CEO aprende com cada conversa da sessão. Alimente semanalmente com dados novos.',ex:'Ex: "Atualize: concorrente baixou para R$299. Tive 12 vendas essa semana."'},
+];
+const REGEN = [
+  {t:'📅 Atualização Semanal',d:'Todo domingo envie ao CEO: novos preços de concorrentes, vendas da semana, reclamações. Ele recalibra na hora.'},
+  {t:'🧠 Treinamento por Feedback',d:'Após cada reclamação: "Recebi reclamação que X. O que adiciono no anúncio?" O anúncio evolui continuamente.'},
+  {t:'📊 Revisão Mensal de Margem',d:'No dia 1 de cada mês, abra a Calculadora com o preço atual do fornecedor. Se o custo subiu, recalcule.'},
+  {t:'🔁 Ciclo de Melhoria',d:'Semana 1: lançar 5 anúncios · Semana 2: ajustar pior CTR · Semana 3: ativar ML Ads · Semana 4: analisar reviews.'},
+];
+
 function initGuide(){
-  const g=document.getElementById('steps-grid');
-  if(g.children.length>0) return;
-  g.innerHTML=GUIDE_STEPS.map(s=>`
+  const g = document.getElementById('steps-grid');
+  if(g.children.length > 0) return;
+  g.innerHTML = STEPS.map(s => `
     <div class="step-card">
-      <div class="step-n">${s.n}</div>
-      <div class="step-icon">${s.icon}</div>
-      <div class="step-title">${s.title}</div>
-      <div class="step-desc">${s.desc}</div>
-      <div class="step-ex">${s.ex}</div>
+      <div class="stepn">${s.n}</div>
+      <div class="stepic">${s.ic}</div>
+      <div class="stept">${s.t}</div>
+      <div class="stepd">${s.d}</div>
+      <div class="stepex">${s.ex}</div>
+    </div>`).join('');
+  const r = document.getElementById('regen-list');
+  if(r.children.length > 0) return;
+  r.innerHTML = REGEN.map(i => `
+    <div style="background:var(--s1);border:1px solid var(--b2);border-radius:8px;padding:12px;margin-bottom:8px">
+      <div style="font-size:12px;font-weight:700;color:var(--white);margin-bottom:4px">${i.t}</div>
+      <div style="font-size:11px;color:var(--muted2);line-height:1.65">${i.d}</div>
     </div>`).join('');
 }
 
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════
 // UTILS
-// ═══════════════════════════════════════════════════
-function copyField(id){
-  const txt=document.getElementById(id).textContent;
-  navigator.clipboard.writeText(txt).then(()=>showToast('Copiado!'));
+// ══════════════════════════════════════════════════
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = '✓ ' + msg; t.classList.add('on');
+  setTimeout(() => t.classList.remove('on'), 2200);
 }
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent='✓ '+msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2000);
-}
-
-// Init
-calcPrice();
-calcProj();
-
-// ═══ API KEY MANAGER ═══════════════════════════════════════════
-function getApiKey(){
-  return localStorage.getItem('vexus_api_key') || '';
-}
-function checkApiKey(){
-  if(!getApiKey()){ showKeyModal(); return false; }
-  return true;
-}
-function showKeyModal(){
-  document.getElementById('key-modal').style.display='flex';
-}
-function hideKeyModal(){
-  document.getElementById('key-modal').style.display='none';
-}
-function saveKey(){
-  const k = document.getElementById('key-inp').value.trim();
-  if(!k.startsWith('sk-ant-')){
-    document.getElementById('key-err').textContent='Inválida. Deve começar com sk-ant-';
-    return;
-  }
-  localStorage.setItem('vexus_api_key',k);
-  document.getElementById('key-err').textContent='';
-  hideKeyModal();
-}
-window.addEventListener('load',function(){
-  if(!getApiKey()) setTimeout(showKeyModal, 600);
-});
-
 </script>
-
-<!-- KEY MODAL -->
-<div id="key-modal" style="display:none;position:fixed;inset:0;z-index:9999;
-  background:rgba(0,0,0,.9);backdrop-filter:blur(10px);
-  align-items:center;justify-content:center;padding:20px;font-family:'Syne',sans-serif">
-  <div style="background:#0d0f12;border:1px solid rgba(201,168,76,.35);
-    border-radius:16px;padding:30px;max-width:420px;width:100%;
-    box-shadow:0 24px 80px rgba(0,0,0,.9)">
-    <div style="text-align:center;margin-bottom:22px">
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;
-        letter-spacing:3px;color:#c9a84c;margin-bottom:4px">VEXUS HUB</div>
-      <div style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;
-        color:#484e60">Configure sua Anthropic API Key</div>
-    </div>
-    <div style="background:#060708;border:1px solid #1c1f27;border-radius:10px;
-      padding:14px;margin-bottom:18px;font-size:12px;color:#6e7588;line-height:1.8">
-      <strong style="color:#c9a84c;display:block;margin-bottom:6px">
-        Você precisa de uma API Key gratuita da Anthropic.</strong>
-      1. Acesse <strong style="color:#eef0f8">console.anthropic.com</strong><br>
-      2. Crie sua conta gratuita<br>
-      3. Vá em <strong style="color:#eef0f8">API Keys → Create Key</strong><br>
-      4. Cole a chave abaixo<br><br>
-      <span style="color:#3ab870">✓ Salva no seu navegador — não sai do dispositivo</span><br>
-      <span style="color:#3ab870">✓ Custo estimado: ~R$0,05 por conversa</span>
-    </div>
-    <input id="key-inp" type="password" placeholder="sk-ant-api03-..."
-      onkeydown="if(event.key==='Enter')saveKey()"
-      style="width:100%;background:#060708;border:1px solid #1c1f27;
-        border-radius:9px;padding:12px 14px;color:#eef0f8;
-        font-family:'Syne',sans-serif;font-size:13px;outline:none;
-        margin-bottom:8px;transition:border-color .2s;box-sizing:border-box"
-      onfocus="this.style.borderColor='rgba(201,168,76,.5)'"
-      onblur="this.style.borderColor='#1c1f27'"/>
-    <div id="key-err" style="font-size:11px;color:#e05252;
-      margin-bottom:12px;min-height:16px"></div>
-    <button onclick="saveKey()"
-      style="width:100%;padding:13px;border-radius:9px;background:#c9a84c;
-        border:none;cursor:pointer;font-family:'Syne',sans-serif;
-        font-size:13px;font-weight:800;color:#000;letter-spacing:.5px;
-        margin-bottom:12px;transition:.15s"
-      onmouseover="this.style.background='#e8cc80'"
-      onmouseout="this.style.background='#c9a84c'">
-      ✓ Salvar e Usar o HUB
-    </button>
-    <div style="text-align:center;font-size:10px;color:#484e60">
-      <a href="https://console.anthropic.com" target="_blank"
-        style="color:#c9a84c;text-decoration:none">
-        console.anthropic.com
-      </a>
-       · Seus dados ficam apenas no seu dispositivo
-    </div>
-  </div>
-</div>
-
 </body>
 </html>
