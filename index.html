@@ -177,8 +177,8 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;displa
     <div><div class="brand">VEXUS HUB</div><div class="brandsub">Powered by Gemini AI</div></div>
   </div>
   <div class="tb-r">
-    <button class="keybtn" onclick="showModal()">🔑 API Key</button>
-    <div class="pill"><div class="dot"></div><div class="ptxt">Online</div></div>
+    <button class="keybtn" id="keybtn" onclick="showModal()">🔑 API Key</button>
+    <div class="pill" id="status-pill"><div class="dot"></div><div class="ptxt" id="status-txt">Online</div></div>
   </div>
 </div>
 
@@ -437,21 +437,50 @@ VANTAGEM: Único no ML com Inox 304 + Latão + 5 acabamentos. Concorrentes usam 
 // ══════════════════════════════════════════════════
 // API KEY
 // ══════════════════════════════════════════════════
-const getKey = () => localStorage.getItem('vexus_gemini_key') || '';
-function showModal(){ document.getElementById('modal').style.display = 'flex'; }
+// Armazena em localStorage + sessionStorage + cookie para máxima persistência
+function saveStorage(k){
+  try{ saveStorage(k); }catch(e){}
+  try{ sessionStorage.setItem('vexus_gemini_key', k); }catch(e){}
+  try{ document.cookie = 'vgk='+encodeURIComponent(k)+';max-age=31536000;path=/;SameSite=Lax'; }catch(e){}
+}
+function getKey(){
+  let k = '';
+  try{ k = localStorage.getItem('vexus_gemini_key') || ''; }catch(e){}
+  if(!k){ try{ k = sessionStorage.getItem('vexus_gemini_key') || ''; }catch(e){} }
+  if(!k){ try{ const m = document.cookie.match(/vgk=([^;]+)/); if(m) k = decodeURIComponent(m[1]); }catch(e){} }
+  return k;
+}
+
 function hideModal(){ document.getElementById('modal').style.display = 'none'; }
+function showModal(){
+  const existing = getKey();
+  if(existing){
+    document.getElementById('key-inp').placeholder = 'Chave salva: AIza...'+existing.slice(-6)+' (cole nova para alterar)';
+  }
+  document.getElementById('modal').style.display = 'flex';
+}
 function saveKey(){
   const k = document.getElementById('key-inp').value.trim();
   if(!k.startsWith('AIza')){
     document.getElementById('key-err').textContent = 'Chave inválida. Deve começar com AIza';
     return;
   }
-  localStorage.setItem('vexus_gemini_key', k);
+  saveStorage(k);
   document.getElementById('key-err').textContent = '';
   hideModal();
   toast('API Key salva com sucesso!');
 }
-window.addEventListener('load', () => { if(!getKey()) showModal(); });
+window.addEventListener('load', () => {
+  if(!getKey()) showModal();
+  else updateKeyStatus();
+});
+function updateKeyStatus(){
+  const k = getKey();
+  const el = document.getElementById('status-txt');
+  if(!el) return;
+  if(k){ el.textContent = '✓ Conectado'; }
+  else { el.textContent = 'Sem Key'; }
+}
 
 // ══════════════════════════════════════════════════
 // NAVEGAÇÃO
