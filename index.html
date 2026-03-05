@@ -371,8 +371,9 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;displa
       1. Acesse <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a><br>
       2. Faça login com sua conta Google<br>
       3. Clique em <strong>"Create API Key"</strong><br>
-      4. Copie e cole abaixo<br><br>
-      <span style="color:var(--green)">✓ Gratuito &nbsp;·&nbsp; ✓ Salvo no seu navegador &nbsp;·&nbsp; ✓ Não sai do dispositivo</span>
+      4. Copie e cole abaixo e clique Salvar<br><br>
+      <span style="color:var(--green)">✓ Gratuito &nbsp;·&nbsp; ✓ Salvo permanentemente &nbsp;·&nbsp; ✓ Não sai do dispositivo</span><br><br>
+      <span style="color:var(--gold)">💡 Dica: para nunca mais ver esta tela, peça ao Claude para embutir sua key diretamente no arquivo.</span>
     </div>
     <input class="minp" id="key-inp" type="password" placeholder="AIzaSy..." onkeydown="if(event.key==='Enter')saveKey()"/>
     <div class="merr" id="key-err"></div>
@@ -443,9 +444,12 @@ function saveStorage(k){
   try{ sessionStorage.setItem('vexus_gemini_key', k); }catch(e){}
   try{ document.cookie = 'vgk='+encodeURIComponent(k)+';max-age=31536000;path=/;SameSite=Lax'; }catch(e){}
 }
+// ⚙️ COLE SUA API KEY AQUI PARA NÃO PRECISAR CONFIGURAR TODA VEZ:
+const KEY_FIXA = 'AIzaSyATej-ncbPVOOd6yobBgKLP58yR2_rgPug'; // Ex: 'AIzaSyXXXXXXXXXXXXXXXXX'
+
 function getKey(){
-  let k = '';
-  try{ k = localStorage.getItem('vexus_gemini_key') || ''; }catch(e){}
+  let k = KEY_FIXA; // Primeiro tenta a key fixa no código
+  if(!k){ try{ k = localStorage.getItem('vexus_gemini_key') || ''; }catch(e){} }
   if(!k){ try{ k = sessionStorage.getItem('vexus_gemini_key') || ''; }catch(e){} }
   if(!k){ try{ const m = document.cookie.match(/vgk=([^;]+)/); if(m) k = decodeURIComponent(m[1]); }catch(e){} }
   return k;
@@ -471,6 +475,8 @@ function saveKey(){
   toast('API Key salva com sucesso!');
 }
 window.addEventListener('load', () => {
+  // Salvar key fixa no storage automaticamente ao carregar
+  if(KEY_FIXA) { try{ localStorage.setItem('vexus_gemini_key', KEY_FIXA); }catch(e){} }
   if(!getKey()) showModal();
   else updateKeyStatus();
 });
