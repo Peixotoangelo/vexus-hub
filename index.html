@@ -177,7 +177,7 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;displa
     <div><div class="brand">VEXUS HUB</div><div class="brandsub">Powered by Gemini AI</div></div>
   </div>
   <div class="tb-r">
-    <button class="keybtn" id="keybtn" onclick="showModal()">🔑 API Key</button>
+    
     <div class="pill" id="status-pill"><div class="dot"></div><div class="ptxt" id="status-txt">Online</div></div>
   </div>
 </div>
@@ -361,10 +361,6 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;displa
   </div>
 </div>
 
-<!-- MODAL -->
-<div class="modal" id="modal" style="display:flex">
-  <div class="mbox">
-    <div class="mtitle">VEXUS HUB</div>
     <div class="msub">Configure sua Gemini API Key — 100% Gratuita</div>
     <div class="minfo">
       <strong>A API do Gemini é GRATUITA com conta Google.</strong><br><br>
@@ -385,6 +381,9 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;displa
 <div class="toast" id="toast"></div>
 
 <script>
+const KEY_FIXA = 'AIzaSyATej-ncbPVOOd6yobBgKLP58yR2_rgPug';
+function getKey(){ return KEY_FIXA; }
+
 // ══════════════════════════════════════════════════
 // SISTEMA
 // ══════════════════════════════════════════════════
@@ -434,59 +433,6 @@ PRECIFICAÇÃO: Preço = Custo ÷ (1−0.43) onde 0.43 = ML14% + Simples6% + Ope
 ALGORITMO ML CRÍTICO: Velocidade 48h = 30% ranqueamento. Fotos mín 6, fundo branco, 1200x1200px. Resposta <1h. 5 anúncios separados por cor. Reviews 4.8+ primeiras 2 semanas. ML Ads R$10-20/dia. Conversão <3% = rebaixamento automático.
 
 VANTAGEM: Único no ML com Inox 304 + Latão + 5 acabamentos. Concorrentes usam Zamak.`;
-
-// ══════════════════════════════════════════════════
-// API KEY
-// ══════════════════════════════════════════════════
-// Armazena em localStorage + sessionStorage + cookie para máxima persistência
-function saveStorage(k){
-  try{ saveStorage(k); }catch(e){}
-  try{ sessionStorage.setItem('vexus_gemini_key', k); }catch(e){}
-  try{ document.cookie = 'vgk='+encodeURIComponent(k)+';max-age=31536000;path=/;SameSite=Lax'; }catch(e){}
-}
-// ⚙️ COLE SUA API KEY AQUI PARA NÃO PRECISAR CONFIGURAR TODA VEZ:
-const KEY_FIXA = 'AIzaSyATej-ncbPVOOd6yobBgKLP58yR2_rgPug'; // Ex: 'AIzaSyXXXXXXXXXXXXXXXXX'
-
-function getKey(){
-  let k = KEY_FIXA; // Primeiro tenta a key fixa no código
-  if(!k){ try{ k = localStorage.getItem('vexus_gemini_key') || ''; }catch(e){} }
-  if(!k){ try{ k = sessionStorage.getItem('vexus_gemini_key') || ''; }catch(e){} }
-  if(!k){ try{ const m = document.cookie.match(/vgk=([^;]+)/); if(m) k = decodeURIComponent(m[1]); }catch(e){} }
-  return k;
-}
-
-function hideModal(){ document.getElementById('modal').style.display = 'none'; }
-function showModal(){
-  const existing = getKey();
-  if(existing){
-    document.getElementById('key-inp').placeholder = 'Chave salva: AIza...'+existing.slice(-6)+' (cole nova para alterar)';
-  }
-  document.getElementById('modal').style.display = 'flex';
-}
-function saveKey(){
-  const k = document.getElementById('key-inp').value.trim();
-  if(!k.startsWith('AIza')){
-    document.getElementById('key-err').textContent = 'Chave inválida. Deve começar com AIza';
-    return;
-  }
-  saveStorage(k);
-  document.getElementById('key-err').textContent = '';
-  hideModal();
-  toast('API Key salva com sucesso!');
-}
-window.addEventListener('load', () => {
-  // Salvar key fixa no storage automaticamente ao carregar
-  if(KEY_FIXA) { try{ localStorage.setItem('vexus_gemini_key', KEY_FIXA); }catch(e){} }
-  if(!getKey()) showModal();
-  else updateKeyStatus();
-});
-function updateKeyStatus(){
-  const k = getKey();
-  const el = document.getElementById('status-txt');
-  if(!el) return;
-  if(k){ el.textContent = '✓ Conectado'; }
-  else { el.textContent = 'Sem Key'; }
-}
 
 // ══════════════════════════════════════════════════
 // NAVEGAÇÃO
@@ -540,7 +486,7 @@ function qchip(el){ document.getElementById('inp').value = el.textContent.replac
 
 async function sendMsg(){
   if(busy) return;
-  if(!getKey()){ showModal(); return; }
+  
   const text = document.getElementById('inp').value.trim();
   const localImgs = [...imgs];
   if(!text && localImgs.length === 0) return;
@@ -781,7 +727,7 @@ function setEvalImg(e){
 
 async function runEval(){
   if(!evalB64 || busy) return;
-  if(!getKey()){ showModal(); return; }
+  
   busy = true;
   document.getElementById('eval-result').innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted2)">🔍 Analisando imagem com o CEO…</div>';
   try {
