@@ -3,169 +3,289 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Vexus HUB — CEO Agent</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<title>Vexus HUB</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#060708;--s1:#0c0e11;--card:#14171d;--b1:#1c1f27;--b2:#242830;
-  --gold:#c9a84c;--gold2:#e8cc80;--goldA:rgba(201,168,76,.1);--goldB:rgba(201,168,76,.2);
-  --green:#3ab870;--red:#e05252;--blue:#4d9be0;
-  --text:#c8ccd8;--muted:#484e60;--muted2:#6e7588;--white:#eef0f8;
+  --bg:#07080a;--s1:#0d0f14;--card:#12151c;--b1:#1a1d26;--b2:#22263180;
+  --gold:#d4a853;--goldL:#f0c97a;--goldA:rgba(212,168,83,.12);--goldB:rgba(212,168,83,.25);
+  --green:#2ecc8a;--red:#e05555;--blue:#5b9cf6;--purple:#9b72e8;
+  --text:#b8bdd0;--muted:#454b60;--muted2:#656d88;--white:#eef1fb;
 }
 html,body{height:100%;overflow:hidden}
-body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;display:flex;flex-direction:column}
-.topbar{height:50px;background:var(--s1);border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;padding:0 14px;flex-shrink:0;position:relative;z-index:100}
-.topbar::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.2}
-.tb-l{display:flex;align-items:center;gap:9px}
-.hmbtn{width:32px;height:32px;border-radius:7px;background:var(--card);border:1px solid var(--b2);cursor:pointer;font-size:15px;color:var(--muted2);display:flex;align-items:center;justify-content:center}
-.logov{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#1a1612,#2a2010);border:1.5px solid rgba(201,168,76,.4);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold);flex-shrink:0}
-.brand{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:3px;color:var(--gold)}
-.brandsub{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2)}
-.tb-r{display:flex;align-items:center;gap:7px}
-.keybtn{padding:4px 11px;border-radius:6px;background:var(--goldA);border:1px solid var(--goldB);color:var(--gold);font-size:10px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif}
-.pill{display:flex;align-items:center;gap:5px;background:rgba(58,184,112,.1);border:1px solid rgba(58,184,112,.25);border-radius:20px;padding:3px 9px}
-.dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pu 2s infinite}
-@keyframes pu{0%,100%{box-shadow:0 0 0 0 rgba(58,184,112,.5)}50%{box-shadow:0 0 0 4px rgba(58,184,112,0)}}
-.ptxt{font-size:9px;color:var(--green);font-weight:700}
-.layout{display:flex;flex:1;overflow:hidden}
-.sidebar{width:235px;flex-shrink:0;background:var(--s1);border-right:1px solid var(--b1);display:flex;flex-direction:column;overflow:hidden;transition:transform .25s ease}
-@media(max-width:767px){.sidebar{position:fixed;top:50px;left:0;bottom:0;z-index:90;transform:translateX(-100%)}.sidebar.open{transform:translateX(0);box-shadow:6px 0 20px rgba(0,0,0,.7)}}
-.overlay{display:none;position:fixed;inset:0;top:50px;z-index:80;background:rgba(0,0,0,.65)}
-.ceocard{padding:14px 12px 10px;border-bottom:1px solid var(--b1);background:linear-gradient(160deg,var(--goldA),transparent 60%)}
-.ceoav{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#1a1612,#2a2010);border:2px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold);margin-bottom:8px}
-.ceonm{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;color:var(--white)}
-.ceorl{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:7px}
-.ceotags{display:flex;flex-wrap:wrap;gap:3px}
-.ctag{font-size:7px;text-transform:uppercase;font-weight:700;padding:2px 5px;border-radius:2px}
-.ctag.g{background:var(--goldA);border:1px solid var(--goldB);color:var(--gold)}
-.ctag.d{background:var(--b1);color:var(--muted2)}
-.nav{padding:7px;border-bottom:1px solid var(--b1)}
-.nsec{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:4px 8px;margin-bottom:2px;font-weight:700}
-.ni{display:flex;align-items:center;gap:8px;padding:8px 9px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:700;color:var(--muted2);transition:.15s;border:1px solid transparent;margin-bottom:2px}
-.ni:hover{background:var(--b1);color:var(--text)}
-.ni.on{background:var(--goldA);border-color:var(--goldB);color:var(--gold)}
-.niic{width:24px;height:24px;border-radius:5px;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
-.ni.on .niic{background:rgba(201,168,76,.15)}
-.ninm{font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.nids{font-size:9px;color:var(--muted);margin-top:1px}
-.kpis{padding:8px;border-top:1px solid var(--b1);margin-top:auto}
-.ksec{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:0 6px;margin-bottom:5px;font-weight:700}
-.kr{display:flex;justify-content:space-between;padding:4px 7px;background:var(--card);border-radius:4px;margin-bottom:2px;font-size:10px}
-.kk{color:var(--muted2)}.kv{font-weight:700}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;display:flex;flex-direction:column}
+
+/* BG noise */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.4}
+
+/* TOPBAR */
+.topbar{height:52px;background:rgba(13,15,20,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--b1);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;flex-shrink:0;position:relative;z-index:100}
+.tb-l{display:flex;align-items:center;gap:10px}
+.hmbtn{width:34px;height:34px;border-radius:8px;background:var(--card);border:1px solid var(--b1);
+  cursor:pointer;font-size:14px;color:var(--muted2);display:flex;align-items:center;justify-content:center;transition:.15s}
+.hmbtn:hover{border-color:var(--goldB);color:var(--gold)}
+.logomark{width:32px;height:32px;border-radius:9px;
+  background:linear-gradient(135deg,#1c1508,#2d2010);
+  border:1px solid var(--goldB);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:19px;color:var(--gold);
+  box-shadow:0 0 12px rgba(212,168,83,.15),inset 0 1px 0 rgba(212,168,83,.1)}
+.brand-wrap{line-height:1}
+.brand{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:3px;color:var(--white)}
+.brand-sub{font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted2);font-weight:500}
+.tb-r{display:flex;align-items:center;gap:8px}
+.pill{display:flex;align-items:center;gap:5px;
+  background:rgba(46,204,138,.08);border:1px solid rgba(46,204,138,.2);
+  border-radius:20px;padding:4px 11px}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 2.5s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(46,204,138,.4)}60%{box-shadow:0 0 0 5px rgba(46,204,138,0)}}
+.ptxt{font-size:9px;color:var(--green);font-weight:600;letter-spacing:.5px}
+
+/* LAYOUT */
+.layout{display:flex;flex:1;overflow:hidden;position:relative;z-index:1}
+
+/* SIDEBAR */
+.sidebar{width:240px;flex-shrink:0;background:rgba(13,15,20,.97);border-right:1px solid var(--b1);
+  display:flex;flex-direction:column;overflow:hidden;transition:transform .28s cubic-bezier(.4,0,.2,1)}
+@media(max-width:767px){
+  .sidebar{position:fixed;top:52px;left:0;bottom:0;z-index:90;transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0);box-shadow:8px 0 32px rgba(0,0,0,.6)}
+}
+.overlay{display:none;position:fixed;inset:0;top:52px;z-index:80;background:rgba(0,0,0,.55);backdrop-filter:blur(3px)}
+
+/* CEO Profile */
+.ceo-section{padding:18px 14px 14px;border-bottom:1px solid var(--b1);
+  background:linear-gradient(180deg,rgba(212,168,83,.05) 0%,transparent 100%);
+  position:relative;overflow:hidden}
+.ceo-section::before{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;
+  background:radial-gradient(circle,rgba(212,168,83,.1),transparent 70%);border-radius:50%}
+.ceo-av{width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,#1c1508,#332210);
+  border:2px solid var(--goldB);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold);
+  margin-bottom:10px;box-shadow:0 0 16px rgba(212,168,83,.2)}
+.ceo-name{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2.5px;color:var(--white)}
+.ceo-role{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:9px;opacity:.8}
+.ceo-chips{display:flex;flex-wrap:wrap;gap:3px}
+.cc{font-size:7px;text-transform:uppercase;font-weight:700;padding:2px 7px;border-radius:3px;letter-spacing:.5px}
+.cc.g{background:var(--goldA);border:1px solid var(--goldB);color:var(--gold)}
+.cc.d{background:var(--b1);color:var(--muted2)}
+
+/* Nav */
+.nav{padding:8px 7px;flex:1;overflow-y:auto}
+.nav::-webkit-scrollbar{width:3px}
+.nav::-webkit-scrollbar-thumb{background:var(--b1);border-radius:2px}
+.nav-sec{font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);
+  padding:8px 10px 4px;font-weight:700}
+.ni{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:8px;cursor:pointer;
+  transition:.15s;border:1px solid transparent;margin-bottom:2px;position:relative}
+.ni:hover{background:var(--b1);border-color:var(--b2)}
+.ni.on{background:var(--goldA);border-color:var(--goldB)}
+.ni-ic{width:28px;height:28px;border-radius:7px;background:var(--card);
+  display:flex;align-items:center;justify-content:center;font-size:13px;
+  flex-shrink:0;border:1px solid var(--b1);transition:.15s}
+.ni.on .ni-ic{background:rgba(212,168,83,.15);border-color:var(--goldB)}
+.ni-tx{flex:1;min-width:0}
+.ni-nm{font-size:11px;font-weight:600;color:var(--muted2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:.15s}
+.ni-ds{font-size:9px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ni.on .ni-nm{color:var(--gold)}
+.ni:hover .ni-nm{color:var(--text)}
+.ni-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);position:absolute;right:10px;opacity:0;transition:.15s}
+.ni.on .ni-dot{opacity:1}
+
+/* KPIs */
+.kpi-section{padding:10px 10px 14px;border-top:1px solid var(--b1)}
+.kpi-sec{font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);
+  padding:0 4px;margin-bottom:7px;font-weight:700}
+.kr{display:flex;justify-content:space-between;align-items:center;
+  padding:5px 8px;background:var(--card);border-radius:6px;margin-bottom:3px;
+  border:1px solid var(--b1)}
+.kk{font-size:10px;color:var(--muted2)}.kv{font-size:11px;font-weight:700}
 .kv.g{color:var(--gold)}.kv.gr{color:var(--green)}.kv.r{color:var(--red)}
+
+/* MAIN */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
-.toolhdr{padding:8px 14px;background:var(--s1);border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:9px;flex-shrink:0}
-#thic{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
-#thnm{font-size:11px;font-weight:800;color:var(--white)}
-#thds{font-size:9px;color:var(--muted2)}
+.tool-hdr{padding:9px 16px;background:rgba(13,15,20,.9);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:10px;flex-shrink:0}
+#th-ic{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;font-size:14px;flex-shrink:0;border:1px solid var(--b1)}
+#th-nm{font-size:12px;font-weight:700;color:var(--white)}
+#th-ds{font-size:9px;color:var(--muted2);margin-top:1px}
+
+/* PANELS */
 .panel{flex:1;display:none;flex-direction:column;overflow:hidden}
 .panel.on{display:flex}
-/* CHAT */
-#msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column}
+
+/* ── CHAT ── */
+#msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:0}
 #msgs::-webkit-scrollbar{width:3px}
-#msgs::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
-.welcome{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px 16px}
-.wav{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#1a1612,#2a2010);border:2px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--gold);margin-bottom:12px}
-.wtitle{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:var(--white);margin-bottom:6px}
-.wdesc{font-size:13px;color:var(--muted2);max-width:380px;line-height:1.7;margin-bottom:18px}
-.wchips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
-.wc{font-size:11px;font-weight:600;color:var(--text);background:var(--card);border:1px solid var(--b2);border-radius:20px;padding:6px 14px;cursor:pointer;transition:.15s}
+#msgs::-webkit-scrollbar-thumb{background:var(--b1);border-radius:2px}
+
+.welcome{display:flex;flex-direction:column;align-items:center;text-align:center;padding:32px 20px}
+.w-glow{width:64px;height:64px;border-radius:50%;
+  background:linear-gradient(135deg,#1c1508,#332210);
+  border:2px solid var(--goldB);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);
+  margin-bottom:14px;
+  box-shadow:0 0 30px rgba(212,168,83,.2),0 0 60px rgba(212,168,83,.08)}
+.w-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:var(--white);margin-bottom:6px}
+.w-sub{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px;opacity:.7}
+.w-desc{font-size:13px;color:var(--muted2);max-width:400px;line-height:1.75;margin-bottom:22px}
+.wchips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;max-width:500px}
+.wc{font-size:11px;font-weight:500;color:var(--text);
+  background:var(--card);border:1px solid var(--b1);
+  border-radius:22px;padding:7px 15px;cursor:pointer;transition:.15s}
 .wc:hover{border-color:var(--goldB);color:var(--gold);background:var(--goldA)}
-.mu{display:flex;justify-content:flex-end;gap:7px;align-items:flex-end;margin-bottom:12px}
-.mu .b{background:var(--goldA);border:1px solid var(--goldB);border-radius:14px 14px 3px 14px;padding:9px 13px;max-width:82%;font-size:13px;line-height:1.65;color:var(--white);word-break:break-word}
-.uav{width:24px;height:24px;border-radius:50%;background:var(--b2);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0}
-.ma{display:flex;gap:8px;align-items:flex-start;margin-bottom:12px}
-.aav{width:28px;height:28px;border-radius:50%;flex-shrink:0;margin-top:2px;background:linear-gradient(135deg,#1a1612,#2a2010);border:1px solid rgba(201,168,76,.25);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--gold)}
-.ma .b{background:var(--card);border:1px solid var(--b2);border-radius:3px 14px 14px 14px;padding:12px 14px;max-width:90%;font-size:13px;line-height:1.75;color:var(--text);word-break:break-word}
-.bnm{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:7px}
-.b strong{color:var(--white)}
-.dtag{display:inline-block;font-size:8px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border-radius:3px;margin-bottom:7px}
-.act{display:flex;gap:7px;align-items:flex-start;background:rgba(255,255,255,.025);border-radius:5px;padding:6px 9px;margin:3px 0;font-size:12px;line-height:1.5}
-.an{font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--gold);flex-shrink:0;line-height:1.3;min-width:16px}
-.sr{display:flex;align-items:center;gap:7px;margin-bottom:5px}
-.sl{font-size:10px;color:var(--muted2);flex:0 0 120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.st{flex:1;background:var(--b1);border-radius:2px;height:3px;overflow:hidden}
-.sf{height:3px;border-radius:2px;width:0;transition:width .8s ease}
-.sv{font-size:10px;font-weight:700;min-width:28px;text-align:right}
-.typing{display:flex;gap:8px;align-items:center;margin-bottom:12px}
-.tdots{display:flex;gap:4px;background:var(--card);border:1px solid var(--b2);border-radius:20px;padding:9px 12px}
-.tdots span{width:5px;height:5px;border-radius:50%;background:var(--gold);opacity:.25;animation:td 1.2s ease-in-out infinite}
-.tdots span:nth-child(2){animation-delay:.2s}.tdots span:nth-child(3){animation-delay:.4s}
-@keyframes td{0%,60%,100%{opacity:.25;transform:scale(1)}30%{opacity:1;transform:scale(1.4)}}
-.imgprev{padding:5px 12px 0;display:flex;gap:5px;flex-wrap:wrap}
-.ith{position:relative;width:46px;height:46px;border-radius:7px;overflow:hidden;border:1px solid var(--b2);flex-shrink:0}
+
+/* Messages */
+.mu{display:flex;justify-content:flex-end;gap:8px;align-items:flex-end;margin-bottom:14px}
+.mu .b{background:linear-gradient(135deg,rgba(212,168,83,.12),rgba(212,168,83,.06));
+  border:1px solid var(--goldB);border-radius:16px 16px 4px 16px;
+  padding:10px 14px;max-width:80%;font-size:13px;line-height:1.65;color:var(--white);word-break:break-word}
+.uav{width:26px;height:26px;border-radius:50%;background:var(--b1);border:1px solid var(--b2);
+  display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+
+.ma{display:flex;gap:10px;align-items:flex-start;margin-bottom:14px}
+.aav{width:30px;height:30px;border-radius:50%;flex-shrink:0;margin-top:2px;
+  background:linear-gradient(135deg,#1c1508,#332210);
+  border:1px solid var(--goldB);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--gold);
+  box-shadow:0 0 10px rgba(212,168,83,.15)}
+.ma .b{background:var(--card);border:1px solid var(--b1);
+  border-radius:4px 16px 16px 16px;
+  padding:13px 15px;max-width:92%;font-size:13px;line-height:1.8;color:var(--text);word-break:break-word}
+.b-name{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px;opacity:.8}
+.b strong{color:var(--white);font-weight:600}
+
+.dtag{display:inline-flex;align-items:center;gap:5px;font-size:8px;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;padding:4px 10px;border-radius:4px;margin-bottom:10px}
+.act{display:flex;gap:8px;align-items:flex-start;
+  background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.04);
+  border-radius:6px;padding:7px 10px;margin:3px 0;font-size:12px;line-height:1.55}
+.an{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--gold);flex-shrink:0;line-height:1.25;min-width:17px}
+.sr{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.sl{font-size:10px;color:var(--muted2);flex:0 0 130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
+.st{flex:1;background:var(--b1);border-radius:3px;height:4px;overflow:hidden}
+.sf{height:4px;border-radius:3px;width:0;transition:width 1s cubic-bezier(.4,0,.2,1)}
+.sv{font-size:10px;font-weight:700;min-width:32px;text-align:right}
+
+.typing{display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.tdots{display:flex;gap:5px;background:var(--card);border:1px solid var(--b1);border-radius:20px;padding:10px 14px}
+.tdots span{width:5px;height:5px;border-radius:50%;background:var(--gold);opacity:.2;animation:td 1.4s ease-in-out infinite}
+.tdots span:nth-child(2){animation-delay:.25s}.tdots span:nth-child(3){animation-delay:.5s}
+@keyframes td{0%,60%,100%{opacity:.2;transform:scale(1)}30%{opacity:1;transform:scale(1.5)}}
+
+.imgprev{padding:6px 14px 0;display:flex;gap:6px;flex-wrap:wrap}
+.ith{position:relative;width:48px;height:48px;border-radius:8px;overflow:hidden;border:1px solid var(--b2);flex-shrink:0}
 .ith img{width:100%;height:100%;object-fit:cover}
-.irm{position:absolute;top:1px;right:1px;background:rgba(0,0,0,.85);color:#fff;border:none;border-radius:50%;width:14px;height:14px;font-size:8px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.qchips{padding:6px 12px 0;display:flex;gap:5px;flex-wrap:wrap}
-.qc{font-size:10px;font-weight:600;color:var(--muted2);background:var(--card);border:1px solid var(--b2);border-radius:20px;padding:5px 10px;cursor:pointer;transition:.15s;white-space:nowrap}
+.irm{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.85);color:#fff;border:none;
+  border-radius:50%;width:15px;height:15px;font-size:8px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center}
+.qchips{padding:7px 14px 0;display:flex;gap:5px;flex-wrap:wrap}
+.qc{font-size:10px;font-weight:500;color:var(--muted2);background:var(--card);border:1px solid var(--b1);
+  border-radius:20px;padding:5px 11px;cursor:pointer;transition:.15s;white-space:nowrap}
 .qc:hover{border-color:var(--goldB);color:var(--gold);background:var(--goldA)}
-.inparea{padding:10px 12px 12px;border-top:1px solid var(--b1);background:var(--s1);flex-shrink:0}
-.inprow{display:flex;gap:7px;align-items:flex-end}
-.attbtn{width:38px;height:38px;min-width:38px;border-radius:8px;background:var(--card);border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--muted2);transition:.15s}
-.attbtn:hover{border-color:var(--gold);color:var(--gold)}
-#inp{flex:1;background:var(--card);border:1px solid var(--b2);border-radius:8px;padding:9px 12px;color:var(--white);font-family:'Syne',sans-serif;font-size:13px;resize:none;outline:none;min-height:38px;max-height:110px;line-height:1.5;transition:border-color .2s}
-#inp:focus{border-color:var(--goldB)}
+.inparea{padding:10px 14px 13px;border-top:1px solid var(--b1);background:rgba(13,15,20,.95);flex-shrink:0}
+.inprow{display:flex;gap:8px;align-items:flex-end}
+.attbtn{width:40px;height:40px;min-width:40px;border-radius:9px;background:var(--card);border:1px solid var(--b1);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;color:var(--muted2);transition:.15s}
+.attbtn:hover{border-color:var(--goldB);color:var(--gold)}
+#inp{flex:1;background:var(--card);border:1px solid var(--b1);border-radius:10px;
+  padding:10px 13px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;
+  resize:none;outline:none;min-height:40px;max-height:110px;line-height:1.5;transition:border-color .2s}
+#inp:focus{border-color:var(--goldB);background:rgba(18,21,28,.8)}
 #inp::placeholder{color:var(--muted)}
-.sendbtn{height:38px;padding:0 14px;background:var(--gold);border:none;border-radius:8px;cursor:pointer;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:#000;flex-shrink:0;transition:.15s}
-.sendbtn:hover{background:var(--gold2)}
-.sendbtn:disabled{opacity:.4;cursor:not-allowed}
-/* PANELS SCROLL */
-.spanel{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
+.sendbtn{height:40px;padding:0 16px;
+  background:linear-gradient(135deg,var(--gold),var(--goldL));
+  border:none;border-radius:10px;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;color:#000;
+  flex-shrink:0;transition:.15s;letter-spacing:.3px}
+.sendbtn:hover{transform:translateY(-1px);box-shadow:0 4px 15px rgba(212,168,83,.3)}
+.sendbtn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ── SCROLL PANELS ── */
+.spanel{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:13px}
 .spanel::-webkit-scrollbar{width:3px}
-.spanel::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
-.pcard{background:var(--card);border:1px solid var(--b2);border-radius:10px;padding:16px}
-.ptitle{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:1.5px;color:var(--white);margin-bottom:12px}
-.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
-@media(max-width:480px){.fgrid{grid-template-columns:1fr}}
-.fg label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);display:block;margin-bottom:3px}
-.fi{width:100%;background:var(--s1);border:1px solid var(--b2);border-radius:7px;padding:8px 11px;color:var(--white);font-family:'Syne',sans-serif;font-size:13px;outline:none;transition:border-color .2s}
+.spanel::-webkit-scrollbar-thumb{background:var(--b1);border-radius:2px}
+.pcard{background:var(--card);border:1px solid var(--b1);border-radius:12px;padding:18px;
+  box-shadow:0 2px 16px rgba(0,0,0,.2)}
+.ptitle{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1.5px;color:var(--white);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+@media(max-width:500px){.fgrid{grid-template-columns:1fr}}
+.fg label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);display:block;margin-bottom:4px}
+.fi{width:100%;background:var(--s1);border:1px solid var(--b1);border-radius:8px;
+  padding:9px 12px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s}
 .fi:focus{border-color:var(--goldB)}
-.rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
-@media(max-width:480px){.rgrid{grid-template-columns:1fr 1fr}}
-.rc{background:var(--s1);border:1px solid var(--b2);border-radius:8px;padding:10px;text-align:center}
-.rl{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);margin-bottom:3px}
-.rv{font-family:'Bebas Neue',sans-serif;font-size:24px;line-height:1}
+.rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:13px}
+@media(max-width:500px){.rgrid{grid-template-columns:1fr 1fr}}
+.rc{background:var(--s1);border:1px solid var(--b1);border-radius:9px;padding:12px;text-align:center}
+.rl{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);margin-bottom:4px;font-weight:600}
+.rv{font-family:'Bebas Neue',sans-serif;font-size:26px;line-height:1}
 .rs{font-size:9px;color:var(--muted);margin-top:2px}
-.calcbtn{width:100%;padding:11px;border-radius:8px;background:var(--gold);border:none;cursor:pointer;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#000;margin-bottom:14px;transition:.15s}
-.calcbtn:hover{background:var(--gold2)}
-.adfield{margin-bottom:12px}
-.adlbl{font-size:8px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
-.adval{background:var(--s1);border:1px solid var(--b2);border-radius:6px;padding:10px 12px;font-size:12px;color:var(--white);line-height:1.7;cursor:pointer;white-space:pre-wrap;transition:border-color .2s}
-.adval:hover{border-color:var(--gold)}
-.copyhint{font-size:9px;color:var(--muted);margin-top:3px}
-.sacitem{background:var(--s1);border:1px solid var(--b2);border-radius:9px;overflow:hidden;margin-bottom:8px}
-.sacq{padding:11px 14px;font-size:12px;font-weight:700;color:var(--white);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none}
-.sacq span{color:var(--gold);transition:.2s;display:inline-block}
-.sacitem.open .sacq span{transform:rotate(180deg)}
-.saca{padding:0 14px 12px;font-size:12px;color:var(--muted2);line-height:1.7;display:none}
+
+.acbtn{width:100%;padding:12px;border-radius:9px;
+  background:linear-gradient(135deg,var(--gold),var(--goldL));
+  border:none;cursor:pointer;font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:700;color:#000;margin-bottom:14px;transition:.15s;letter-spacing:.3px}
+.acbtn:hover{transform:translateY(-1px);box-shadow:0 4px 15px rgba(212,168,83,.3)}
+
+.adfield{margin-bottom:13px}
+.adlbl{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;opacity:.8}
+.adval{background:var(--s1);border:1px solid var(--b1);border-radius:8px;
+  padding:11px 13px;font-size:12px;color:var(--white);line-height:1.75;
+  cursor:pointer;white-space:pre-wrap;transition:border-color .2s;
+  position:relative}
+.adval:hover{border-color:var(--goldB);background:rgba(212,168,83,.04)}
+.copyhint{font-size:9px;color:var(--muted);margin-top:4px}
+
+.sacitem{background:var(--s1);border:1px solid var(--b1);border-radius:9px;overflow:hidden;margin-bottom:8px;transition:border-color .15s}
+.sacitem:hover{border-color:var(--b2)}
+.sacitem.open{border-color:var(--goldB)}
+.sacq{padding:12px 14px;font-size:12px;font-weight:600;color:var(--white);cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;user-select:none;gap:10px}
+.sacq-arr{color:var(--gold);transition:transform .2s;flex-shrink:0;font-size:10px}
+.sacitem.open .sacq-arr{transform:rotate(180deg)}
+.saca{padding:0 14px 13px;font-size:12px;color:var(--muted2);line-height:1.75;display:none}
 .sacitem.open .saca{display:block}
-.copybtn{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:4px;background:transparent;border:1px solid var(--gold);color:var(--gold);cursor:pointer;margin-top:7px;font-family:'Syne',sans-serif;transition:.15s}
-.copybtn:hover{background:var(--goldA)}
-.steps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
-.step-card{background:var(--s1);border:1px solid var(--b2);border-radius:10px;padding:14px;position:relative;overflow:hidden}
-.stepn{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--gold);opacity:.1;position:absolute;top:-6px;right:8px;line-height:1}
-.stepic{font-size:22px;margin-bottom:8px}
-.stept{font-size:13px;font-weight:700;color:var(--white);margin-bottom:4px}
-.stepd{font-size:11px;color:var(--muted2);line-height:1.65;margin-bottom:8px}
-.stepex{border-left:2px solid var(--gold);padding-left:9px;font-size:11px;color:var(--text);line-height:1.6;font-style:italic}
-/* MODAL */
-.modal{display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.92);backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:20px}
-.mbox{background:#0d0f12;border:1px solid rgba(201,168,76,.35);border-radius:16px;padding:28px;max-width:430px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.9)}
-.mtitle{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:3px;color:var(--gold);text-align:center;margin-bottom:3px}
-.msub{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted2);text-align:center;margin-bottom:20px}
-.minfo{background:#060708;border:1px solid var(--b1);border-radius:10px;padding:14px;margin-bottom:16px;font-size:12px;color:var(--muted2);line-height:1.9}
-.minfo strong{color:var(--white)}.minfo a{color:var(--gold);text-decoration:none}
-.minp{width:100%;background:#060708;border:1px solid var(--b2);border-radius:9px;padding:12px 14px;color:var(--white);font-family:'Syne',sans-serif;font-size:13px;outline:none;margin-bottom:8px;transition:border-color .2s}
-.minp:focus{border-color:rgba(201,168,76,.5)}
-.merr{font-size:11px;color:var(--red);min-height:16px;margin-bottom:10px}
-.mbtn{width:100%;padding:13px;border-radius:9px;background:var(--gold);border:none;cursor:pointer;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#000;letter-spacing:.5px;margin-bottom:10px;transition:.15s}
-.mbtn:hover{background:var(--gold2)}
-.mfoot{text-align:center;font-size:10px;color:var(--muted)}
-.mfoot a{color:var(--gold);text-decoration:none}
+.cpbtn{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  padding:4px 12px;border-radius:5px;background:transparent;border:1px solid var(--goldB);
+  color:var(--gold);cursor:pointer;margin-top:8px;font-family:'DM Sans',sans-serif;transition:.15s}
+.cpbtn:hover{background:var(--goldA)}
+.cpbtn.ok{background:var(--green);border-color:var(--green);color:#000}
+
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:11px}
+.step-card{background:var(--s1);border:1px solid var(--b1);border-radius:11px;padding:15px;
+  position:relative;overflow:hidden;transition:border-color .15s}
+.step-card:hover{border-color:var(--b2)}
+.step-n{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--gold);opacity:.08;
+  position:absolute;top:-8px;right:8px;line-height:1;user-select:none}
+.step-ic{font-size:24px;margin-bottom:9px}
+.step-t{font-size:13px;font-weight:700;color:var(--white);margin-bottom:5px}
+.step-d{font-size:11px;color:var(--muted2);line-height:1.65;margin-bottom:9px}
+.step-ex{border-left:2px solid var(--gold);padding-left:10px;font-size:11px;color:var(--text);line-height:1.6;font-style:italic;opacity:.7}
+
+/* REGEN CARDS */
+.regen-card{background:var(--s1);border:1px solid var(--b1);border-radius:9px;padding:13px;margin-bottom:8px}
+.regen-t{font-size:12px;font-weight:700;color:var(--white);margin-bottom:4px}
+.regen-d{font-size:11px;color:var(--muted2);line-height:1.65}
+
 /* TOAST */
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:#000;font-size:11px;font-weight:700;padding:8px 18px;border-radius:20px;z-index:9999;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(14px);
+  background:linear-gradient(135deg,var(--gold),var(--goldL));
+  color:#000;font-size:11px;font-weight:700;
+  padding:8px 18px;border-radius:22px;z-index:9999;opacity:0;
+  transition:.3s;pointer-events:none;white-space:nowrap;
+  box-shadow:0 4px 20px rgba(212,168,83,.3)}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.ma,.mu{animation:fi .25s ease}
 </style>
 </head>
 <body>
@@ -173,66 +293,98 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;displa
 <div class="topbar">
   <div class="tb-l">
     <div class="hmbtn" onclick="toggleSB()">☰</div>
-    <div class="logov">V</div>
-    <div><div class="brand">VEXUS HUB</div><div class="brandsub">Powered by Gemini AI</div></div>
+    <div class="logomark">V</div>
+    <div class="brand-wrap">
+      <div class="brand">VEXUS HUB</div>
+      <div class="brand-sub">Gemini AI · Metais Premium</div>
+    </div>
   </div>
   <div class="tb-r">
-    
-    <div class="pill" id="status-pill"><div class="dot"></div><div class="ptxt" id="status-txt">Online</div></div>
+    <div class="pill"><div class="dot"></div><div class="ptxt">Conectado</div></div>
   </div>
 </div>
 
 <div class="layout">
   <div class="overlay" id="ov" onclick="closeSB()"></div>
+
+  <!-- SIDEBAR -->
   <div class="sidebar" id="sb">
-    <div class="ceocard">
-      <div class="ceoav">V</div>
-      <div class="ceonm">Victor Stein</div>
-      <div class="ceorl">CEO &amp; Sócio Estratégico</div>
-      <div class="ceotags">
-        <span class="ctag g">ML Expert</span><span class="ctag g">B2A/AEO</span>
-        <span class="ctag d">Pricing</span><span class="ctag d">SAC</span><span class="ctag d">Growth</span>
+    <div class="ceo-section">
+      <div class="ceo-av">V</div>
+      <div class="ceo-name">Victor Stein</div>
+      <div class="ceo-role">CEO &amp; Sócio Estratégico</div>
+      <div class="ceo-chips">
+        <span class="cc g">ML Expert</span><span class="cc g">B2A/AEO</span>
+        <span class="cc d">Pricing</span><span class="cc d">SAC</span><span class="cc d">Growth</span>
       </div>
     </div>
+
     <div class="nav">
-      <div class="nsec">Ferramentas</div>
-      <div class="ni on" id="btn-ceo" onclick="goTool('ceo')"><div class="niic">🧠</div><div><div class="ninm">CEO Estratégico</div><div class="nids">Estratégia, diagnóstico, B2A</div></div></div>
-      <div class="ni" id="btn-pricing" onclick="goTool('pricing')"><div class="niic">💰</div><div><div class="ninm">Calculadora de Margem</div><div class="nids">Preço, markup, projeção</div></div></div>
-      <div class="ni" id="btn-adgen" onclick="goTool('adgen')"><div class="niic">📋</div><div><div class="ninm">Gerador de Anúncio</div><div class="nids">Título + bullets AEO</div></div></div>
-      <div class="ni" id="btn-sac" onclick="goTool('sac')"><div class="niic">💬</div><div><div class="ninm">Base SAC / FAQ</div><div class="nids">Respostas prontas ML</div></div></div>
-      <div class="ni" id="btn-imgeval" onclick="goTool('imgeval')"><div class="niic">🖼️</div><div><div class="ninm">Avaliar Foto ML</div><div class="nids">Score do algoritmo</div></div></div>
-      <div class="ni" id="btn-guide" onclick="goTool('guide')"><div class="niic">📖</div><div><div class="ninm">Como Usar</div><div class="nids">Guia + auto-regeneração</div></div></div>
+      <div class="nav-sec">Ferramentas</div>
+      <div class="ni on" id="btn-ceo" onclick="goTool('ceo')">
+        <div class="ni-ic">🧠</div>
+        <div class="ni-tx"><div class="ni-nm">CEO Estratégico</div><div class="ni-ds">Estratégia · Diagnóstico · B2A</div></div>
+        <div class="ni-dot"></div>
+      </div>
+      <div class="ni" id="btn-pricing" onclick="goTool('pricing')">
+        <div class="ni-ic">💰</div>
+        <div class="ni-tx"><div class="ni-nm">Calculadora de Margem</div><div class="ni-ds">Preço · Markup · Projeção</div></div>
+        <div class="ni-dot"></div>
+      </div>
+      <div class="ni" id="btn-adgen" onclick="goTool('adgen')">
+        <div class="ni-ic">📋</div>
+        <div class="ni-tx"><div class="ni-nm">Gerador de Anúncio</div><div class="ni-ds">Título · Bullets AEO · FAQ</div></div>
+        <div class="ni-dot"></div>
+      </div>
+      <div class="ni" id="btn-sac" onclick="goTool('sac')">
+        <div class="ni-ic">💬</div>
+        <div class="ni-tx"><div class="ni-nm">Base SAC / FAQ</div><div class="ni-ds">Respostas prontas ML</div></div>
+        <div class="ni-dot"></div>
+      </div>
+      <div class="ni" id="btn-imgeval" onclick="goTool('imgeval')">
+        <div class="ni-ic">🖼️</div>
+        <div class="ni-tx"><div class="ni-nm">Avaliar Foto ML</div><div class="ni-ds">Score do algoritmo</div></div>
+        <div class="ni-dot"></div>
+      </div>
+      <div class="ni" id="btn-guide" onclick="goTool('guide')">
+        <div class="ni-ic">📖</div>
+        <div class="ni-tx"><div class="ni-nm">Como Usar</div><div class="ni-ds">Guia · Auto-regeneração</div></div>
+        <div class="ni-dot"></div>
+      </div>
     </div>
-    <div class="kpis">
-      <div class="ksec">Dados Vexus</div>
+
+    <div class="kpi-section">
+      <div class="kpi-sec">Dados Vexus</div>
       <div class="kr"><span class="kk">F-1006 Preto</span><span class="kv g">R$349,90</span></div>
       <div class="kr"><span class="kk">F-1006 Gold</span><span class="kv g">R$449,90</span></div>
       <div class="kr"><span class="kk">Margem bruta</span><span class="kv gr">~49%</span></div>
       <div class="kr"><span class="kk">Markup ML</span><span class="kv">÷ 0,57</span></div>
-      <div class="kr"><span class="kk">Fase</span><span class="kv r">Lançamento</span></div>
+      <div class="kr"><span class="kk">Fase atual</span><span class="kv r">Lançamento</span></div>
     </div>
   </div>
 
+  <!-- MAIN -->
   <div class="main">
-    <div class="toolhdr">
-      <div id="thic" style="background:rgba(201,168,76,.1)">🧠</div>
-      <div><div id="thnm">CEO Estratégico — Victor Stein</div><div id="thds">Estratégia · Diagnóstico · Imagem · B2A/AEO</div></div>
+    <div class="tool-hdr">
+      <div id="th-ic" style="background:rgba(212,168,83,.1);border-color:rgba(212,168,83,.2)">🧠</div>
+      <div><div id="th-nm">CEO Estratégico — Victor Stein</div><div id="th-ds">Estratégia · Diagnóstico Financeiro · Avaliação de Imagem · B2A/AEO</div></div>
     </div>
 
-    <!-- CEO -->
+    <!-- CEO PANEL -->
     <div class="panel on" id="panel-ceo">
       <div id="msgs">
         <div class="welcome" id="welcome">
-          <div class="wav">V</div>
-          <div class="wtitle">CEO Victor Stein</div>
-          <div class="wdesc">Central estratégica da Vexus Metais. Diagnóstico financeiro, arquitetura de anúncios, avaliação de fotos ML e B2A — tudo aqui. Me diga o que atacamos hoje.</div>
+          <div class="w-glow">V</div>
+          <div class="w-title">CEO Victor Stein</div>
+          <div class="w-sub">Vexus Metais · Command Center</div>
+          <div class="w-desc">Central estratégica para dominar o Mercado Livre. Diagnóstico financeiro, arquitetura de anúncios, avaliação de fotos pelo algoritmo ML e otimização B2A — tudo aqui.</div>
           <div class="wchips">
             <div class="wc" onclick="chip(this)">📊 Diagnóstico financeiro F-1006 Gold</div>
             <div class="wc" onclick="chip(this)">🖼️ Avalie minha foto do anúncio</div>
             <div class="wc" onclick="chip(this)">📋 Crie título otimizado F-1006 Preto</div>
             <div class="wc" onclick="chip(this)">⚔️ Estratégia contra concorrente Zamak</div>
             <div class="wc" onclick="chip(this)">🚀 Plano de lançamento 30 dias ML</div>
-            <div class="wc" onclick="chip(this)">🤖 Otimize anúncio para B2A e IA</div>
+            <div class="wc" onclick="chip(this)">🤖 Otimize anúncio para B2A e IAs</div>
           </div>
         </div>
       </div>
@@ -240,13 +392,14 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;displa
       <div class="qchips">
         <div class="qc" onclick="qchip(this)">💰 Margem do Rose Gold</div>
         <div class="qc" onclick="qchip(this)">📸 Checklist foto ideal ML</div>
-        <div class="qc" onclick="qchip(this)">🎯 Como conseguir as 20 primeiras avaliações</div>
+        <div class="qc" onclick="qchip(this)">🎯 Como obter as 20 primeiras avaliações</div>
       </div>
       <div class="inparea">
         <div class="inprow">
           <input type="file" id="filein" accept="image/*" multiple style="display:none" onchange="addFiles(event)"/>
           <div class="attbtn" onclick="document.getElementById('filein').click()">📎</div>
-          <textarea id="inp" rows="1" placeholder="Fale com o CEO ou envie uma imagem…" onkeydown="handleKey(event)" oninput="resize(this)"></textarea>
+          <textarea id="inp" rows="1" placeholder="Fale com o CEO ou envie uma imagem…"
+            onkeydown="handleKey(event)" oninput="resize(this)"></textarea>
           <button class="sendbtn" id="sendbtn" onclick="sendMsg()">Enviar ↑</button>
         </div>
       </div>
@@ -263,7 +416,7 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;displa
             <div class="fg"><label>Imposto Simples (%)</label><input class="fi" id="pc-imp" type="number" value="6" oninput="calcP()"/></div>
             <div class="fg"><label>Operacional (%)</label><input class="fi" id="pc-op" type="number" value="3" oninput="calcP()"/></div>
             <div class="fg"><label>Margem Desejada (%)</label><input class="fi" id="pc-mg" type="number" value="20" oninput="calcP()"/></div>
-            <div class="fg"><label>Unidades/mês estimadas</label><input class="fi" id="pc-un" type="number" value="35" oninput="calcP()"/></div>
+            <div class="fg"><label>Unidades / mês</label><input class="fi" id="pc-un" type="number" value="35" oninput="calcP()"/></div>
           </div>
           <div id="calc-res" style="display:none">
             <div class="rgrid">
@@ -271,11 +424,11 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;displa
               <div class="rc"><div class="rl">Preço Sugerido</div><div class="rv" id="r-sug" style="color:var(--green)">—</div><div class="rs">arredondado ,90</div></div>
               <div class="rc"><div class="rl">Lucro / Unidade</div><div class="rv" id="r-liq" style="color:var(--green)">—</div><div class="rs">líquido</div></div>
               <div class="rc"><div class="rl">Margem Real</div><div class="rv" id="r-mgr">—</div><div class="rs">sobre venda</div></div>
-              <div class="rc"><div class="rl">Faturamento Mensal</div><div class="rv" id="r-fat" style="color:var(--gold)">—</div><div class="rs">bruto</div></div>
+              <div class="rc"><div class="rl">Faturamento</div><div class="rv" id="r-fat" style="color:var(--gold)">—</div><div class="rs">mensal bruto</div></div>
               <div class="rc"><div class="rl">Lucro Mensal</div><div class="rv" id="r-mliq" style="color:var(--green)">—</div><div class="rs">líquido</div></div>
             </div>
           </div>
-          <div style="font-size:10px;color:var(--muted);margin-top:10px">Fórmula: Preço = Custo ÷ (1 − soma das taxas) · Preço arredondado para ,90</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:12px;line-height:1.6">Fórmula: Preço = Custo ÷ (1 − soma das taxas) · Preço arredondado psicológico ,90</div>
         </div>
       </div>
     </div>
@@ -301,12 +454,12 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;displa
               </select>
             </div>
           </div>
-          <button class="calcbtn" onclick="genAd()">⚡ Gerar Anúncio Otimizado</button>
+          <button class="acbtn" onclick="genAd()">⚡ Gerar Anúncio Otimizado</button>
           <div id="ad-result" style="display:none">
-            <div class="adfield"><div class="adlbl">📌 Título ML (60 chars)</div><div class="adval" id="ad-titulo" onclick="copyEl('ad-titulo')"></div><div class="copyhint">Toque para copiar</div></div>
-            <div class="adfield"><div class="adlbl">🔑 Palavras-chave AEO</div><div class="adval" id="ad-kw" onclick="copyEl('ad-kw')"></div><div class="copyhint">Toque para copiar</div></div>
-            <div class="adfield"><div class="adlbl">📝 Bullets Descrição B2A/AEO</div><div class="adval" id="ad-bullets" onclick="copyEl('ad-bullets')"></div><div class="copyhint">Toque para copiar</div></div>
-            <div class="adfield"><div class="adlbl">❓ FAQ Voice Search</div><div class="adval" id="ad-faq" onclick="copyEl('ad-faq')"></div><div class="copyhint">Toque para copiar</div></div>
+            <div class="adfield"><div class="adlbl">📌 Título ML (60 chars)</div><div class="adval" id="ad-titulo" onclick="copyEl('ad-titulo','Título')"></div><div class="copyhint">Toque para copiar</div></div>
+            <div class="adfield"><div class="adlbl">🔑 Palavras-chave AEO</div><div class="adval" id="ad-kw" onclick="copyEl('ad-kw','Palavras-chave')"></div><div class="copyhint">Toque para copiar</div></div>
+            <div class="adfield"><div class="adlbl">📝 Bullets Descrição B2A/AEO</div><div class="adval" id="ad-bullets" onclick="copyEl('ad-bullets','Bullets')"></div><div class="copyhint">Toque para copiar</div></div>
+            <div class="adfield"><div class="adlbl">❓ FAQ Voice Search</div><div class="adval" id="ad-faq" onclick="copyEl('ad-faq','FAQ')"></div><div class="copyhint">Toque para copiar</div></div>
           </div>
         </div>
       </div>
@@ -317,7 +470,7 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;displa
       <div class="spanel">
         <div class="pcard">
           <div class="ptitle">💬 Base SAC — Respostas Prontas</div>
-          <p style="font-size:12px;color:var(--muted2);margin-bottom:14px">Responder em menos de 1h é fator de ranqueamento no ML. Copie e cole diretamente.</p>
+          <p style="font-size:12px;color:var(--muted2);margin-bottom:16px;line-height:1.7">Responder em menos de 1h é fator de ranqueamento no ML. Toque na pergunta, copie e cole.</p>
           <div id="sac-list"></div>
         </div>
       </div>
@@ -328,16 +481,16 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;displa
       <div class="spanel">
         <div class="pcard" style="text-align:center">
           <div class="ptitle" style="justify-content:center">🖼️ Avaliação de Foto — Algoritmo ML</div>
-          <p style="font-size:12px;color:var(--muted2);margin-bottom:16px">Envie uma foto. O CEO avalia nos mesmos critérios do algoritmo do Mercado Livre.</p>
-          <label style="display:block;border:2px dashed var(--b2);border-radius:10px;padding:28px;cursor:pointer;margin-bottom:14px;transition:.2s" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--b2)'">
-            <div style="font-size:36px;margin-bottom:8px">📸</div>
-            <div style="font-size:13px;color:var(--muted2)">Clique para selecionar ou arraste a imagem</div>
-            <div style="font-size:10px;color:var(--muted);margin-top:4px">JPG, PNG, WEBP</div>
+          <p style="font-size:12px;color:var(--muted2);margin-bottom:18px;line-height:1.7">Envie uma foto do produto. O CEO avalia nos mesmos 8 critérios que o algoritmo do ML usa para ranquear anúncios.</p>
+          <label id="dropzone" style="display:block;border:2px dashed var(--b1);border-radius:12px;padding:32px;cursor:pointer;margin-bottom:16px;transition:.2s" onmouseover="this.style.borderColor='var(--goldB)'" onmouseout="this.style.borderColor='var(--b1)'">
+            <div style="font-size:40px;margin-bottom:10px">📸</div>
+            <div style="font-size:13px;color:var(--muted2);font-weight:500">Clique para selecionar ou arraste a imagem</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:5px">JPG · PNG · WEBP</div>
             <input type="file" accept="image/*" style="display:none" onchange="setEvalImg(event)"/>
           </label>
-          <div id="eval-preview" style="display:none;margin-bottom:14px">
-            <img id="eval-img" style="max-height:180px;border-radius:8px;border:1px solid var(--b2);margin-bottom:10px;display:inline-block"/>
-            <br><button class="calcbtn" style="max-width:260px;display:inline-block" onclick="runEval()">🔍 Analisar com o CEO</button>
+          <div id="eval-preview" style="display:none;margin-bottom:16px">
+            <img id="eval-img" style="max-height:200px;border-radius:10px;border:1px solid var(--b1);margin-bottom:12px;display:inline-block"/>
+            <br><button class="acbtn" style="max-width:260px;display:inline-block;margin-bottom:0" onclick="runEval()">🔍 Analisar com o CEO</button>
           </div>
           <div id="eval-result"></div>
         </div>
@@ -358,61 +511,40 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;displa
       </div>
     </div>
 
-  </div>
-</div>
-
-    <div class="msub">Configure sua Gemini API Key — 100% Gratuita</div>
-    <div class="minfo">
-      <strong>A API do Gemini é GRATUITA com conta Google.</strong><br><br>
-      1. Acesse <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a><br>
-      2. Faça login com sua conta Google<br>
-      3. Clique em <strong>"Create API Key"</strong><br>
-      4. Copie e cole abaixo e clique Salvar<br><br>
-      <span style="color:var(--green)">✓ Gratuito &nbsp;·&nbsp; ✓ Salvo permanentemente &nbsp;·&nbsp; ✓ Não sai do dispositivo</span><br><br>
-      <span style="color:var(--gold)">💡 Dica: para nunca mais ver esta tela, peça ao Claude para embutir sua key diretamente no arquivo.</span>
-    </div>
-    <input class="minp" id="key-inp" type="password" placeholder="AIzaSy..." onkeydown="if(event.key==='Enter')saveKey()"/>
-    <div class="merr" id="key-err"></div>
-    <button class="mbtn" onclick="saveKey()">✓ Salvar e Usar o HUB</button>
-    <div class="mfoot"><a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a> &nbsp;·&nbsp; Gratuito com conta Google</div>
-  </div>
-</div>
+  </div><!-- /main -->
+</div><!-- /layout -->
 
 <div class="toast" id="toast"></div>
 
 <script>
-const KEY_FIXA = 'AIzaSyATej-ncbPVOOd6yobBgKLP58yR2_rgPug';
-function getKey(){ return KEY_FIXA; }
+// ══════════════════════════════════════════
+// API KEY — EMBUTIDA DIRETAMENTE
+// ══════════════════════════════════════════
+const API_KEY = 'AIzaSyATej-ncbPVOOd6yobBgKLP58yR2_rgPug';
+const MODEL   = 'gemini-2.0-flash';
 
-// ══════════════════════════════════════════════════
-// SISTEMA
-// ══════════════════════════════════════════════════
-const MODEL = 'gemini-2.0-flash';
-let imgs = [], history = [], busy = false, evalB64 = null, evalMime = null;
-
-const SYS = `Você é Victor Stein, CEO e Sócio Estratégico da Vexus Metais — operação premium de metais sanitários no Mercado Livre brasileiro.
+// ══════════════════════════════════════════
+// SYSTEM PROMPT
+// ══════════════════════════════════════════
+const SYS = `Você é Victor Stein, CEO e Sócio Estratégico da Vexus Metais — operação de metais sanitários premium focada em dominar o Mercado Livre brasileiro.
 
 COMUNICAÇÃO: Direto, incisivo, técnico. Zero bajulação. Use "Os dados indicam", "A matemática mostra". Máximo 380 palavras. Pode dizer: "Isso é amador", "Dinheiro na mesa", "Executa hoje".
 
 FORMATO OBRIGATÓRIO POR TIPO:
 
-Quando DIAGNÓSTICO FINANCEIRO:
-[DIAGNÓSTICO FINANCEIRO]
+DIAGNÓSTICO FINANCEIRO → use tag [DIAGNÓSTICO FINANCEIRO]:
 • Custo ÷ (1−0.43) = preço mínimo
 • Margem de Contribuição por unidade
 • Projeção 3 cenários (15/35/70 un/mês)
 • VEREDITO: ACELERAR / AJUSTAR MARGEM / DESCARTAR
 
-Quando ANÚNCIO ou TÍTULO:
-[ARQUITETURA DO ANÚNCIO]
-• Título (máx 60 char): Adjetivo + Material + Produto + Estilo + Marca
-• 5 bullets AEO com dados técnicos exatos
-• FAQ 2 perguntas para voz/IA
+ANÚNCIO/TÍTULO → use tag [ARQUITETURA DO ANÚNCIO]:
+• Título (máx 60 char)
+• 5 bullets AEO com dados técnicos
+• FAQ 2 perguntas
 • CTA + quebra de objeção
 
-Quando IMAGEM:
-[AVALIAÇÃO FOTO ML]
-Notas obrigatórias (formato exato CRITÉRIO: X/10):
+IMAGEM → use tag [AVALIAÇÃO FOTO ML] e notas neste formato exato (CRITÉRIO: X/10):
 FUNDO: X/10
 ILUMINAÇÃO: X/10
 RESOLUÇÃO: X/10
@@ -423,182 +555,190 @@ DIFERENCIAL EXPOSTO: X/10
 CONFORMIDADE ML: X/10
 Depois: NOTA TOTAL, VEREDITO (Aprovado/Ajustar/Reprovar), ações corretivas numeradas.
 
-PRODUTOS:
+PRODUTOS VEXUS:
 F-1006 Gourmet Mola: Inox 304 + Latão, cartucho cerâmico 500k ciclos, mola helicoidal, bica extensível ~50cm, furação 35mm, 1/2", pressão 5-40 mca, temp 75°C
-Preto custo R$177,89 → venda R$349,90 | Gold/Rose custo R$229,42 → venda R$449,90 | Black Rose → R$479,90
-Fornecedor: Alumichapas — Loanda-PR. Modelo: dropshipping/consignado.
+→ Preto R$177,89→R$349,90 | Gold/Rose R$229,42→R$449,90 | Black Rose→R$479,90
+Fornecedor: Alumichapas — Loanda-PR. Dropshipping/consignado local.
 
-PRECIFICAÇÃO: Preço = Custo ÷ (1−0.43) onde 0.43 = ML14% + Simples6% + Operacional3% + Margem20%
-
-ALGORITMO ML CRÍTICO: Velocidade 48h = 30% ranqueamento. Fotos mín 6, fundo branco, 1200x1200px. Resposta <1h. 5 anúncios separados por cor. Reviews 4.8+ primeiras 2 semanas. ML Ads R$10-20/dia. Conversão <3% = rebaixamento automático.
-
+PRECIFICAÇÃO: Preço = Custo ÷ (1−0.43) — ML14% + Simples6% + Op3% + Margem20%
+ALGORITMO ML: Velocidade 48h=30% ranqueamento. Fotos mín 6, fundo branco, 1200×1200px. Resposta <1h. 5 anúncios por cor. Reviews 4.8+ em 2 semanas. ML Ads R$10-20/dia. Conversão <3% = rebaixamento.
 VANTAGEM: Único no ML com Inox 304 + Latão + 5 acabamentos. Concorrentes usam Zamak.`;
 
-// ══════════════════════════════════════════════════
+// ══════════════════════════════════════════
+// ESTADO
+// ══════════════════════════════════════════
+let imgs=[], history=[], busy=false, evalB64=null, evalMime=null;
+
+// ══════════════════════════════════════════
 // NAVEGAÇÃO
-// ══════════════════════════════════════════════════
-const TCFG = {
-  ceo:     ['🧠','rgba(201,168,76,.1)','CEO Estratégico — Victor Stein','Estratégia · Diagnóstico · Imagem · B2A/AEO'],
-  pricing: ['💰','rgba(58,184,112,.1)','Calculadora de Margem','Preço mínimo · Markup · Lucro/unidade · Projeção mensal'],
-  adgen:   ['📋','rgba(77,155,224,.1)','Gerador de Anúncio Otimizado','Título ML · Bullets AEO/B2A · FAQ Voice Search'],
-  sac:     ['💬','rgba(154,110,224,.1)','Base SAC — Respostas Prontas','8 perguntas frequentes otimizadas para converter'],
-  imgeval: ['🖼️','rgba(224,154,58,.1)','Avaliação de Foto — Algoritmo ML','Score 0-10 em 8 critérios reais do marketplace'],
-  guide:   ['📖','rgba(58,191,184,.1)','Como Usar o Vexus HUB','Passo a passo com exemplos · Auto-regeneração'],
+// ══════════════════════════════════════════
+const TCFG={
+  ceo:     ['🧠','rgba(212,168,83,.1)','rgba(212,168,83,.2)','CEO Estratégico — Victor Stein','Estratégia · Diagnóstico · Imagem · B2A/AEO'],
+  pricing: ['💰','rgba(46,204,138,.1)','rgba(46,204,138,.2)','Calculadora de Margem','Preço mínimo · Markup · Lucro/unidade · Projeção mensal'],
+  adgen:   ['📋','rgba(91,156,246,.1)','rgba(91,156,246,.2)','Gerador de Anúncio Otimizado','Título ML · Bullets AEO/B2A · FAQ Voice Search'],
+  sac:     ['💬','rgba(155,114,232,.1)','rgba(155,114,232,.2)','Base SAC — Respostas Prontas','8 perguntas frequentes otimizadas para converter'],
+  imgeval: ['🖼️','rgba(224,154,58,.1)','rgba(224,154,58,.2)','Avaliação de Foto — Algoritmo ML','Score 0-10 em 8 critérios reais do marketplace'],
+  guide:   ['📖','rgba(46,191,184,.1)','rgba(46,191,184,.2)','Como Usar o Vexus HUB','Passo a passo com exemplos · Auto-regeneração'],
 };
+
 function goTool(t){
-  document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
   document.getElementById('btn-'+t).classList.add('on');
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
   document.getElementById('panel-'+t).classList.add('on');
-  const [ic,bg,nm,ds] = TCFG[t];
-  document.getElementById('thic').textContent = ic;
-  document.getElementById('thic').style.background = bg;
-  document.getElementById('thnm').textContent = nm;
-  document.getElementById('thds').textContent = ds;
+  const [ic,bg,bc,nm,ds]=TCFG[t];
+  const el=document.getElementById('th-ic');
+  el.textContent=ic; el.style.background=bg; el.style.borderColor=bc;
+  document.getElementById('th-nm').textContent=nm;
+  document.getElementById('th-ds').textContent=ds;
   closeSB();
   if(t==='sac') initSAC();
   if(t==='guide') initGuide();
   if(t==='pricing') calcP();
 }
-function toggleSB(){ document.getElementById('sb').classList.toggle('open'); document.getElementById('ov').style.display = document.getElementById('sb').classList.contains('open') ? 'block' : 'none'; }
-function closeSB(){ document.getElementById('sb').classList.remove('open'); document.getElementById('ov').style.display = 'none'; }
+function toggleSB(){
+  const sb=document.getElementById('sb');
+  sb.classList.toggle('open');
+  document.getElementById('ov').style.display=sb.classList.contains('open')?'block':'none';
+}
+function closeSB(){
+  document.getElementById('sb').classList.remove('open');
+  document.getElementById('ov').style.display='none';
+}
 
-// ══════════════════════════════════════════════════
+// ══════════════════════════════════════════
 // CHAT
-// ══════════════════════════════════════════════════
+// ══════════════════════════════════════════
 function addFiles(e){
-  Array.from(e.target.files).forEach(f => {
-    const r = new FileReader();
-    r.onload = ev => { imgs.push({b64:ev.target.result, mime:f.type||'image/jpeg'}); renderImgs(); };
+  Array.from(e.target.files).forEach(f=>{
+    const r=new FileReader();
+    r.onload=ev=>{imgs.push({b64:ev.target.result,mime:f.type||'image/jpeg'});renderImgs();};
     r.readAsDataURL(f);
   });
-  e.target.value = '';
+  e.target.value='';
 }
 function renderImgs(){
-  document.getElementById('imgprev').innerHTML = imgs.map((img,i) =>
+  document.getElementById('imgprev').innerHTML=imgs.map((img,i)=>
     `<div class="ith"><img src="${img.b64}"/><button class="irm" onclick="rmImg(${i})">✕</button></div>`).join('');
 }
-function rmImg(i){ imgs.splice(i,1); renderImgs(); }
-function handleKey(e){ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); sendMsg(); } }
-function resize(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,110)+'px'; }
-function chip(el){ document.getElementById('inp').value = el.textContent.replace(/^.\s/,''); sendMsg(); }
-function qchip(el){ document.getElementById('inp').value = el.textContent.replace(/^.\s/,''); document.getElementById('inp').focus(); }
+function rmImg(i){imgs.splice(i,1);renderImgs();}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
+function resize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,110)+'px';}
+function chip(el){document.getElementById('inp').value=el.textContent.replace(/^.\s/,'');sendMsg();}
+function qchip(el){document.getElementById('inp').value=el.textContent.replace(/^.\s/,'');document.getElementById('inp').focus();}
 
 async function sendMsg(){
   if(busy) return;
-  
-  const text = document.getElementById('inp').value.trim();
-  const localImgs = [...imgs];
-  if(!text && localImgs.length === 0) return;
+  const text=document.getElementById('inp').value.trim();
+  const localImgs=[...imgs];
+  if(!text&&localImgs.length===0) return;
 
-  const w = document.getElementById('welcome');
+  const w=document.getElementById('welcome');
   if(w) w.remove();
 
-  document.getElementById('inp').value = '';
-  document.getElementById('inp').style.height = 'auto';
-  imgs = []; renderImgs();
+  document.getElementById('inp').value='';
+  document.getElementById('inp').style.height='auto';
+  imgs=[]; renderImgs();
 
-  appendUser(text, localImgs);
+  appendUser(text,localImgs);
 
-  const parts = [];
-  localImgs.forEach(img => parts.push({inlineData:{mimeType:img.mime, data:img.b64.split(',')[1]}}));
-  parts.push({text: text || 'Avalie a imagem com todos os critérios do algoritmo ML.'});
-  history.push({role:'user', parts});
+  const parts=[];
+  localImgs.forEach(img=>parts.push({inlineData:{mimeType:img.mime,data:img.b64.split(',')[1]}}));
+  parts.push({text:text||'Avalie a imagem com todos os critérios do algoritmo ML.'});
+  history.push({role:'user',parts});
 
-  const tid = showTyping();
-  busy = true;
-  document.getElementById('sendbtn').disabled = true;
+  const tid=showTyping();
+  busy=true;
+  document.getElementById('sendbtn').disabled=true;
 
-  try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${getKey()}`;
-    const res = await fetch(url, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        system_instruction:{parts:[{text:SYS}]},
-        contents: history,
-        generationConfig:{maxOutputTokens:1200, temperature:0.7}
-      })
-    });
-    const data = await res.json();
+  try{
+    const res=await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`,
+      {method:'POST',headers:{'Content-Type':'application/json'},
+       body:JSON.stringify({
+         system_instruction:{parts:[{text:SYS}]},
+         contents:history,
+         generationConfig:{maxOutputTokens:1200,temperature:0.7}
+       })}
+    );
+    const data=await res.json();
     removeTyping(tid);
     if(data.error){
-      const msg = data.error.message || 'Erro desconhecido';
-      appendAgent('Erro da API Gemini: ' + msg + (msg.includes('API_KEY') ? '\n\nClique em "🔑 API Key" e verifique sua chave.' : ''));
+      appendAgent('Erro da API: '+data.error.message);
       history.pop();
     } else {
-      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Resposta vazia.';
-      history.push({role:'model', parts:[{text:reply}]});
+      const reply=data.candidates?.[0]?.content?.parts?.[0]?.text||'Resposta vazia.';
+      history.push({role:'model',parts:[{text:reply}]});
       appendAgent(reply);
     }
-  } catch(err) {
+  } catch(err){
     removeTyping(tid);
-    appendAgent('Falha de conexão. Verifique sua internet e tente novamente.');
+    appendAgent('Falha de conexão. Verifique sua internet.');
     history.pop();
   }
-  busy = false;
-  document.getElementById('sendbtn').disabled = false;
+  busy=false;
+  document.getElementById('sendbtn').disabled=false;
 }
 
-function appendUser(text, images){
-  const msgs = document.getElementById('msgs');
-  const d = document.createElement('div'); d.className = 'mu';
-  const ih = images.map(i => `<img src="${i.b64}" style="max-width:160px;border-radius:8px;border:1px solid var(--b2);display:block;margin-bottom:6px"/>`).join('');
-  d.innerHTML = `<div class="b">${ih}${text ? `<div>${esc(text)}</div>` : ''}</div><div class="uav">👤</div>`;
-  msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
+function appendUser(text,images){
+  const msgs=document.getElementById('msgs');
+  const d=document.createElement('div'); d.className='mu';
+  const ih=images.map(i=>`<img src="${i.b64}" style="max-width:160px;border-radius:8px;border:1px solid var(--b1);display:block;margin-bottom:6px"/>`).join('');
+  d.innerHTML=`<div class="b">${ih}${text?`<div>${esc(text)}</div>`:''}</div><div class="uav">👤</div>`;
+  msgs.appendChild(d); msgs.scrollTop=msgs.scrollHeight;
 }
 
 function appendAgent(text){
-  const msgs = document.getElementById('msgs');
-  const d = document.createElement('div'); d.className = 'ma';
-  d.innerHTML = `<div class="aav">V</div><div class="b"><div class="bnm">Victor Stein · CEO Vexus</div>${fmt(text)}</div>`;
-  msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
-  setTimeout(() => d.querySelectorAll('.sf[data-w]').forEach(b => b.style.width = b.dataset.w + '%'), 100);
+  const msgs=document.getElementById('msgs');
+  const d=document.createElement('div'); d.className='ma';
+  d.innerHTML=`<div class="aav">V</div><div class="b"><div class="b-name">Victor Stein · CEO Vexus</div>${fmt(text)}</div>`;
+  msgs.appendChild(d); msgs.scrollTop=msgs.scrollHeight;
+  setTimeout(()=>d.querySelectorAll('.sf[data-w]').forEach(b=>b.style.width=b.dataset.w+'%'),100);
 }
 
 function showTyping(){
-  const id = Date.now();
-  const msgs = document.getElementById('msgs');
-  const d = document.createElement('div'); d.className = 'typing'; d.id = 't'+id;
-  d.innerHTML = `<div class="aav" style="opacity:.5">V</div><div class="tdots"><span></span><span></span><span></span></div>`;
-  msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
+  const id=Date.now();
+  const msgs=document.getElementById('msgs');
+  const d=document.createElement('div'); d.className='typing'; d.id='t'+id;
+  d.innerHTML=`<div class="aav" style="opacity:.4">V</div><div class="tdots"><span></span><span></span><span></span></div>`;
+  msgs.appendChild(d); msgs.scrollTop=msgs.scrollHeight;
   return id;
 }
-function removeTyping(id){ const e = document.getElementById('t'+id); if(e) e.remove(); }
+function removeTyping(id){const e=document.getElementById('t'+id);if(e)e.remove();}
 
 function fmt(t){
-  const tags = {
-    '[DIAGNÓSTICO FINANCEIRO]':'<div class="dtag" style="background:rgba(77,155,224,.12);color:#4d9be0;border:1px solid rgba(77,155,224,.25)">📊 Diagnóstico Financeiro</div>',
+  const tags={
+    '[DIAGNÓSTICO FINANCEIRO]':'<div class="dtag" style="background:rgba(91,156,246,.1);color:#5b9cf6;border:1px solid rgba(91,156,246,.25)">📊 Diagnóstico Financeiro</div>',
     '[ARQUITETURA DO ANÚNCIO]':'<div class="dtag" style="background:var(--goldA);color:var(--gold);border:1px solid var(--goldB)">📋 Arquitetura do Anúncio</div>',
-    '[AVALIAÇÃO FOTO ML]':'<div class="dtag" style="background:rgba(224,154,58,.12);color:#e09a3a;border:1px solid rgba(224,154,58,.25)">🖼️ Avaliação Foto ML</div>',
-    '[OTIMIZAÇÃO B2A]':'<div class="dtag" style="background:rgba(58,184,112,.12);color:var(--green);border:1px solid rgba(58,184,112,.25)">🤖 Otimização B2A</div>',
-    '[ESTRATÉGIA]':'<div class="dtag" style="background:rgba(154,110,224,.12);color:#9a6ee0;border:1px solid rgba(154,110,224,.25)">🎯 Estratégia</div>',
+    '[AVALIAÇÃO FOTO ML]':'<div class="dtag" style="background:rgba(224,154,58,.1);color:#e09a3a;border:1px solid rgba(224,154,58,.25)">🖼️ Avaliação Foto ML</div>',
+    '[OTIMIZAÇÃO B2A]':'<div class="dtag" style="background:rgba(46,204,138,.1);color:var(--green);border:1px solid rgba(46,204,138,.25)">🤖 Otimização B2A</div>',
+    '[ESTRATÉGIA]':'<div class="dtag" style="background:rgba(155,114,232,.1);color:#9b72e8;border:1px solid rgba(155,114,232,.25)">🎯 Estratégia</div>',
   };
-  Object.entries(tags).forEach(([k,v]) => { t = t.replaceAll(k, v); });
-  t = t.replace(/([A-ZÁÀÂÃÉÊÍÓÔÕÚÇ][A-ZÁÀÂÃÉÊÍÓÔÕÚÇa-záàâãéêíóôõúç\s]{2,24}):\s*(\d+)\/10/g, (m, lbl, n) => {
-    const num = parseInt(n);
-    const c = num>=8 ? 'var(--green)' : num>=5 ? 'var(--gold)' : 'var(--red)';
+  Object.entries(tags).forEach(([k,v])=>{t=t.replaceAll(k,v);});
+  t=t.replace(/([A-ZÁÀÂÃÉÊÍÓÔÕÚÇ][A-ZÁÀÂÃÉÊÍÓÔÕÚÇa-záàâãéêíóôõúç\s]{2,24}):\s*(\d+)\/10/g,(m,lbl,n)=>{
+    const num=parseInt(n);
+    const c=num>=8?'var(--green)':num>=5?'var(--gold)':'var(--red)';
     return `<div class="sr"><span class="sl">${lbl.trim()}</span><div class="st"><div class="sf" data-w="${num*10}" style="background:${c}"></div></div><span class="sv" style="color:${c}">${n}/10</span></div>`;
   });
-  t = t.replace(/\bACELERAR\b/g, '<strong style="color:var(--green)">✅ ACELERAR</strong>');
-  t = t.replace(/\bDESCARTAR\b/g, '<strong style="color:var(--red)">❌ DESCARTAR</strong>');
-  t = t.replace(/\bAJUSTAR MARGEM\b/g, '<strong style="color:var(--gold)">⚠️ AJUSTAR MARGEM</strong>');
-  t = t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-  t = t.replace(/\*(.*?)\*/g, '<em style="color:#e8cc80;font-style:normal;font-weight:600">$1</em>');
-  t = t.replace(/^#{1,3}\s(.+)$/gm, '<div style="font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin:8px 0 3px">$1</div>');
-  t = t.replace(/^[-•]\s(.+)$/gm, '<div class="act"><span class="an">→</span><span>$1</span></div>');
-  t = t.replace(/^(\d+)\.\s(.+)$/gm, '<div class="act"><span class="an">$1</span><span>$2</span></div>');
-  t = t.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+  t=t.replace(/\bACELERAR\b/g,'<strong style="color:var(--green)">✅ ACELERAR</strong>');
+  t=t.replace(/\bDESCARTAR\b/g,'<strong style="color:var(--red)">❌ DESCARTAR</strong>');
+  t=t.replace(/\bAJUSTAR MARGEM\b/g,'<strong style="color:var(--gold)">⚠️ AJUSTAR MARGEM</strong>');
+  t=t.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
+  t=t.replace(/\*(.*?)\*/g,'<em style="color:var(--goldL);font-style:normal;font-weight:600">$1</em>');
+  t=t.replace(/^#{1,3}\s(.+)$/gm,'<div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin:10px 0 4px;opacity:.8">$1</div>');
+  t=t.replace(/^[-•]\s(.+)$/gm,'<div class="act"><span class="an">→</span><span>$1</span></div>');
+  t=t.replace(/^(\d+)\.\s(.+)$/gm,'<div class="act"><span class="an">$1</span><span>$2</span></div>');
+  t=t.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
   return t;
 }
-function esc(t){ return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
 
-// ══════════════════════════════════════════════════
+// ══════════════════════════════════════════
 // CALCULADORA
-// ══════════════════════════════════════════════════
+// ══════════════════════════════════════════
 function calcP(){
-  const c = parseFloat(document.getElementById('pc-custo').value)||0;
-  if(!c){ document.getElementById('calc-res').style.display='none'; return; }
+  const c=parseFloat(document.getElementById('pc-custo').value)||0;
+  if(!c){document.getElementById('calc-res').style.display='none';return;}
   const ml=parseFloat(document.getElementById('pc-ml').value)||14;
   const imp=parseFloat(document.getElementById('pc-imp').value)||6;
   const op=parseFloat(document.getElementById('pc-op').value)||3;
@@ -609,200 +749,168 @@ function calcP(){
   const psug=Math.ceil(pmin/10)*10-0.10;
   const liq=psug-(c+psug*((ml+imp+op)/100));
   const mgr=(psug-c)/psug*100;
-  const fat=un*psug, mliq=un*liq;
   const mc=mgr>=20?'var(--green)':mgr>=10?'var(--gold)':'var(--red)';
   document.getElementById('r-min').textContent='R$'+pmin.toFixed(2);
   document.getElementById('r-sug').textContent='R$'+psug.toFixed(2);
   document.getElementById('r-liq').textContent='R$'+liq.toFixed(2);
   document.getElementById('r-mgr').textContent=mgr.toFixed(1)+'%';
   document.getElementById('r-mgr').style.color=mc;
-  document.getElementById('r-fat').textContent='R$'+fat.toFixed(0);
-  document.getElementById('r-mliq').textContent='R$'+mliq.toFixed(0);
+  document.getElementById('r-fat').textContent='R$'+(un*psug).toFixed(0);
+  document.getElementById('r-mliq').textContent='R$'+(un*liq).toFixed(0);
   document.getElementById('calc-res').style.display='block';
 }
 
-// ══════════════════════════════════════════════════
+// ══════════════════════════════════════════
 // GERADOR
-// ══════════════════════════════════════════════════
-const ADDB = {
+// ══════════════════════════════════════════
+const ADDB={
   'F-1006':{
-    'Preto Fosco':{
-      titulo:'Torneira Gourmet Mola Inox 304 Monocomando Preto Vexus',
-      kw:'torneira gourmet mola inox 304 preto fosco monocomando cozinha',
-      bullets:'✅ CORPO INOX 304: Não usamos Zamak. Resistente à ferrugem e maresia — ideal para litoral\n✅ DUTOS EM LATÃO: Pressão 5-40 mca · Temperatura máxima 75°C · Bitola 1/2"\n✅ MOLA HELICOIDAL INDUSTRIAL: Estabilizadora de bica, retorno automático — visual restaurante\n✅ BICA EXTENSÍVEL 360°: Ducha dupla (jato + spray), alcance ~50cm, rotação completa\n✅ CARTUCHO CERÂMICO 500.000 CICLOS: Sem gotejamento · Garantia 12 meses · Fácil instalação',
-      faq:'❓ O corpo é Inox 304 ou Zamak?\n✅ 100% Aço Inox 304 no corpo e Latão nos dutos. Nenhuma peça estrutural em Zamak.\n\n❓ Funciona com aquecedor a gás, elétrico e solar?\n✅ Sim. Compatível com todos os sistemas. Temp. máx. 75°C · Pressão: 5 a 40 mca.'
-    },
-    'Gold':{
-      titulo:'Torneira Gourmet Mola Inox 304 Monocomando Gold Dourada Vexus',
-      kw:'torneira gourmet mola inox 304 gold dourada monocomando cozinha premium',
-      bullets:'✅ INOX 304 COM ACABAMENTO GOLD: Resistência superior + estética premium — tendência 2026\n✅ DUTOS EM LATÃO: Vedação profissional · Pressão 5-40 mca · Temperatura até 75°C\n✅ MOLA HELICOIDAL: Design de cozinha profissional, valoriza qualquer bancada\n✅ BICA 360° EXTENSÍVEL: 2 modos de jato, alcance ~50cm para toda a cuba\n✅ CARTUCHO CERÂMICO 500K CICLOS: Durabilidade comprovada · Garantia 12 meses',
-      faq:'❓ O acabamento Gold descasca com o tempo?\n✅ Não. Tratamento PVD sobre Inox 304. Resistente à maresia e produtos de limpeza.\n\n❓ Qual a pressão mínima necessária?\n✅ 5 mca. A maioria das residências opera acima de 8 mca — dentro do limite.'
-    },
-    'Rose Gold':{
-      titulo:'Torneira Gourmet Mola Inox 304 Monocomando Rose Gold Vexus',
-      kw:'torneira gourmet mola inox 304 rose gold monocomando cozinha',
-      bullets:'✅ INOX 304 + ROSE GOLD: Tendência dominante em cozinhas gourmet 2025-2026\n✅ DUTOS LATÃO: Material nobre hidráulico · Pressão 5-40 mca · Compatível com aquecimento\n✅ MOLA INDUSTRIAL: Visual que transforma a pia no ponto focal da decoração\n✅ BICA EXTENSÍVEL: 2 modos de jato · Alcance ~50cm · Rotação 360°\n✅ CARTUCHO CERÂMICO 500K CICLOS: Sem manutenção frequente · Garantia 12 meses',
-      faq:'❓ Rose Gold e Gold têm a mesma qualidade técnica?\n✅ Sim, idêntica. Apenas o acabamento difere: Rose Gold tem tonalidade rosada.\n\n❓ Posso instalar sozinho?\n✅ Sim! Acompanha kit completo: mangueiras trançadas, anéis de vedação e fixação. Furação: 35mm.'
-    },
-    'Black Rose':{
-      titulo:'Torneira Gourmet Mola Inox 304 Monocomando Black Rose Vexus',
-      kw:'torneira gourmet mola inox 304 black rose bicolor monocomando premium',
-      bullets:'✅ BICOLOR EXCLUSIVO BLACK ROSE: Design único — menor concorrência no ML por ser escasso\n✅ CORPO INOX 304: Resistência total à corrosão, maresia e umidade salina\n✅ DUTOS LATÃO: Qualidade hidráulica profissional · Pressão 5-40 mca\n✅ MOLA + BICA EXTENSÍVEL: Função industrial + estética premium em único produto\n✅ CARTUCHO CERÂMICO 500K CICLOS: Garantia 12 meses · Fabricação controlada',
-      faq:'❓ Por que o Black Rose é mais caro?\n✅ Acabamento bicolor exige processo adicional. É o modelo mais exclusivo e com menor concorrência.\n\n❓ A mola é decorativa ou funcional?\n✅ Totalmente funcional. Mola helicoidal em inox — estabiliza a bica e retrai automaticamente.'
-    },
-    'Cromado':{
-      titulo:'Torneira Gourmet Mola Inox 304 Monocomando Cromada Vexus',
-      kw:'torneira gourmet mola inox 304 cromada monocomando cozinha premium',
-      bullets:'✅ INOX 304 CROMADO: Clássico e resistente — banho de cromo sobre aço inox 304\n✅ DUTOS EM LATÃO: Padrão profissional · Pressão 5-40 mca · Temperatura até 75°C\n✅ MOLA HELICOIDAL: Design industrial que valoriza qualquer cozinha\n✅ BICA 360° EXTENSÍVEL: Jato concentrado + spray · Alcance ~50cm\n✅ CARTUCHO CERÂMICO 500K CICLOS: Sem gotejamento · Sem manutenção frequente',
-      faq:'❓ A torneira cromada enferruja?\n✅ Não. Corpo em Inox 304 com banho de cromo. Diferente de Zamak que oxida com facilidade.\n\n❓ Qual a diferença para o modelo preto?\n✅ Apenas estética. Idêntica qualidade técnica: Inox 304, Latão, cartucho 500k ciclos.'
-    }
+    'Preto Fosco':{titulo:'Torneira Gourmet Mola Inox 304 Monocomando Preto Vexus',kw:'torneira gourmet mola inox 304 preto fosco monocomando cozinha',bullets:'✅ CORPO INOX 304: Não usamos Zamak. Resistente à ferrugem e maresia — ideal para litoral\n✅ DUTOS EM LATÃO: Pressão 5-40 mca · Temperatura máxima 75°C · Bitola 1/2"\n✅ MOLA HELICOIDAL INDUSTRIAL: Estabilizadora de bica, retorno automático — visual restaurante\n✅ BICA EXTENSÍVEL 360°: Ducha dupla (jato + spray), alcance ~50cm, rotação completa\n✅ CARTUCHO CERÂMICO 500.000 CICLOS: Sem gotejamento · Garantia 12 meses · Fácil instalação',faq:'❓ O corpo é Inox 304 ou Zamak?\n✅ 100% Aço Inox 304 no corpo e Latão nos dutos internos. Nenhuma peça estrutural em Zamak.\n\n❓ Funciona com aquecedor a gás, elétrico e solar?\n✅ Sim. Compatível com todos os sistemas. Temp. máx. 75°C · Pressão: 5 a 40 mca.'},
+    'Gold':{titulo:'Torneira Gourmet Mola Inox 304 Monocomando Gold Dourada Vexus',kw:'torneira gourmet mola inox 304 gold dourada monocomando cozinha premium',bullets:'✅ INOX 304 COM ACABAMENTO GOLD: Resistência superior + estética premium tendência 2026\n✅ DUTOS EM LATÃO: Vedação profissional · Pressão 5-40 mca · Temperatura até 75°C\n✅ MOLA HELICOIDAL: Design inspirado em cozinhas profissionais — valoriza qualquer bancada\n✅ BICA 360° EXTENSÍVEL: 2 modos de jato, alcance ~50cm para toda a cuba\n✅ CARTUCHO CERÂMICO 500K CICLOS: Durabilidade comprovada · Garantia 12 meses',faq:'❓ O acabamento Gold descasca com o tempo?\n✅ Não. Tratamento sobre Inox 304. Resistente à maresia e produtos de limpeza.\n\n❓ Qual a pressão mínima necessária?\n✅ 5 mca. A maioria das residências opera acima de 8 mca.'},
+    'Rose Gold':{titulo:'Torneira Gourmet Mola Inox 304 Monocomando Rose Gold Vexus',kw:'torneira gourmet mola inox 304 rose gold monocomando cozinha',bullets:'✅ INOX 304 + ROSE GOLD: Tendência dominante em cozinhas gourmet 2025-2026\n✅ DUTOS LATÃO: Material nobre hidráulico · Pressão 5-40 mca · Compatível com aquecimento\n✅ MOLA INDUSTRIAL: Visual que transforma a pia no ponto focal da decoração\n✅ BICA EXTENSÍVEL: 2 modos de jato · Alcance ~50cm · Rotação 360°\n✅ CARTUCHO CERÂMICO 500K CICLOS: Sem manutenção frequente · Garantia 12 meses',faq:'❓ Rose Gold e Gold têm a mesma qualidade técnica?\n✅ Sim, idêntica. Apenas o acabamento difere.\n\n❓ Posso instalar sozinho?\n✅ Sim! Acompanha kit completo. Furação necessária: 35mm.'},
+    'Black Rose':{titulo:'Torneira Gourmet Mola Inox 304 Monocomando Black Rose Vexus',kw:'torneira gourmet mola inox 304 black rose bicolor monocomando premium',bullets:'✅ BICOLOR EXCLUSIVO BLACK ROSE: Design único — menor concorrência no ML por ser escasso\n✅ CORPO INOX 304: Resistência total à corrosão, maresia e umidade salina\n✅ DUTOS LATÃO: Qualidade hidráulica profissional · Pressão 5-40 mca\n✅ MOLA + BICA EXTENSÍVEL: Função industrial + estética premium em único produto\n✅ CARTUCHO CERÂMICO 500K CICLOS: Garantia 12 meses · Fabricação controlada',faq:'❓ Por que o Black Rose é mais caro?\n✅ Acabamento bicolor exige processo adicional. É o modelo mais exclusivo da linha.\n\n❓ A mola é decorativa ou funcional?\n✅ Totalmente funcional. Mola helicoidal em inox que estabiliza e retrai automaticamente.'},
+    'Cromado':{titulo:'Torneira Gourmet Mola Inox 304 Monocomando Cromada Vexus',kw:'torneira gourmet mola inox 304 cromada monocomando cozinha premium',bullets:'✅ INOX 304 CROMADO: Clássico e resistente — banho de cromo sobre aço inox 304\n✅ DUTOS EM LATÃO: Padrão profissional · Pressão 5-40 mca · Temperatura até 75°C\n✅ MOLA HELICOIDAL: Design industrial que valoriza qualquer cozinha\n✅ BICA 360° EXTENSÍVEL: Jato concentrado + spray · Alcance ~50cm\n✅ CARTUCHO CERÂMICO 500K CICLOS: Sem gotejamento · Sem manutenção frequente',faq:'❓ A torneira cromada enferruja?\n✅ Não. Corpo em Inox 304 com banho de cromo — diferente de Zamak que oxida com facilidade.\n\n❓ Qual a diferença para o modelo preto?\n✅ Apenas estética. Idêntica qualidade técnica.'}
   }
 };
-
-function resetAd(){ document.getElementById('ad-result').style.display='none'; }
+function resetAd(){document.getElementById('ad-result').style.display='none';}
 function genAd(){
-  const cod = document.getElementById('ag-cod').value;
-  const cor = document.getElementById('ag-cor').value;
-  const prod = ADDB[cod];
-  if(!prod){ toast('Produto sem template — use o CEO para gerar manualmente'); return; }
-  const d = prod[cor] || Object.values(prod)[0];
-  document.getElementById('ad-titulo').textContent = d.titulo;
-  document.getElementById('ad-kw').textContent = d.kw;
-  document.getElementById('ad-bullets').textContent = d.bullets;
-  document.getElementById('ad-faq').textContent = d.faq;
-  document.getElementById('ad-result').style.display = 'block';
+  const cod=document.getElementById('ag-cod').value;
+  const cor=document.getElementById('ag-cor').value;
+  const prod=ADDB[cod];
+  if(!prod){toast('Use o CEO para gerar este produto');return;}
+  const d=prod[cor]||Object.values(prod)[0];
+  document.getElementById('ad-titulo').textContent=d.titulo;
+  document.getElementById('ad-kw').textContent=d.kw;
+  document.getElementById('ad-bullets').textContent=d.bullets;
+  document.getElementById('ad-faq').textContent=d.faq;
+  document.getElementById('ad-result').style.display='block';
 }
-function copyEl(id){
-  navigator.clipboard.writeText(document.getElementById(id).textContent).then(() => toast('Copiado!'));
+function copyEl(id,label){
+  navigator.clipboard.writeText(document.getElementById(id).textContent).then(()=>toast(label+' copiado!'));
 }
 
-// ══════════════════════════════════════════════════
+// ══════════════════════════════════════════
 // SAC
-// ══════════════════════════════════════════════════
-const SACDB = [
+// ══════════════════════════════════════════
+const SACDB=[
   {q:'É compatível com aquecedor a gás/elétrico/solar?',a:'Sim! Compatível com todos os sistemas. Temperatura máxima: 75°C. Pressão: 5 a 40 mca. Funciona com qualquer aquecimento residencial.'},
   {q:'Qual furação necessária na bancada?',a:'Furação de 35mm de diâmetro — padrão para torneiras gourmet de bancada. Qualquer encanador faz em poucos minutos. Não precisa quebrar a bancada.'},
   {q:'O corpo é mesmo Inox 304 ou é Zamak?',a:'100% Aço Inox 304 no corpo. Dutos internos em Latão. Não usamos Zamak em nenhuma parte estrutural. Inox 304 = sem oxidação, ideal para litoral.'},
-  {q:'Funciona somente com água fria?',a:'Sim. Para uso apenas com água fria, instale um adaptador T na entrada (não incluso, ~R$8 em loja hidráulica). O produto tem entradas quente e fria padrão 1/2".'},
+  {q:'Funciona somente com água fria?',a:'Sim. Para uso apenas com água fria, instale um adaptador T na entrada (não incluso, ~R$8 em loja hidráulica). Entradas quente e fria padrão 1/2".'},
   {q:'Qual a pressão mínima necessária?',a:'Pressão mínima de 5 mca. Caixas d\'água elevadas normalmente entregam 8-15 mca. Recomendamos acima de 10 mca para melhor performance.'},
-  {q:'Pode usar em casa de praia/litoral?',a:'Sim! Inox 304 é altamente resistente à maresia. Por isso usamos Inox 304 e não Zamak — que oxida rapidamente em ambientes litorâneos.'},
+  {q:'Pode usar em casa de praia ou litoral?',a:'Sim! Inox 304 é altamente resistente à maresia. Por isso usamos Inox 304 e não Zamak — que oxida rapidamente em ambientes litorâneos.'},
   {q:'Qual o prazo e política de troca?',a:'Garantia de 12 meses contra defeitos de fabricação. Em caso de problema, resolvemos via ML (troca ou reembolso). Envio: 1-3 dias úteis após confirmação.'},
   {q:'Vem com kit de instalação?',a:'Sim! Inclui: 2 mangueiras flexíveis em aço trançado (50cm), kit de anéis de vedação e sistema de fixação para bancada.'},
 ];
-
 function initSAC(){
-  const list = document.getElementById('sac-list');
-  if(list.children.length > 0) return;
-  list.innerHTML = SACDB.map((item, i) => `
+  const list=document.getElementById('sac-list');
+  if(list.children.length>0) return;
+  list.innerHTML=SACDB.map((item,i)=>`
     <div class="sacitem${i===0?' open':''}">
-      <div class="sacq" onclick="this.parentElement.classList.toggle('open')">${item.q}<span>▾</span></div>
-      <div class="saca">${item.a.replace(/'/g,"&#39;")}<br>
-        <button class="copybtn" onclick="copySac(this, '${item.a.replace(/'/g,"\\'")}')">Copiar Resposta</button>
+      <div class="sacq" onclick="this.parentElement.classList.toggle('open')">${item.q}<span class="sacq-arr">▾</span></div>
+      <div class="saca">${item.a}<br>
+        <button class="cpbtn" onclick="copySac(this,'${item.a.replace(/'/g,"\\'")}')">Copiar Resposta</button>
       </div>
     </div>`).join('');
 }
-function copySac(btn, txt){
-  navigator.clipboard.writeText(txt).then(() => {
-    const orig = btn.textContent;
-    btn.textContent = '✓ Copiado!'; btn.style.background = 'var(--green)'; btn.style.borderColor = 'var(--green)'; btn.style.color = '#000';
-    setTimeout(() => { btn.textContent = orig; btn.style.background=''; btn.style.borderColor=''; btn.style.color=''; }, 2000);
+function copySac(btn,txt){
+  navigator.clipboard.writeText(txt).then(()=>{
+    const o=btn.textContent;
+    btn.textContent='✓ Copiado!'; btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent=o;btn.classList.remove('ok');},2200);
   });
 }
 
-// ══════════════════════════════════════════════════
+// ══════════════════════════════════════════
 // AVALIAÇÃO IMAGEM
-// ══════════════════════════════════════════════════
+// ══════════════════════════════════════════
 function setEvalImg(e){
-  const file = e.target.files[0]; if(!file) return;
-  evalMime = file.type || 'image/jpeg';
-  const r = new FileReader();
-  r.onload = ev => {
-    evalB64 = ev.target.result;
-    document.getElementById('eval-img').src = evalB64;
-    document.getElementById('eval-preview').style.display = 'block';
-    document.getElementById('eval-result').innerHTML = '';
+  const file=e.target.files[0]; if(!file) return;
+  evalMime=file.type||'image/jpeg';
+  const r=new FileReader();
+  r.onload=ev=>{
+    evalB64=ev.target.result;
+    document.getElementById('eval-img').src=evalB64;
+    document.getElementById('eval-preview').style.display='block';
+    document.getElementById('eval-result').innerHTML='';
   };
   r.readAsDataURL(file);
 }
-
 async function runEval(){
-  if(!evalB64 || busy) return;
-  
-  busy = true;
-  document.getElementById('eval-result').innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted2)">🔍 Analisando imagem com o CEO…</div>';
-  try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${getKey()}`;
-    const res = await fetch(url, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        system_instruction:{parts:[{text:SYS}]},
-        contents:[{role:'user', parts:[
-          {inlineData:{mimeType:evalMime, data:evalB64.split(',')[1]}},
-          {text:'Avalie esta imagem com [AVALIAÇÃO FOTO ML] completo. Todos os 8 critérios com nota e ações corretivas numeradas.'}
-        ]}],
-        generationConfig:{maxOutputTokens:1200, temperature:0.5}
-      })
-    });
-    const data = await res.json();
+  if(!evalB64||busy) return;
+  busy=true;
+  document.getElementById('eval-result').innerHTML='<div style="text-align:center;padding:24px;color:var(--muted2);font-size:13px">🔍 Analisando imagem com o CEO…</div>';
+  try{
+    const res=await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`,
+      {method:'POST',headers:{'Content-Type':'application/json'},
+       body:JSON.stringify({
+         system_instruction:{parts:[{text:SYS}]},
+         contents:[{role:'user',parts:[
+           {inlineData:{mimeType:evalMime,data:evalB64.split(',')[1]}},
+           {text:'Avalie esta imagem com [AVALIAÇÃO FOTO ML] completo. Todos os 8 critérios com nota e ações corretivas numeradas.'}
+         ]}],
+         generationConfig:{maxOutputTokens:1200,temperature:0.5}
+       })}
+    );
+    const data=await res.json();
     if(data.error){
-      document.getElementById('eval-result').innerHTML = `<div style="color:var(--red)">Erro: ${data.error.message}</div>`;
+      document.getElementById('eval-result').innerHTML=`<div style="color:var(--red);padding:12px">Erro: ${data.error.message}</div>`;
     } else {
-      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Resposta vazia.';
-      document.getElementById('eval-result').innerHTML = `<div style="background:var(--card);border:1px solid var(--b2);border-radius:10px;padding:14px;font-size:13px;line-height:1.75">${fmt(reply)}</div>`;
-      setTimeout(() => document.querySelectorAll('#eval-result .sf[data-w]').forEach(b => b.style.width = b.dataset.w+'%'), 100);
+      const reply=data.candidates?.[0]?.content?.parts?.[0]?.text||'Resposta vazia.';
+      document.getElementById('eval-result').innerHTML=`<div style="background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:15px;font-size:13px;line-height:1.8;text-align:left">${fmt(reply)}</div>`;
+      setTimeout(()=>document.querySelectorAll('#eval-result .sf[data-w]').forEach(b=>b.style.width=b.dataset.w+'%'),100);
     }
-  } catch(err) {
-    document.getElementById('eval-result').innerHTML = '<div style="color:var(--red)">Falha de conexão.</div>';
+  } catch(err){
+    document.getElementById('eval-result').innerHTML='<div style="color:var(--red);padding:12px">Falha de conexão.</div>';
   }
-  busy = false;
+  busy=false;
 }
 
-// ══════════════════════════════════════════════════
+// ══════════════════════════════════════════
 // GUIA
-// ══════════════════════════════════════════════════
-const STEPS = [
-  {ic:'🧠',n:'01',t:'CEO Estratégico',d:'Converse sobre qualquer decisão: estratégia, diagnóstico, concorrentes, lançamento. Envie imagens para avaliação pelo algoritmo ML.',ex:'Ex: "Tenho R$3.000 de capital. Qual produto lançar primeiro no ML?"'},
-  {ic:'🖼️',n:'02',t:'Avaliar Foto ML',d:'Envie a foto do produto. O CEO pontua 0-10 nos critérios reais que o algoritmo do ML usa para ranquear anúncios.',ex:'Ex: Foto com fundo branco. Score abaixo de 7 = algoritmo te rebaixa vs concorrentes.'},
-  {ic:'💰',n:'03',t:'Calculadora de Margem',d:'Digite o custo. Resultado instantâneo: preço mínimo, sugerido, lucro/unidade e projeção mensal.',ex:'Ex: Rose Gold R$229,42 → mínimo R$402,49 → sugerido R$449,90 com margem garantida.'},
-  {ic:'📋',n:'04',t:'Gerador de Anúncio',d:'Selecione produto e acabamento. Gera título ML otimizado + bullets AEO/B2A prontos para colar no marketplace.',ex:'Ex: F-1006 + Gold → título + 5 bullets técnicos + FAQ voice search prontos.'},
-  {ic:'💬',n:'05',t:'Base SAC',d:'8 perguntas frequentes do ML com respostas otimizadas. Copie e cole. Responder em <1h é fator de ranqueamento.',ex:'Ex: "Funciona com aquecedor?" → copie a resposta pronta em 5 segundos.'},
-  {ic:'🔄',n:'06',t:'Auto-Regeneração',d:'O CEO aprende com cada conversa da sessão. Alimente semanalmente com dados novos.',ex:'Ex: "Atualize: concorrente baixou para R$299. Tive 12 vendas essa semana."'},
+// ══════════════════════════════════════════
+const STEPS=[
+  {ic:'🧠',n:'01',t:'CEO Estratégico',d:'Converse sobre qualquer decisão estratégica, diagnóstico financeiro, análise de concorrentes ou lançamento. Envie imagens para avaliação pelo algoritmo ML.',ex:'"Tenho R$3.000 de capital. Qual produto lançar primeiro no ML?"'},
+  {ic:'🖼️',n:'02',t:'Avaliar Foto ML',d:'Envie a foto do produto. O CEO pontua 0-10 nos critérios reais que o algoritmo do ML usa para ranquear. Score abaixo de 7 = rebaixamento automático.',ex:'"Foto com fundo branco. CEO aponta: iluminação lateral cria sombra — perde 2 pontos."'},
+  {ic:'💰',n:'03',t:'Calculadora de Margem',d:'Digite o custo. Resultado instantâneo: preço mínimo para não perder, preço sugerido com arredondamento psicológico e projeção mensal.',ex:'F-1006 Rose Gold R$229,42 → mínimo R$402,49 → sugerido R$449,90.'},
+  {ic:'📋',n:'04',t:'Gerador de Anúncio',d:'Selecione produto e acabamento. Gera título ML otimizado + bullets AEO/B2A prontos para colar no marketplace em segundos.',ex:'F-1006 + Gold → título 58 chars + 5 bullets técnicos + FAQ voice search.'},
+  {ic:'💬',n:'05',t:'Base SAC',d:'8 perguntas frequentes do ML com respostas otimizadas para converter. Copie e cole. Responder em menos de 1h é fator de ranqueamento.',ex:'"Funciona com aquecedor?" → copie a resposta pronta em 5 segundos.'},
+  {ic:'🔄',n:'06',t:'Auto-Regeneração',d:'O CEO aprende com cada conversa da sessão. Alimente semanalmente com dados novos para manter a estratégia atualizada e calibrada.',ex:'"Concorrente baixou para R$299. Tive 12 vendas essa semana. O que ajusto?"'},
 ];
-const REGEN = [
-  {t:'📅 Atualização Semanal',d:'Todo domingo envie ao CEO: novos preços de concorrentes, vendas da semana, reclamações. Ele recalibra na hora.'},
-  {t:'🧠 Treinamento por Feedback',d:'Após cada reclamação: "Recebi reclamação que X. O que adiciono no anúncio?" O anúncio evolui continuamente.'},
-  {t:'📊 Revisão Mensal de Margem',d:'No dia 1 de cada mês, abra a Calculadora com o preço atual do fornecedor. Se o custo subiu, recalcule.'},
-  {t:'🔁 Ciclo de Melhoria',d:'Semana 1: lançar 5 anúncios · Semana 2: ajustar pior CTR · Semana 3: ativar ML Ads · Semana 4: analisar reviews.'},
+const REGEN=[
+  {t:'📅 Atualização Semanal',d:'Todo domingo: informe ao CEO novos preços de concorrentes, vendas da semana e reclamações. Ele recalibra a estratégia na hora.'},
+  {t:'🧠 Treinamento por Feedback',d:'Após cada reclamação recebida: "Recebi reclamação que X. O que adiciono no anúncio?" O anúncio evolui continuamente.'},
+  {t:'📊 Revisão Mensal de Margem',d:'Dia 1 de cada mês: abra a Calculadora com o preço atual do fornecedor. Se o custo subiu, recalcule antes de vender no prejuízo.'},
+  {t:'🔁 Ciclo de Melhoria',d:'Semana 1: lançar 5 anúncios · Semana 2: ajustar pior CTR · Semana 3: ativar ML Ads R$10/dia · Semana 4: analisar reviews e melhorar.'},
 ];
-
 function initGuide(){
-  const g = document.getElementById('steps-grid');
-  if(g.children.length > 0) return;
-  g.innerHTML = STEPS.map(s => `
+  const g=document.getElementById('steps-grid');
+  if(g.children.length>0) return;
+  g.innerHTML=STEPS.map(s=>`
     <div class="step-card">
-      <div class="stepn">${s.n}</div>
-      <div class="stepic">${s.ic}</div>
-      <div class="stept">${s.t}</div>
-      <div class="stepd">${s.d}</div>
-      <div class="stepex">${s.ex}</div>
+      <div class="step-n">${s.n}</div>
+      <div class="step-ic">${s.ic}</div>
+      <div class="step-t">${s.t}</div>
+      <div class="step-d">${s.d}</div>
+      <div class="step-ex">${s.ex}</div>
     </div>`).join('');
-  const r = document.getElementById('regen-list');
-  if(r.children.length > 0) return;
-  r.innerHTML = REGEN.map(i => `
-    <div style="background:var(--s1);border:1px solid var(--b2);border-radius:8px;padding:12px;margin-bottom:8px">
-      <div style="font-size:12px;font-weight:700;color:var(--white);margin-bottom:4px">${i.t}</div>
-      <div style="font-size:11px;color:var(--muted2);line-height:1.65">${i.d}</div>
+  const r=document.getElementById('regen-list');
+  if(r.children.length>0) return;
+  r.innerHTML=REGEN.map(i=>`
+    <div class="regen-card">
+      <div class="regen-t">${i.t}</div>
+      <div class="regen-d">${i.d}</div>
     </div>`).join('');
 }
 
-// ══════════════════════════════════════════════════
+// ══════════════════════════════════════════
 // UTILS
-// ══════════════════════════════════════════════════
+// ══════════════════════════════════════════
 function toast(msg){
-  const t = document.getElementById('toast');
-  t.textContent = '✓ ' + msg; t.classList.add('on');
-  setTimeout(() => t.classList.remove('on'), 2200);
+  const t=document.getElementById('toast');
+  t.textContent='✓ '+msg; t.classList.add('on');
+  setTimeout(()=>t.classList.remove('on'),2200);
 }
 </script>
 </body>
